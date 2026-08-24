@@ -1,0 +1,36 @@
+# ── Secrets & environment ─────────────────────────────
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.pfx
+config.json
+credentials.json
+
+# ── Internal / client-confidential — never pushed ──────
+# Client questionnaire, build prompts & working files
+DOCS/
+Website Convert/
+REQUIRED-FROM-CLIENT.md
+
+# ── Local tooling & IDE ────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+.playwright-mcp/
+.playwright/
+test-results/
+
+# ── OS junk ────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+Desktop.ini
+*~
+
+# ── Logs & temp ────────────────────────────────────────
+*.log
+tmp/
+temp/
+*.tmp
