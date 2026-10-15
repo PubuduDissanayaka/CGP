@@ -64,6 +64,57 @@ python3 -m http.server 4173
 # → http://localhost:4173
 ```
 
+## ✦ Deployment
+
+**Live site:** https://cgp.lk — StackCP shared hosting (account `devtenent.com`),
+docroot `~/cgp.lk`, which is a **git clone of
+[PubuduDissanayaka/CGP](https://github.com/PubuduDissanayaka/CGP) (public repo)**.
+Nothing else serves this site; there is no separate upload step.
+
+Deploying is therefore three steps:
+
+```bash
+# 1. copy the built site over a clone of the repo (never the client's working
+#    documents: Hero-Slide/ and the .docx change requests stay out of the
+#    public repo — they live in hermes-sync instead)
+rsync -a --exclude Hero-Slide/ --exclude '*.docx' <build-dir>/ <clone>/
+cd <clone> && git add -A && git commit -m "..." && git push origin main
+
+# 2. pull on the server
+ssh -i ~/.ssh/id_ed25519 -o BatchMode=yes devtenent.com@ssh.us.stackcp.com \
+  'cd ~/cgp.lk && git pull --ff-only origin main'
+
+# 3. verify from outside — always with a cache-busting query string
+curl -sS "https://cgp.lk/students.html?cb=$(date +%s)" | grep -o 'styles.css?v=[0-9]*'
+```
+
+**Rollback:** the docroot is a clean clone, so one line reverts it —
+
+```bash
+ssh devtenent.com@ssh.us.stackcp.com 'cd ~/cgp.lk && git reset --hard <previous-sha>'
+```
+
+**Cache gotcha (measured 2026-10-15).** StackCDN's edge cache keeps `.html`
+responses for 24 hours and does **not** notice that the files changed, so after a
+deploy some URLs keep serving the previous page until their TTL expires. On
+2026-10-15 the homepage `/`, `/students.html` and `/about.html` were still on the
+old build for up to 24 h while everything else was already current. The fix is
+the **Edge Caching → purge** control in the StackCP panel; otherwise it clears
+itself within 24 h. Note `/` and `/index.html` are **separate cache entries** —
+check both. Always probe with `?cb=<timestamp>`, because a plain probe caches the
+page you are trying to verify.
+
+Deployed 2026-10-15 from the locally verified build: repo commit `71a47df`,
+carrying the 2026-10-12 (home page / About CGP) and 2026-10-15 (Students &
+Parents) change requests.
+
+**Deploy history**
+
+| Date | Repo commit | Contents |
+|------|-------------|----------|
+| 2026-08-24 | `3777054` | Initial release of the seven-page site (was live until 2026-10-15) |
+| 2026-10-15 | `71a47df` | Students & Parents rebuild + 2026-10-12 home page / About CGP changes |
+
 ## ✦ Structure
 
 ```
