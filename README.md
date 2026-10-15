@@ -150,15 +150,19 @@ ssh devtenent.com@ssh.us.stackcp.com 'cd ~/cgp.lk && git reset --hard <previous-
 responses for 24 hours and does **not** notice that the files changed, so after a
 deploy some URLs keep serving the previous page until their TTL expires. On
 2026-10-15 the homepage `/`, `/students.html` and `/about.html` were still on the
-old build for up to 24 h while everything else was already current. The fix is
-the **Edge Caching → purge** control in the StackCP panel; otherwise it clears
-itself within 24 h. Note `/` and `/index.html` are **separate cache entries** —
-check both. Always probe with `?cb=<timestamp>`, because a plain probe caches the
-page you are trying to verify.
+old build for up to 24 h while everything else was already current; the menu
+structure deploy later the same day hit the same thing — `/partners.html` served
+the previous page (no `submenu-partners`, no `nav__row`) straight after the push,
+with `expires` set 24 h ahead, while the same URL with `?cb=<timestamp>` served
+the new build. The fix is the **Edge Caching → purge** control in the StackCP
+panel; otherwise it clears itself within 24 h. Note `/` and `/index.html` are
+**separate cache entries** — check both. Always probe with `?cb=<timestamp>`,
+because a plain probe caches the page you are trying to verify.
 
-Deployed 2026-10-15 from the locally verified build: repo commit `71a47df`,
-carrying the 2026-10-12 (home page / About CGP) and 2026-10-15 (Students &
-Parents) change requests.
+Deployed 2026-10-15 from the locally verified build: repo commit `9dc4f8d`, the
+menu structure change (see the menu structure change request below). It follows
+`71a47df`, which carried the 2026-10-12 (home page / About CGP) and 2026-10-15
+(Students & Parents) change requests.
 
 **Deploy history**
 
@@ -166,6 +170,10 @@ Parents) change requests.
 |------|-------------|----------|
 | 2026-08-24 | `3777054` | Initial release of the seven-page site (was live until 2026-10-15) |
 | 2026-10-15 | `71a47df` | Students & Parents rebuild + 2026-10-12 home page / About CGP changes |
+| 2026-10-15 | `9dc4f8d` | Menu structure: client's proposed navigation, German Partners section menu, navigating labels, anchor offset |
+
+**Rollback for the menu change:** `git reset --hard 6975a46` on the server (the
+commit that was live before it) — one line, and the docroot is a clean clone.
 
 ## ✦ Structure
 
