@@ -22,6 +22,9 @@ REQUIRED-FROM-CLIENT.md
 .playwright-mcp/
 .playwright/
 test-results/
+# One-off browser/CDP harnesses used while checking the nav — not site content.
+verify-*.js
+shots.js
 
 # ── OS junk ────────────────────────────────────────────
 .DS_Store

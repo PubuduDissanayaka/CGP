@@ -47,9 +47,61 @@ CGP connects Sri Lankan nurses and healthcare professionals with careers in Germ
 | [Resources & Downloads](resources.html) | Guides, full FAQ, plain-English German glossary |
 | [Contact](contact.html) | Contact details and the enquiry form |
 
-The four pages under **Students & Parents** are the section's content; `students.html` is the section landing page. The main navigation opens the section from the **Students & Parents** dropdown (Who Can Apply · Complete Pathway · Frequently Asked Questions), and `students.html` is linked from the footer and from every page inside the section.
+The four pages under **Students & Parents** are the section's content; `students.html` is the section landing page. The main navigation shows the three pages inside the section under the **Students & Parents** caret (Who Can Apply · Complete Pathway · Frequently Asked Questions), exactly as the client specified.
 
 Each of the six **downloadable guides** (`downloads/`) is a self-contained printable page — document checklist, fee policy, FAQ, German language starter guide, Nursing Ausbildung pathway guide, and a pre-departure checklist.
+
+## ✦ The main navigation
+
+The main navigation follows the client's proposed menu (see *Changes Home
+page.docx*), and every item in it is a real destination:
+
+```
+Home · About CGP ▾ · Students & Parents ▾ · German Partners ▾ · Current Students · Resources · Contact
+```
+
+- **A label is a link; the caret beside it is a button.** "About CGP",
+  "Students & Parents" and "German Partners" point at their own page, and the
+  caret button opens that section's menu. Nothing is reachable only from inside
+  a menu, and no top-level item is a dead end.
+- **About CGP** → Who We Are · Vision & Mission · How CGP Works · Our Approach —
+  the client's four items, anchored to sections on `about.html`.
+- **Students & Parents** → Who Can Apply · Complete Pathway · Frequently Asked
+  Questions — the client's three pages, and only those three.
+- **German Partners** → Partnership services · How the partnership works · The
+  partnership model · Why work with CGP. The client's proposed navigation shows
+  this as a dropdown but has not named its items, so the page's own section
+  headings are used, the same rule About CGP follows. Swap the four entries in
+  `PARTNERS_SUBMENU` (`build-pages.py`) when the client supplies their own.
+- Menu item text is always the target section's own heading, so a menu item
+  cannot drift out of step with the page it points at. `verify-menu.py` checks
+  that every one of the eleven menu links resolves to a real target.
+- `aria-current="page"` marks the link to the page you are on;
+  `aria-current="true"` marks the section that page belongs to (for example the
+  Students & Parents label while you are on the FAQ page).
+
+### Menu destinations at a glance
+
+```mermaid
+flowchart LR
+  H[Home] --> A[About CGP]
+  A --> A1[Who We Are]
+  A --> A2[Vision &amp; Mission]
+  A --> A3[How CGP Works]
+  A --> A4[Our Approach]
+  H --> S[Students &amp; Parents]
+  S --> S1[Who Can Apply]
+  S --> S2[Complete Pathway]
+  S --> S3[Frequently Asked Questions]
+  H --> P[German Partners]
+  P --> P1[Partnership services]
+  P --> P2[How the partnership works]
+  P --> P3[The partnership model]
+  P --> P4[Why work with CGP]
+  H --> C[Current Students]
+  H --> R[Resources]
+  H --> K[Contact]
+```
 
 ## ✦ Run it
 
@@ -132,7 +184,9 @@ Parents) change requests.
 ├── downloads/                  Six printable PDF-style guides (self-contained HTML)
 ├── Hero-Slide/                 Client-supplied banner artwork (PNG masters)
 ├── build-pages.py              Optional dev tool — generates the shared chrome
+├── verify-menu.py              Menu contract check — run after any nav change
 ├── Changes Home page.docx      Client change request, 2026-10-12
+├── Website - Students.docx     Client change request, 2026-10-15
 └── README.md
 ```
 
@@ -140,13 +194,22 @@ Parents) change requests.
 
 This generated eight of the ten pages so the header, navigation and footer are byte-identical across the site. **It is not required to run or edit the site** — the `.html` files are complete and safe to hand-edit.
 
-The main navigation — including the **About CGP** dropdown (its four section links) and the **Students & Parents** dropdown (Who Can Apply · Complete Pathway · Frequently Asked Questions) — lives in `nav()` in that script, and the About page's four sections are generated from the `ABOUT` template below it. Changing either means changing the script, then re-running it.
+The main navigation lives in `nav()` in that script: `SECTION_MENUS` names the three sections that carry a menu, and `ABOUT_SUBMENU` / `STUDENTS_SUBMENU` / `PARTNERS_SUBMENU` are their items. The About page's four sections are generated from the `ABOUT` template below it. Changing any of it means changing the script, then re-running it.
 
 > ⚠️ If you hand-edit shared chrome (header/nav/footer) inside a generated page, either mirror the change into the script or delete the script — otherwise the next run overwrites your edit. `index.html` is hand-maintained and is never touched by the script.
 
+### Checking a menu change
+
+`python3 verify-menu.py` asserts the whole menu contract and exits non-zero on any
+break: the generator is idempotent, every page carries `?v=` the same version,
+every page has one `<h1>` and no duplicate ids, all ten pages render the same
+nav in the client's order, every one of the eleven menu links resolves to a real
+page or anchor, and `aria-current` is on the right link for every page. Run it
+after any change to `nav()`, the submenus or the menu markup.
+
 ### Cache busting
 
-CSS and JS are referenced as `css/styles.css?v=11`. When you change either file, bump `ASSET_VERSION` in `build-pages.py`, re-run it, and change the matching `?v=` numbers in `index.html`.
+CSS and JS are referenced as `css/styles.css?v=13`. When you change either file, bump `ASSET_VERSION` in `build-pages.py`, re-run it, and change the matching `?v=` numbers in `index.html`.
 
 ## ✦ Design system
 
@@ -261,7 +324,8 @@ banner artwork in the site's own visual language.
 **Still to confirm with the client** (see the Multica issue): which supplied artwork belongs
 to which banner, the Vision and Mission wording, and whether the placeholder statistics should
 also come off the About and Current Students pages. *(The Students navigation item became a
-dropdown on 2026-10-15; the German Partners item did not.)*
+dropdown on 2026-10-15; the German Partners item followed on 2026-10-15 — see the menu
+structure change below.)*
 
 ## ✦ Client change request — 2026-10-15
 
@@ -315,4 +379,61 @@ pages.
   the required German level is "normally B1 or B2". Both are the generally documented position
   and both are hedged as set by law and by the institution, but the client should confirm the
   wording before it is published.
+
+## ✦ Client change request — 2026-10-15 (menu structure)
+
+Applied from the two client documents together — `Changes Home page.docx` (2026-10-12, whose
+closing line is the client's *Proposed Main Navigation*) and `Website - Students.docx`
+(2026-10-15, whose §8 is the client's *Final Menu Structure*). The menu now matches them
+exactly and follows one rule everywhere.
+
+**The menu**
+
+- Top level is the client's proposed navigation, in their order:
+  `Home · About CGP ▾ · Students & Parents ▾ · German Partners ▾ · Current Students · Resources · Contact`.
+- **`German Partners` became a caret menu.** The client's proposed navigation marks it as a
+  dropdown but never names its items, so the page's own four section headings are used —
+  Partnership services · How the partnership works · The partnership model · Why work with CGP.
+  This is the one judgement call in the change: the client's caret is honoured, the items are
+  borrowed from the page itself rather than invented, and they are one four-line list
+  (`PARTNERS_SUBMENU`) to replace once the client sends their own.
+- **Every top-level label is now a link, and the caret beside it is a button.** Before this,
+  About CGP and Students & Parents were `<button>`s that only opened a menu, so `students.html`
+  — the section landing page, and the only place the client's Students & Parents hero banner
+  lives — was reachable from the footer and from inside the section but not from the main
+  navigation at all. The label now goes to the page; the caret opens the menu. No menu item was
+  added: the Students & Parents menu still holds the client's three pages and nothing else.
+- Menu item text is the target section's own heading, always, so an item and the page it points
+  at cannot drift apart.
+- `partners.html` sections gained the ids the new menu anchors to (`partnership-services`,
+  `how-the-partnership-works`, `partnership-model`, `why-work-with-cgp`).
+- Inside a section: `aria-current="page"` on the link to the page you are on,
+  `aria-current="true"` on the section it belongs to — previously a sub-page such as
+  `who-can-apply.html` marked nothing in the main navigation at all.
+- The caret button carries its own accessible name (`"German Partners menu"`), because the
+  glyph inside it is `aria-hidden`.
+
+**Anchor landing**
+
+- `html { scroll-padding-top: 6rem }` added to `css/styles.css`. The header is sticky and
+  5rem tall, so a menu anchor used to park its heading *behind* the header: measured with the
+  same probe either side of the fix, 8 of 8 section anchors were partly hidden on a 390 px
+  viewport (heading top 4 px or 68 px against a header bottom of 85 px) and 1 of 8 on desktop;
+  after the fix none are. This affects the four About CGP anchors as well as the four new
+  German Partners ones.
+
+**Housekeeping**
+
+- `ASSET_VERSION` / `?v=` raised to **13** on all ten pages, `index.html` included.
+- A `verify-menu.py` contract check was added (see *Checking a menu change* above).
+- `js/main.js` was **not** changed: the existing `[data-nav-menu]` disclosure code already
+  binds to `.nav__toggle` and `.nav__submenu`, which the new markup still provides.
+
+**Deliberate, and not changed here**
+
+- The footer keeps its own wording (`Resources & Downloads`), which is longer than the main
+  navigation's `Resources`. The client's proposed menu governs the main navigation; the footer
+  is a different surface and was left alone rather than changed without being asked.
+- The German Partners item ordering and wording are a developer choice standing in for the
+  client's, not a client decision — flagged on the Multica issue.
 

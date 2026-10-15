@@ -292,6 +292,14 @@ h1, h2, h3, h4,
   border-bottom: var(--rule-thin) solid var(--color-rule);
 }
 
+/* The header is sticky and 5rem tall, so a section link that jumps to an
+   anchor would otherwise park its heading behind the header. Every menu item
+   in the main navigation is an anchor or a page link, so the offset lives
+   here, once, rather than as a margin on each target. */
+html {
+  scroll-padding-top: 6rem;
+}
+
 .header__bar {
   display: flex;
   align-items: center;
@@ -414,7 +422,7 @@ h1, h2, h3, h4,
   border-color: var(--color-ink-3);
 }
 
-.nav__link[aria-current="page"] {
+.nav__link[aria-current] {
   font-weight: var(--weight-bold);
   border-color: var(--color-accent);
 }
@@ -424,9 +432,12 @@ h1, h2, h3, h4,
 }
 
 /* --------------------------------------------------------------------------
-   NAV DROPDOWN - disclosure menu inside the main navigation.
-   Opens on hover and on click; the button carries aria-expanded so keyboard
-   and screen-reader users get the same menu. Mobile renders it inline.
+   NAV DROPDOWN - section menu inside the main navigation.
+   The label is a normal link to the section's own page; the caret beside it is
+   a separate button that opens the menu, so "go to the page" and "show what is
+   in it" stay two separate actions. Opens on hover and on the button, which
+   carries aria-expanded, so keyboard and screen-reader users get the same menu.
+   Mobile renders it inline.
    -------------------------------------------------------------------------- */
 .nav__item {
   position: relative;
@@ -434,10 +445,24 @@ h1, h2, h3, h4,
   align-items: center;
 }
 
+.nav__row {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
 .nav__toggle {
   display: inline-flex;
   align-items: center;
-  gap: 0.375rem;
+  justify-content: center;
+  padding: 0.25rem 0.125rem;
+  color: inherit;
+  border-bottom: 2px solid transparent;
+  transition: border-color var(--duration-fast) var(--ease-out);
+}
+
+.nav__toggle:hover {
+  border-color: var(--color-ink-3);
 }
 
 .nav__caret {
@@ -450,7 +475,7 @@ h1, h2, h3, h4,
   transform: rotate(180deg);
 }
 
-.nav__item.is-open > .nav__link {
+.nav__item.is-open .nav__link {
   border-color: var(--color-accent);
 }
 
@@ -555,8 +580,27 @@ h1, h2, h3, h4,
     align-items: stretch;
   }
 
+  /* The label and its caret share one full-width row; the row carries the
+     rule and the caret keeps a full-size touch target. */
+  .nav__row {
+    border-bottom: var(--rule-thin) solid var(--color-rule);
+  }
+
+  .nav__row .nav__link {
+    flex: 1;
+    width: auto;
+    border-bottom: none;
+  }
+
   .nav__toggle {
-    justify-content: space-between;
+    min-width: 2.75rem;
+    min-height: 2.75rem;
+    padding: var(--space-2) var(--container-pad);
+    border-bottom: none;
+  }
+
+  .nav__item.is-open .nav__row {
+    border-bottom-color: var(--color-accent);
   }
 
   .nav__submenu {

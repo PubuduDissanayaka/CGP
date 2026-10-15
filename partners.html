@@ -8,8 +8,8 @@
   <!-- ?v= is a cache-busting version stamp. Bump ASSET_VERSION in
        build-pages.py (and index.html) whenever CSS or JS changes,
        so returning visitors are not served a stale copy. -->
-  <link rel="stylesheet" href="css/tokens.css?v=12">
-  <link rel="stylesheet" href="css/styles.css?v=12">
+  <link rel="stylesheet" href="css/tokens.css?v=13">
+  <link rel="stylesheet" href="css/styles.css?v=13">
   <link rel="icon" href="assets/images/CGPLogo.png" type="image/png">
 </head>
 <body>
@@ -32,9 +32,12 @@
       <nav class="nav" id="site-nav" aria-label="Main navigation">
         <a class="nav__link" href="index.html">Home</a>
         <div class="nav__item" data-nav-menu>
-          <button class="nav__link nav__toggle" type="button" aria-expanded="false" aria-controls="submenu-about">
-            About CGP <span class="nav__caret" aria-hidden="true">&#9662;</span>
-          </button>
+          <div class="nav__row">
+            <a class="nav__link" href="about.html">About CGP</a>
+            <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="submenu-about" aria-label="About CGP menu">
+              <span class="nav__caret" aria-hidden="true">&#9662;</span>
+            </button>
+          </div>
           <div class="nav__submenu" id="submenu-about">
             <div class="nav__menu">
               <a class="nav__sublink" href="about.html#who-we-are">Who We Are</a>
@@ -45,9 +48,12 @@
           </div>
         </div>
         <div class="nav__item" data-nav-menu>
-          <button class="nav__link nav__toggle" type="button" aria-expanded="false" aria-controls="submenu-students">
-            Students &amp; Parents <span class="nav__caret" aria-hidden="true">&#9662;</span>
-          </button>
+          <div class="nav__row">
+            <a class="nav__link" href="students.html">Students &amp; Parents</a>
+            <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="submenu-students" aria-label="Students &amp; Parents menu">
+              <span class="nav__caret" aria-hidden="true">&#9662;</span>
+            </button>
+          </div>
           <div class="nav__submenu" id="submenu-students">
             <div class="nav__menu">
               <a class="nav__sublink" href="who-can-apply.html">Who Can Apply</a>
@@ -56,7 +62,22 @@
             </div>
           </div>
         </div>
-        <a class="nav__link" href="partners.html" aria-current="page">German Partners</a>
+        <div class="nav__item" data-nav-menu>
+          <div class="nav__row">
+            <a class="nav__link" href="partners.html" aria-current="page">German Partners</a>
+            <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="submenu-partners" aria-label="German Partners menu">
+              <span class="nav__caret" aria-hidden="true">&#9662;</span>
+            </button>
+          </div>
+          <div class="nav__submenu" id="submenu-partners">
+            <div class="nav__menu">
+              <a class="nav__sublink" href="partners.html#partnership-services">Partnership services</a>
+              <a class="nav__sublink" href="partners.html#how-the-partnership-works">How the partnership works</a>
+              <a class="nav__sublink" href="partners.html#partnership-model">The partnership model</a>
+              <a class="nav__sublink" href="partners.html#why-work-with-cgp">Why work with CGP</a>
+            </div>
+          </div>
+        </div>
         <a class="nav__link" href="current-students.html">Current Students</a>
         <a class="nav__link" href="resources.html">Resources</a>
         <a class="nav__link" href="contact.html">Contact</a>
@@ -101,7 +122,7 @@
       <figcaption>Partnering with German healthcare institutions</figcaption>
     </figure>
 
-    <section class="section section--dark" aria-labelledby="pservices-title">
+    <section class="section section--dark" id="partnership-services" aria-labelledby="pservices-title">
       <div class="container">
         <header class="section-head">
           <span class="section-head__index">01</span>
@@ -134,7 +155,7 @@
       </div>
     </section>
 
-    <section class="section" aria-labelledby="pwork-title">
+    <section class="section" id="how-the-partnership-works" aria-labelledby="pwork-title">
       <div class="container">
         <header class="section-head">
           <span class="section-head__index">02</span>
@@ -202,7 +223,7 @@
       </div>
     </section>
 
-    <section class="section" style="padding-top: 0;" aria-labelledby="pmodel-title">
+    <section class="section" id="partnership-model" style="padding-top: 0;" aria-labelledby="pmodel-title">
       <div class="container">
         <header class="section-head">
           <span class="section-head__index">03</span>
@@ -237,7 +258,7 @@
       </div>
     </section>
 
-    <section class="section section--dark" aria-labelledby="pwhy-title">
+    <section class="section section--dark" id="why-work-with-cgp" aria-labelledby="pwhy-title">
       <div class="container">
         <header class="section-head">
           <span class="section-head__index">04</span>
@@ -350,6 +371,6 @@
     </div>
   </footer>
 
-  <script src="js/main.js?v=12"></script>
+  <script src="js/main.js?v=13"></script>
 </body>
 </html>

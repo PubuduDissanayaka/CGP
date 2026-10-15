@@ -18,7 +18,9 @@ the change into SHELL below or stop using this script - otherwise the next
 run will overwrite your edit.
 """
 
+import html as html_lib
 import pathlib
+import re
 
 ROOT = pathlib.Path(__file__).parent
 
@@ -31,7 +33,7 @@ LOGO = "assets/images/CGPLogo.png"
 
 # Bump this whenever css/ or js/ changes, then re-run, and mirror it in
 # index.html. Forces browsers to fetch the new file instead of a cached one.
-ASSET_VERSION = "12"
+ASSET_VERSION = "13"
 
 # Ten pages as of the 2026-10-15 Students & Parents rebuild: the seven main
 # pages plus the three pages that now sit under the Students & Parents menu.
@@ -83,6 +85,9 @@ def page_hero_of(filename):
 # "Resources & Downloads" is shortened to "Resources".
 NAV_LABELS = {"resources.html": "Resources"}
 
+# Every item in a section menu is the section's own heading, verbatim, and the
+# anchor is the id on that heading's <section> - so a menu item can never
+# disagree with the page it points at.
 ABOUT_SUBMENU = [
     ("about.html#who-we-are", "Who We Are"),
     ("about.html#vision-mission", "Vision &amp; Mission"),
@@ -90,17 +95,55 @@ ABOUT_SUBMENU = [
     ("about.html#our-approach", "Our Approach"),
 ]
 
+# The client's proposed main navigation (Changes Home page.docx, 2026-10-12)
+# marks German Partners as a dropdown as well. The client has not supplied its
+# items, so - as on About CGP - the section's own headings are used. Swap these
+# four lines when the client names their own items.
+PARTNERS_SUBMENU = [
+    ("partners.html#partnership-services", "Partnership services"),
+    ("partners.html#how-the-partnership-works", "How the partnership works"),
+    ("partners.html#partnership-model", "The partnership model"),
+    ("partners.html#why-work-with-cgp", "Why work with CGP"),
+]
 
-def dropdown(label, current, toggle_href, items, submenu_id):
-    """A main-nav dropdown (disclosure menu).
+# The three main-nav items that are section menus rather than single links:
+# page -> (label, menu items, submenu id).
+SECTION_MENUS = {
+    "about.html": ("About CGP", ABOUT_SUBMENU, "submenu-about"),
+    "students.html": ("Students &amp; Parents", STUDENTS_SUBMENU, "submenu-students"),
+    "partners.html": ("German Partners", PARTNERS_SUBMENU, "submenu-partners"),
+}
 
-    label       - the visible top-level label
-    current     - the page currently being rendered
-    toggle_href - the page that marks the toggle itself as the current page
-    items       - [(href, text)] shown inside the menu
-    submenu_id  - id the toggle points at with aria-controls
+
+def dropdown(label, current, section_href, items, submenu_id):
+    """A main-nav section menu (disclosure menu).
+
+    Every top-level item in the main navigation is a link to its own page, so
+    no destination is reachable only from inside a menu. The sections that have
+    more than one destination carry a caret button beside the label; the button
+    - and only the button - opens the menu, which keeps "go to the page" and
+    "show me what is in it" as two separate, predictable actions.
+
+    label        - the visible top-level label (may contain character entities)
+    current      - the page currently being rendered
+    section_href - the section's own page; the label links to it
+    items        - [(href, text)] shown inside the menu
+    submenu_id   - id the caret button points at with aria-controls
     """
-    cur = ' aria-current="page"' if current == toggle_href else ""
+    child_hrefs = [href for href, _ in items]
+
+    if current == section_href:
+        cur = ' aria-current="page"'
+    elif current in child_hrefs:
+        # A page inside the section is open. aria-current="true" marks the
+        # section the visitor is in without claiming this link is the page
+        # they are on.
+        cur = ' aria-current="true"'
+    else:
+        cur = ""
+
+    # The caret button carries only a glyph, so it needs its own name.
+    plain = html_lib.escape(html_lib.unescape(re.sub(r"<[^>]+>", "", label)), quote=True)
 
     lines = []
     for href, text in items:
@@ -111,9 +154,12 @@ def dropdown(label, current, toggle_href, items, submenu_id):
     sub = "\n".join(lines)
 
     return f"""        <div class="nav__item" data-nav-menu>
-          <button class="nav__link nav__toggle" type="button" aria-expanded="false" aria-controls="{submenu_id}"{cur}>
-            {label} <span class="nav__caret" aria-hidden="true">&#9662;</span>
-          </button>
+          <div class="nav__row">
+            <a class="nav__link" href="{section_href}"{cur}>{label}</a>
+            <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="{submenu_id}" aria-label="{plain} menu">
+              <span class="nav__caret" aria-hidden="true">&#9662;</span>
+            </button>
+          </div>
           <div class="nav__submenu" id="{submenu_id}">
             <div class="nav__menu">
 {sub}
@@ -126,28 +172,12 @@ def nav(current):
     out = []
 
     for href, label in PAGES:
-        cur = ' aria-current="page"' if href == current and href != "students.html" else ""
-
-        if href == "about.html":
-            out.append(dropdown("About CGP", current, "about.html", ABOUT_SUBMENU, "submenu-about"))
+        if href in SECTION_MENUS:
+            menu_label, items, submenu_id = SECTION_MENUS[href]
+            out.append(dropdown(menu_label, current, href, items, submenu_id))
             continue
 
-        if href == "students.html":
-            # "Students & Parents" is the section: the label opens the menu, and
-            # the three pages inside it are the section's content. The section
-            # landing page (students.html) is linked from the footer and from
-            # every page inside the section.
-            out.append(
-                dropdown(
-                    "Students &amp; Parents",
-                    current,
-                    "students.html",
-                    STUDENTS_SUBMENU,
-                    "submenu-students",
-                )
-            )
-            continue
-
+        cur = ' aria-current="page"' if href == current else ""
         out.append(
             f'        <a class="nav__link" href="{href}"{cur}>{NAV_LABELS.get(href, label)}</a>'
         )
@@ -1032,7 +1062,7 @@ PARTNERS = page_hero(
      ("Contact", f'<a href="mailto:{EMAIL}">{EMAIL}</a>')],
     meta="F&uuml;r Partnereinrichtungen",
 ) + band("medical-team.jpg", "A team of healthcare professionals in surgical dress viewed from below", "Partnering with German healthcare institutions") + f"""
-    <section class="section section--dark" aria-labelledby="pservices-title">
+    <section class="section section--dark" id="partnership-services" aria-labelledby="pservices-title">
       <div class="container">
 {section_head("01", "Partnership services", "What we provide")}
         <div class="grid">
@@ -1046,7 +1076,7 @@ PARTNERS = page_hero(
       </div>
     </section>
 
-    <section class="section" aria-labelledby="pwork-title">
+    <section class="section" id="how-the-partnership-works" aria-labelledby="pwork-title">
       <div class="container">
 {section_head("02", "How the partnership works", "Seven stages")}
         <div class="grid">
@@ -1061,7 +1091,7 @@ PARTNERS = page_hero(
       </div>
     </section>
 
-    <section class="section" style="padding-top: 0;" aria-labelledby="pmodel-title">
+    <section class="section" id="partnership-model" style="padding-top: 0;" aria-labelledby="pmodel-title">
       <div class="container">
 {section_head("03", "The partnership model", "Illustrative example", "pmodel-title")}
         <div class="grid row-gap-lg">
@@ -1091,7 +1121,7 @@ PARTNERS = page_hero(
       </div>
     </section>
 
-    <section class="section section--dark" aria-labelledby="pwhy-title">
+    <section class="section section--dark" id="why-work-with-cgp" aria-labelledby="pwhy-title">
       <div class="container">
 {section_head("04", "Why work with CGP", "Four reasons")}
         <div class="grid row-gap">
