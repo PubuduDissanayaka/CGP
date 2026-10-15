@@ -8,8 +8,8 @@
   <!-- ?v= is a cache-busting version stamp. Bump ASSET_VERSION in
        build-pages.py (and index.html) whenever CSS or JS changes,
        so returning visitors are not served a stale copy. -->
-  <link rel="stylesheet" href="css/tokens.css?v=9">
-  <link rel="stylesheet" href="css/styles.css?v=9">
+  <link rel="stylesheet" href="css/tokens.css?v=12">
+  <link rel="stylesheet" href="css/styles.css?v=12">
   <link rel="icon" href="assets/images/CGPLogo.png" type="image/png">
 </head>
 <body>
@@ -31,11 +31,34 @@
 
       <nav class="nav" id="site-nav" aria-label="Main navigation">
         <a class="nav__link" href="index.html">Home</a>
-        <a class="nav__link" href="about.html" aria-current="page">About CGP</a>
-        <a class="nav__link" href="students.html">Students</a>
+        <div class="nav__item" data-nav-menu>
+          <button class="nav__link nav__toggle" type="button" aria-expanded="false" aria-controls="submenu-about" aria-current="page">
+            About CGP <span class="nav__caret" aria-hidden="true">&#9662;</span>
+          </button>
+          <div class="nav__submenu" id="submenu-about">
+            <div class="nav__menu">
+              <a class="nav__sublink" href="about.html#who-we-are">Who We Are</a>
+              <a class="nav__sublink" href="about.html#vision-mission">Vision &amp; Mission</a>
+              <a class="nav__sublink" href="about.html#how-cgp-works">How CGP Works</a>
+              <a class="nav__sublink" href="about.html#our-approach">Our Approach</a>
+            </div>
+          </div>
+        </div>
+        <div class="nav__item" data-nav-menu>
+          <button class="nav__link nav__toggle" type="button" aria-expanded="false" aria-controls="submenu-students">
+            Students &amp; Parents <span class="nav__caret" aria-hidden="true">&#9662;</span>
+          </button>
+          <div class="nav__submenu" id="submenu-students">
+            <div class="nav__menu">
+              <a class="nav__sublink" href="who-can-apply.html">Who Can Apply</a>
+              <a class="nav__sublink" href="complete-pathway.html">Complete Pathway</a>
+              <a class="nav__sublink" href="faq.html">Frequently Asked Questions</a>
+            </div>
+          </div>
+        </div>
         <a class="nav__link" href="partners.html">German Partners</a>
         <a class="nav__link" href="current-students.html">Current Students</a>
-        <a class="nav__link" href="resources.html">Resources &amp; Downloads</a>
+        <a class="nav__link" href="resources.html">Resources</a>
         <a class="nav__link" href="contact.html">Contact</a>
       </nav>
 
@@ -55,7 +78,7 @@
           <div class="page-hero__index">
             <span class="micro-label">02</span>
             <span class="micro-label">About CGP</span>
-            <span class="micro-label page-hero__of">Page 02 / 07</span>
+            <span class="micro-label page-hero__of">Page 02 / 10</span>
           </div>
           <h1 class="page-hero__title" id="page-title">Guidance you can hold us to.</h1>
           <div class="page-hero__lede">
@@ -78,11 +101,11 @@
       <figcaption>CGP students in preparation</figcaption>
     </figure>
 
-    <section class="section" aria-labelledby="who-title">
+    <section class="section" id="who-we-are" aria-labelledby="who-title">
       <div class="container">
         <header class="section-head">
           <span class="section-head__index">01</span>
-          <h2 class="section-head__label">Who we are</h2>
+          <h2 class="section-head__label">Who We Are</h2>
           <span class="section-head__meta">Wilimbula &middot; Gampaha District</span>
         </header>
 
@@ -91,7 +114,7 @@
             <p class="display" id="who-title" style="margin-bottom: var(--space-4);">We don't just recruit students. We prepare them - and stay with them.</p>
             <p>Ceylon German Pathway (CGP) is based in Wilimbula, Henegama, in the Gampaha District, and serves Sri Lankan students and families nationwide. We help motivated young people pursue vocational education and healthcare career opportunities in Germany.</p>
             <p>Most people who come to us are asking the same question: <em>&ldquo;I want to build a healthcare career in Germany, but I don't know how to start, what documents I need, how to learn German, or how to handle the Ausbildung and visa process.&rdquo;</em> Our entire service is built to answer that question properly, in order, with someone accountable at each step.</p>
-            <p>That means candidate selection, German language training, application and document preparation, employer interview coordination, visa guidance, pre-departure orientation, and support once you have arrived in Germany.</p>
+            <p>That means candidate identification, German language preparation, cultural and professional preparation, documentation, partner interviews and selection, pre-departure preparation, and support once you have arrived in Germany.</p>
           </div>
           <figure class="col-narrow reveal">
             <img class="img-bw" src="assets/images/nurse-care.jpg" alt="One person's hands holding another's in a gesture of care and reassurance" width="1600" height="1067" loading="lazy">
@@ -101,17 +124,27 @@
       </div>
     </section>
 
-    <section class="section section--dark" aria-labelledby="believe-title">
+    <section class="section section--dark" id="vision-mission" aria-labelledby="vm-title">
       <div class="container">
         <header class="section-head">
           <span class="section-head__index">02</span>
-          <h2 class="section-head__label">What we believe</h2>
-          <span class="section-head__meta">Five working principles</span>
+          <h2 class="section-head__label">Vision &amp; Mission</h2>
+          <span class="section-head__meta">Unsere Vision</span>
         </header>
 
-        <div class="grid row-gap">
-          <div class="col-wide reveal" style="margin-bottom: var(--space-4);">
-            <p class="display" id="believe-title">Principles, not slogans.</p>
+        <div class="grid row-gap-lg">
+          <div class="vm reveal">
+            <article class="vm__block">
+              <p class="micro-label vm__label">Vision</p>
+              <p class="vm__statement" id="vm-title">A trusted, sustainable pathway between Sri Lanka and Germany: candidates prepared properly, German partners who can rely on them, and families who know exactly what to expect at every stage.</p>
+            </article>
+            <article class="vm__block">
+              <p class="micro-label vm__label">Mission</p>
+              <p class="vm__statement">We prepare motivated young Sri Lankans for Nursing Ausbildung in Germany - through systematic German language learning, cultural and professional preparation and honest guidance - and we stay with them from their first enquiry to their working life in Germany.</p>
+            </article>
+          </div>
+          <div class="col-full reveal" style="grid-column: 1 / 13; margin-top: var(--space-5);">
+            <p class="display" style="margin-bottom: var(--space-4);">Principles, not slogans.</p>
           </div>
           <div class="col-full grid row-gap" style="grid-column: 1 / 13;">
           <article class="why-card reveal">
@@ -144,35 +177,31 @@
       </div>
     </section>
 
-    <section class="section" aria-labelledby="diff-title">
+    <section class="section" id="how-cgp-works" aria-labelledby="how-title">
       <div class="container">
         <header class="section-head">
           <span class="section-head__index">03</span>
-          <h2 class="section-head__label">What makes us different</h2>
-          <span class="section-head__meta">The long view</span>
-        </header>
-
-        <div class="grid">
-          <div class="why__breakout reveal" style="grid-column: 1 / 13;">
-            <blockquote id="diff-title">&ldquo;We don't just recruit students. We prepare and support them through the entire pathway - from candidate selection and German language training to employer interviews, visa preparation, pre-departure orientation, arrival in Germany and integration support - while building long-term relationships with German healthcare institutions.&rdquo;</blockquote>
-            <p class="micro-label">- The CGP model</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" style="padding-top: 0;" aria-labelledby="how-title">
-      <div class="container">
-        <header class="section-head">
-          <span class="section-head__index">04</span>
-          <h2 class="section-head__label">How we work</h2>
-          <span class="section-head__meta">Illustrative examples</span>
+          <h2 class="section-head__label">How CGP Works</h2>
+          <span class="section-head__meta">Eight stages &middot; Sri Lanka &rarr; Ausbildung</span>
         </header>
 
         <div class="grid row-gap-lg">
           <div class="col-wide reveal">
-            <p class="display" id="how-title">Two examples of the model in practice.</p>
+            <p class="display" id="how-title">One pathway, eight stages.</p>
+            <p class="lead" style="margin-top: var(--space-3); max-width: 44em;">From the first conversation in Sri Lanka to a training place in Germany - the same sequence for every candidate, and one that students, families and German partner institutions can all follow.</p>
           </div>
+
+          <ol class="pathway reveal" aria-label="The CGP candidate pathway">
+            <li class="pathway__step"><span class="pathway__num">01</span><span class="pathway__label">Candidate Identification</span></li>
+            <li class="pathway__step"><span class="pathway__num">02</span><span class="pathway__label">German Language Preparation</span></li>
+            <li class="pathway__step"><span class="pathway__num">03</span><span class="pathway__label">Cultural &amp; Professional Preparation</span></li>
+            <li class="pathway__step"><span class="pathway__num">04</span><span class="pathway__label">Documentation</span></li>
+            <li class="pathway__step"><span class="pathway__num">05</span><span class="pathway__label">German Partner Interview &amp; Selection</span></li>
+            <li class="pathway__step"><span class="pathway__num">06</span><span class="pathway__label">Pre-departure Preparation</span></li>
+            <li class="pathway__step"><span class="pathway__num">07</span><span class="pathway__label">Germany</span></li>
+            <li class="pathway__step"><span class="pathway__num">08</span><span class="pathway__label">Ausbildung</span></li>
+          </ol>
+
           <div class="col-full reveal" style="grid-column: 1 / 13;">
             <div class="notice">
               <p><strong>Please read:</strong> the two examples below describe how the CGP service model is designed to work. They are illustrative of our process - they are not accounts of specific completed cases, and no outcome is implied or promised. Real, verified case studies will replace them as they are confirmed.</p>
@@ -204,6 +233,10 @@
               </dl>
             </article>
           </div>
+          <div class="why__breakout reveal" style="grid-column: 1 / 13;">
+            <blockquote>&ldquo;We don't just recruit students. We prepare and support them through the entire pathway - from candidate identification and German language preparation to partner interviews, pre-departure preparation, arrival in Germany and integration support - while building long-term relationships with German healthcare institutions.&rdquo;</blockquote>
+            <p class="micro-label">- The CGP model</p>
+          </div>
         </div>
 
         <div class="stats reveal">
@@ -226,6 +259,33 @@
             </div>
           </div>
           <p class="stats__note">Figures shown are working placeholders supplied for layout purposes and will be replaced with verified numbers before launch.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="our-approach" aria-labelledby="approach-title">
+      <div class="container">
+        <header class="section-head">
+          <span class="section-head__index">04</span>
+          <h2 class="section-head__label">Our Approach</h2>
+          <span class="section-head__meta">Wie wir arbeiten</span>
+        </header>
+
+        <div class="grid row-gap-lg">
+          <div class="col-wide reveal">
+            <p class="display" id="approach-title">Prepared, guided and monitored - at every stage.</p>
+            <p class="lead" style="margin-top: var(--space-3); max-width: 42em;">Eight commitments that shape how we work with every candidate.</p>
+          </div>
+          <ol class="approach reveal">
+            <li class="approach__item"><span class="approach__index">01</span><span class="approach__text">Starting candidate preparation at an early stage.</span></li>
+            <li class="approach__item"><span class="approach__index">02</span><span class="approach__text">Systematic German-language learning.</span></li>
+            <li class="approach__item"><span class="approach__index">03</span><span class="approach__text">Selecting motivated and suitable candidates.</span></li>
+            <li class="approach__item"><span class="approach__index">04</span><span class="approach__text">Individual guidance and monitoring.</span></li>
+            <li class="approach__item"><span class="approach__index">05</span><span class="approach__text">Cultural and professional preparation.</span></li>
+            <li class="approach__item"><span class="approach__index">06</span><span class="approach__text">Realistic expectations about Ausbildung and life in Germany.</span></li>
+            <li class="approach__item"><span class="approach__index">07</span><span class="approach__text">Preparation before departure.</span></li>
+            <li class="approach__item"><span class="approach__index">08</span><span class="approach__text">Long-term cooperation with German institutions.</span></li>
+          </ol>
         </div>
       </div>
     </section>
@@ -269,7 +329,7 @@
           <ul>
             <li><a href="index.html">Home</a></li>
             <li><a href="about.html">About CGP</a></li>
-            <li><a href="students.html">Students</a></li>
+            <li><a href="students.html">Students &amp; Parents</a></li>
             <li><a href="partners.html">German Partners</a></li>
             <li><a href="current-students.html">Current Students</a></li>
             <li><a href="resources.html">Resources &amp; Downloads</a></li>
@@ -303,6 +363,6 @@
     </div>
   </footer>
 
-  <script src="js/main.js?v=9"></script>
+  <script src="js/main.js?v=12"></script>
 </body>
 </html>

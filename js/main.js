@@ -216,6 +216,197 @@
   }
 
   /* ----------------------------------------------------------------------
+     Nav dropdown - disclosure menu for "About CGP".
+     Opens on hover (pointer devices) and on click/Enter, closes on Escape,
+     on outside click and when focus leaves the menu. The button carries
+     aria-expanded so the state is announced.
+     ---------------------------------------------------------------------- */
+  var hoverPointer = window.matchMedia("(hover: hover) and (min-width: 62.01rem)");
+
+  toArray(document.querySelectorAll("[data-nav-menu]")).forEach(function (item) {
+    var button = item.querySelector(".nav__toggle");
+    var submenu = item.querySelector(".nav__submenu");
+    if (!button || !submenu) return;
+
+    var setOpen = function (open) {
+      item.classList.toggle("is-open", open);
+      button.setAttribute("aria-expanded", String(open));
+    };
+
+    var close = function () {
+      setOpen(false);
+    };
+
+    button.addEventListener("click", function () {
+      setOpen(!item.classList.contains("is-open"));
+    });
+
+    item.addEventListener("mouseenter", function () {
+      if (hoverPointer.matches) setOpen(true);
+    });
+
+    item.addEventListener("mouseleave", function () {
+      if (hoverPointer.matches) close();
+    });
+
+    item.addEventListener("focusout", function (e) {
+      if (!item.contains(e.relatedTarget)) close();
+    });
+
+    item.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") {
+        close();
+        button.focus();
+      }
+    });
+
+    document.addEventListener("click", function (e) {
+      if (!item.contains(e.target)) close();
+    });
+  });
+
+  /* ----------------------------------------------------------------------
+     Hero banner slider - three rotating banners on the home page.
+     Accessible carousel: arrow keys, swipe, dots, and a play/pause control.
+     Rotation stops on hover, on focus, when the tab is hidden, after any
+     deliberate interaction, and entirely under prefers-reduced-motion.
+     ---------------------------------------------------------------------- */
+  var slider = document.querySelector("[data-hero-slider]");
+
+  if (slider) {
+    var track = slider.querySelector("[data-slider-track]");
+    var slides = toArray(slider.querySelectorAll(".hero-slide"));
+    var dots = toArray(slider.querySelectorAll("[data-slider-dot]"));
+    var prevBtn = slider.querySelector("[data-slider-prev]");
+    var nextBtn = slider.querySelector("[data-slider-next]");
+    var toggleBtn = slider.querySelector("[data-slider-toggle]");
+    var viewport = slider.querySelector(".hero-slider__viewport");
+
+    var reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
+    var interval = parseInt(slider.getAttribute("data-autoplay"), 10) || 7000;
+    var index = 0;
+    var timer = null;
+    var playing = false;
+
+    var stop = function () {
+      if (timer) window.clearInterval(timer);
+      timer = null;
+      playing = false;
+      if (toggleBtn) {
+        toggleBtn.setAttribute("aria-label", "Play banner rotation");
+        toggleBtn.setAttribute("aria-pressed", "false");
+        toggleBtn.textContent = "\u25B6";
+      }
+    };
+
+    var start = function () {
+      if (reduced.matches || slides.length < 2 || timer) return;
+      timer = window.setInterval(function () {
+        show(index + 1);
+      }, interval);
+      playing = true;
+      if (toggleBtn) {
+        toggleBtn.setAttribute("aria-label", "Pause banner rotation");
+        toggleBtn.setAttribute("aria-pressed", "true");
+        toggleBtn.textContent = "\u2016";
+      }
+    };
+
+    var show = function (next) {
+      index = (next + slides.length) % slides.length;
+      track.style.transform = "translateX(" + (index * -100) + "%)";
+
+      slides.forEach(function (slide, i) {
+        var active = i === index;
+        slide.setAttribute("aria-hidden", String(!active));
+        toArray(slide.querySelectorAll("a, button")).forEach(function (el) {
+          if (active) el.removeAttribute("tabindex");
+          else el.setAttribute("tabindex", "-1");
+        });
+      });
+
+      dots.forEach(function (dot, i) {
+        dot.setAttribute("aria-current", String(i === index));
+      });
+    };
+
+    show(0);
+
+    if (prevBtn) {
+      prevBtn.addEventListener("click", function () {
+        stop();
+        show(index - 1);
+      });
+    }
+
+    if (nextBtn) {
+      nextBtn.addEventListener("click", function () {
+        stop();
+        show(index + 1);
+      });
+    }
+
+    dots.forEach(function (dot, i) {
+      dot.addEventListener("click", function () {
+        stop();
+        show(i);
+      });
+    });
+
+    if (toggleBtn) {
+      toggleBtn.addEventListener("click", function () {
+        if (playing) stop();
+        else start();
+      });
+    }
+
+    slider.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowRight") {
+        stop();
+        show(index + 1);
+      }
+      if (e.key === "ArrowLeft") {
+        stop();
+        show(index - 1);
+      }
+    });
+
+    slider.addEventListener("mouseenter", stop);
+    slider.addEventListener("focusin", stop);
+
+    document.addEventListener("visibilitychange", function () {
+      if (document.hidden) stop();
+    });
+
+    // Swipe / drag
+    var startX = 0;
+    var dragging = false;
+
+    if (viewport) {
+      viewport.addEventListener("pointerdown", function (e) {
+        if (e.pointerType === "mouse") return;
+        dragging = true;
+        startX = e.clientX;
+      });
+
+      viewport.addEventListener("pointerup", function (e) {
+        if (!dragging) return;
+        dragging = false;
+        var delta = e.clientX - startX;
+        if (Math.abs(delta) < 40) return;
+        stop();
+        show(delta < 0 ? index + 1 : index - 1);
+      });
+
+      viewport.addEventListener("pointercancel", function () {
+        dragging = false;
+      });
+    }
+
+    start();
+  }
+
+  /* ----------------------------------------------------------------------
      Reveal on scroll - subtle, one-shot, respects reduced motion
      ---------------------------------------------------------------------- */
   var reveals = document.querySelectorAll(".reveal");

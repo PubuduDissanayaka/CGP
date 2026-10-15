@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Students - Nursing Ausbildung Pathway | Ceylon German Pathway</title>
-  <meta name="description" content="The complete CGP Nursing Ausbildung pathway for Sri Lankan students: German language training, applications, documents, interviews, visa guidance, pre-departure and arrival support, plus transparent fees and FAQs.">
+  <title>Students &amp; Parents - Nursing Ausbildung Pathway | Ceylon German Pathway</title>
+  <meta name="description" content="Students & Parents - the CGP Nursing Ausbildung pathway for Sri Lankan families: who can apply, the complete fifteen-stage pathway, twelve student services and programme information and transparency.">
   <!-- ?v= is a cache-busting version stamp. Bump ASSET_VERSION in
        build-pages.py (and index.html) whenever CSS or JS changes,
        so returning visitors are not served a stale copy. -->
-  <link rel="stylesheet" href="css/tokens.css?v=9">
-  <link rel="stylesheet" href="css/styles.css?v=9">
+  <link rel="stylesheet" href="css/tokens.css?v=12">
+  <link rel="stylesheet" href="css/styles.css?v=12">
   <link rel="icon" href="assets/images/CGPLogo.png" type="image/png">
 </head>
 <body>
@@ -31,11 +31,34 @@
 
       <nav class="nav" id="site-nav" aria-label="Main navigation">
         <a class="nav__link" href="index.html">Home</a>
-        <a class="nav__link" href="about.html">About CGP</a>
-        <a class="nav__link" href="students.html" aria-current="page">Students</a>
+        <div class="nav__item" data-nav-menu>
+          <button class="nav__link nav__toggle" type="button" aria-expanded="false" aria-controls="submenu-about">
+            About CGP <span class="nav__caret" aria-hidden="true">&#9662;</span>
+          </button>
+          <div class="nav__submenu" id="submenu-about">
+            <div class="nav__menu">
+              <a class="nav__sublink" href="about.html#who-we-are">Who We Are</a>
+              <a class="nav__sublink" href="about.html#vision-mission">Vision &amp; Mission</a>
+              <a class="nav__sublink" href="about.html#how-cgp-works">How CGP Works</a>
+              <a class="nav__sublink" href="about.html#our-approach">Our Approach</a>
+            </div>
+          </div>
+        </div>
+        <div class="nav__item" data-nav-menu>
+          <button class="nav__link nav__toggle" type="button" aria-expanded="false" aria-controls="submenu-students" aria-current="page">
+            Students &amp; Parents <span class="nav__caret" aria-hidden="true">&#9662;</span>
+          </button>
+          <div class="nav__submenu" id="submenu-students">
+            <div class="nav__menu">
+              <a class="nav__sublink" href="who-can-apply.html">Who Can Apply</a>
+              <a class="nav__sublink" href="complete-pathway.html">Complete Pathway</a>
+              <a class="nav__sublink" href="faq.html">Frequently Asked Questions</a>
+            </div>
+          </div>
+        </div>
         <a class="nav__link" href="partners.html">German Partners</a>
         <a class="nav__link" href="current-students.html">Current Students</a>
-        <a class="nav__link" href="resources.html">Resources &amp; Downloads</a>
+        <a class="nav__link" href="resources.html">Resources</a>
         <a class="nav__link" href="contact.html">Contact</a>
       </nav>
 
@@ -49,54 +72,75 @@
 
   <main id="main">
 
-    <section class="page-hero" aria-labelledby="page-title">
+    <section class="hero" aria-labelledby="students-hero-title">
+
+      <!-- Client-supplied Students & Parents banner (2026-10-15). It carries
+           its own headline, so it is shown whole - never cropped - and that
+           message is repeated as real text underneath. No call-to-action
+           buttons appear in this banner, by instruction. -->
       <div class="container">
-        <div class="grid">
-          <div class="page-hero__index">
-            <span class="micro-label">03</span>
-            <span class="micro-label">Students</span>
-            <span class="micro-label page-hero__of">Page 03 / 07</span>
+        <figure class="hero-banner">
+          <img src="assets/images/hero-students-parents.jpg" alt="Banner: Students &amp; Parents - Your journey starts with preparation. Four young Sri Lankan students studying German together, with the German flag and the Berlin TV tower behind them." width="1944" height="809" fetchpriority="high">
+          <figcaption class="hero-banner__caption">
+            <span class="micro-label">Students &amp; Parents</span>
+            <span class="hero-banner__line">Learn German. Prepare Yourself. Build Your Pathway to Germany.</span>
+          </figcaption>
+        </figure>
+
+        <div class="grid hero__head">
+          <div class="hero__head-main">
+            <p class="hero__kicker micro-label">Preparation &middot; Education &middot; Support</p>
+            <h1 class="hero__title" id="students-hero-title">Your journey starts with <em>preparation.</em></h1>
           </div>
-          <h1 class="page-hero__title" id="page-title">The complete Nursing Ausbildung pathway.</h1>
-          <div class="page-hero__lede">
-            <p class="lead">One route, from your first question to your first day of training in Germany - language, applications, documents, interviews, visa, departure and arrival. Everything below is part of the same programme.</p>
+          <div class="hero__head-side">
+            <p class="lead hero__lede">CGP supports young Sri Lankans through structured German-language education, professional and cultural preparation, and responsible guidance towards vocational training opportunities in Germany.</p>
           </div>
-          <dl class="page-hero__aside">
-            <dt>Best suited to</dt>
-            <dd>Motivated students, around 18&ndash;25, aiming at healthcare in Germany</dd>
-            <dt>Core requirement</dt>
-            <dd>Commitment to German language training</dd>
-            <dt>Main offering</dt>
-            <dd>Nursing Ausbildung Programme</dd>
-          </dl>
+        </div>
+      </div>
+
+      <div class="hero__strip">
+        <div class="container">
+          <div class="grid">
+            <p class="hero__fact"><strong>Best suited to</strong> Motivated students, around 18&ndash;25, aiming at healthcare in Germany.</p>
+            <p class="hero__fact"><strong>Core requirement</strong> Commitment to systematic German-language learning.</p>
+            <p class="hero__fact"><strong>Main offering</strong> Nursing Ausbildung Programme.</p>
+          </div>
         </div>
       </div>
     </section>
 
-    <figure class="page-band">
-      <img class="img-bw" src="assets/images/nurse-tablet.jpg" alt="Close view of a healthcare professional in a white coat holding a phone" width="1600" height="1067">
-      <figcaption>A profession, not just a placement</figcaption>
-    </figure>
-
-    <section class="section" aria-labelledby="forwhom-title">
+    <section class="section" aria-labelledby="start-title">
       <div class="container">
         <header class="section-head">
           <span class="section-head__index">01</span>
-          <h2 class="section-head__label">Who this is for</h2>
-          <span class="section-head__meta">Be honest with yourself here</span>
+          <h2 class="section-head__label">Start here</h2>
+          <span class="section-head__meta">Three pages</span>
         </header>
 
         <div class="grid">
-          <div class="col-left prose reveal">
-            <p class="display" id="forwhom-title" style="margin-bottom: var(--space-4);">This pathway asks something of you.</p>
-            <p>Our best students are motivated young people - usually around 18 to 25 - who genuinely want to build a professional healthcare career in Germany, and who need reliable guidance with German language training, applications, documentation, visa preparation and ongoing support.</p>
-            <p>What it is not: a shortcut. Nursing Ausbildung is real vocational training in a second language, inside a demanding profession. The students who do well are the ones who treat the language course as the foundation of everything else.</p>
-            <p>If that sounds like the wrong fit, tell us early and we will say so honestly. That is a better outcome for everyone than a student who commits to a pathway they did not want.</p>
+          <div class="col-wide reveal" style="margin-bottom: var(--space-5);">
+            <p class="display" id="start-title">The Students &amp; Parents section, in three pages.</p>
           </div>
-          <figure class="col-right reveal">
-            <img class="img-bw" src="assets/images/student-writing.jpg" alt="A student writing notes by hand in a notebook" width="1600" height="1067" loading="lazy">
-            <figcaption class="small" style="padding-top: var(--space-1); border-bottom: 1px solid var(--color-rule);">Preparation, not shortcuts</figcaption>
-          </figure>
+          <div class="route-cards">
+            <a class="route-card reveal" href="who-can-apply.html">
+              <p class="route-card__index">01</p>
+              <h3 class="route-card__title">Who Can Apply</h3>
+              <p class="route-card__desc">The eligibility and the personal commitment CGP asks for from candidates before anyone enrols.</p>
+              <span class="route-card__more">Read <span aria-hidden="true">&rarr;</span></span>
+            </a>
+            <a class="route-card reveal" href="complete-pathway.html">
+              <p class="route-card__index">02</p>
+              <h3 class="route-card__title">Complete Pathway</h3>
+              <p class="route-card__desc">The whole preparation journey in fifteen stages - and which of them CGP is responsible for.</p>
+              <span class="route-card__more">Read <span aria-hidden="true">&rarr;</span></span>
+            </a>
+            <a class="route-card reveal" href="faq.html">
+              <p class="route-card__index">03</p>
+              <h3 class="route-card__title">Frequently Asked Questions</h3>
+              <p class="route-card__desc">The sixteen questions students and parents ask us most, answered honestly.</p>
+              <span class="route-card__more">Read <span aria-hidden="true">&rarr;</span></span>
+            </a>
+          </div>
         </div>
       </div>
     </section>
@@ -179,213 +223,21 @@
       </div>
     </section>
 
-    <section class="section" aria-labelledby="fees-title">
+    <section class="section" aria-labelledby="transparency-title">
       <div class="container">
         <header class="section-head">
           <span class="section-head__index">03</span>
-          <h2 class="section-head__label">Fees &amp; payment policy</h2>
-          <span class="section-head__meta">Transparent by design</span>
+          <h2 class="section-head__label">Programme Information &amp; Transparency</h2>
+          <span class="section-head__meta">Before you enrol</span>
         </header>
 
         <div class="grid">
           <div class="col-left reveal">
-            <p class="display" id="fees-title" style="margin-bottom: var(--space-4);">Three fees. Written down. No surprises.</p>
-            <div class="prose">
-              <p>&ldquo;How much will this cost me, and are there any hidden charges?&rdquo; is the first question almost every family asks us. So here is the structure in full.</p>
-              <p>You receive the exact amounts and the payment schedule in writing before you commit to anything. Nothing is added later.</p>
-            </div>
+            <p class="display" id="transparency-title" style="margin-bottom: var(--space-4);">Clear and transparent communication, before you commit.</p>
           </div>
-          <div class="col-right reveal">
-            <table class="fee-table">
-              <caption>CGP fee structure</caption>
-              <thead>
-                <tr>
-                  <th scope="col">Fee</th>
-                  <th scope="col">What it covers</th>
-                  <th scope="col">Amount</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <th scope="row">Registration</th>
-                  <td>Enrolment as a CGP student, assessment and counselling.</td>
-                  <td class="tbd">On enquiry</td>
-                </tr>
-                <tr>
-                  <th scope="row">German language course</th>
-                  <td>Structured German training towards the required level.</td>
-                  <td class="tbd">On enquiry</td>
-                </tr>
-                <tr>
-                  <th scope="row">CGP service fee</th>
-                  <td>Applications, documents, interview coordination, visa guidance, pre-departure and arrival support.</td>
-                  <td class="tbd">On enquiry</td>
-                </tr>
-              </tbody>
-            </table>
-            <div class="notice" style="margin-top: var(--space-4);">
-              <p><strong>Amounts pending.</strong> Exact fee amounts are being finalised and will be published here. Until then we confirm them directly on enquiry, in writing, before any commitment is made.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" style="padding-top: 0;" aria-labelledby="faq-title">
-      <div class="container">
-        <header class="section-head">
-          <span class="section-head__index">04</span>
-          <h2 class="section-head__label">Frequently asked questions</h2>
-          <span class="section-head__meta">Ten questions we get most</span>
-        </header>
-
-        <div class="grid">
-          <div class="col-wide reveal" style="margin-bottom: var(--space-4);">
-            <p class="display" id="faq-title">Straight answers.</p>
-          </div>
-          <div class="col-full" style="grid-column: 1 / 13;">
-            <div class="accordion--light" data-accordion>
-            <div class="accordion__item is-open">
-              <h3>
-                <button class="accordion__trigger" aria-expanded="true">
-                  <span class="accordion__index">4.01</span>
-                  <span class="accordion__title">What is Nursing Ausbildung in Germany?</span>
-                  <span class="accordion__glyph" aria-hidden="true">+</span>
-                </button>
-              </h3>
-              <div class="accordion__panel">
-                <div class="accordion__panel-inner">
-                  <p>Ausbildung is Germany's dual vocational training system. For nursing, it combines classroom study with paid, hands-on training inside a real healthcare institution, and leads to a state-recognised German nursing qualification.</p>
-                </div>
-              </div>
-            </div>
-            <div class="accordion__item">
-              <h3>
-                <button class="accordion__trigger" aria-expanded="false">
-                  <span class="accordion__index">4.02</span>
-                  <span class="accordion__title">Do I need to know German before applying?</span>
-                  <span class="accordion__glyph" aria-hidden="true">+</span>
-                </button>
-              </h3>
-              <div class="accordion__panel">
-                <div class="accordion__panel-inner">
-                  <p>You do not need German to make your first enquiry - but you do need it to succeed. German language training is a core part of the CGP pathway, and reaching the level required by employers and authorities is a genuine requirement of the process, not an optional extra.</p>
-                </div>
-              </div>
-            </div>
-            <div class="accordion__item">
-              <h3>
-                <button class="accordion__trigger" aria-expanded="false">
-                  <span class="accordion__index">4.03</span>
-                  <span class="accordion__title">What are the eligibility requirements?</span>
-                  <span class="accordion__glyph" aria-hidden="true">+</span>
-                </button>
-              </h3>
-              <div class="accordion__panel">
-                <div class="accordion__panel-inner">
-                  <p>The pathway suits motivated students, typically around 18 to 25, who want to build a professional healthcare career in Germany and are prepared to commit to language training. Exact requirements depend on the German institution and the current rules that apply to your application, so we confirm them with you during assessment and counselling rather than publishing a generic list.</p>
-                </div>
-              </div>
-            </div>
-            <div class="accordion__item">
-              <h3>
-                <button class="accordion__trigger" aria-expanded="false">
-                  <span class="accordion__index">4.04</span>
-                  <span class="accordion__title">How much does the CGP programme cost?</span>
-                  <span class="accordion__glyph" aria-hidden="true">+</span>
-                </button>
-              </h3>
-              <div class="accordion__panel">
-                <div class="accordion__panel-inner">
-                  <p>There are three fee components: registration, the German language course, and the CGP service fee. The structure is set out on this page, and the exact amounts and payment schedule are confirmed in writing before you commit. There are no hidden charges.</p>
-                </div>
-              </div>
-            </div>
-            <div class="accordion__item">
-              <h3>
-                <button class="accordion__trigger" aria-expanded="false">
-                  <span class="accordion__index">4.05</span>
-                  <span class="accordion__title">What does CGP support me with during the application and visa process?</span>
-                  <span class="accordion__glyph" aria-hidden="true">+</span>
-                </button>
-              </h3>
-              <div class="accordion__panel">
-                <div class="accordion__panel-inner">
-                  <p>Application preparation, document preparation and checking, employer interview coordination and preparation, and step-by-step visa guidance. If something goes wrong or a document is queried, you have a named point of contact rather than being left to work it out alone.</p>
-                </div>
-              </div>
-            </div>
-            <div class="accordion__item">
-              <h3>
-                <button class="accordion__trigger" aria-expanded="false">
-                  <span class="accordion__index">4.06</span>
-                  <span class="accordion__title">How long does the process take?</span>
-                  <span class="accordion__glyph" aria-hidden="true">+</span>
-                </button>
-              </h3>
-              <div class="accordion__panel">
-                <div class="accordion__panel-inner">
-                  <p>It depends mainly on two things: how quickly you progress through German language training, and the timelines of the German institution you are matched with. We give you a realistic timeline during counselling and update it honestly as you progress - we would rather tell you it will take longer than promise a date we cannot control.</p>
-                </div>
-              </div>
-            </div>
-            <div class="accordion__item">
-              <h3>
-                <button class="accordion__trigger" aria-expanded="false">
-                  <span class="accordion__index">4.07</span>
-                  <span class="accordion__title">Will CGP support me after I arrive in Germany?</span>
-                  <span class="accordion__glyph" aria-hidden="true">+</span>
-                </button>
-              </h3>
-              <div class="accordion__panel">
-                <div class="accordion__panel-inner">
-                  <p>Yes. Arrival support and integration support are part of the pathway, and ongoing student support continues while you are settling into your training.</p>
-                </div>
-              </div>
-            </div>
-            <div class="accordion__item">
-              <h3>
-                <button class="accordion__trigger" aria-expanded="false">
-                  <span class="accordion__index">4.08</span>
-                  <span class="accordion__title">Is accommodation available in Germany?</span>
-                  <span class="accordion__glyph" aria-hidden="true">+</span>
-                </button>
-              </h3>
-              <div class="accordion__panel">
-                <div class="accordion__panel-inner">
-                  <p>Accommodation arrangements vary between German healthcare institutions. It is one of the specifics we confirm with the institution for your particular placement, and we cover it fully in pre-departure orientation so you know exactly what applies before you travel.</p>
-                </div>
-              </div>
-            </div>
-            <div class="accordion__item">
-              <h3>
-                <button class="accordion__trigger" aria-expanded="false">
-                  <span class="accordion__index">4.09</span>
-                  <span class="accordion__title">Can I work after completing Nursing Ausbildung?</span>
-                  <span class="accordion__glyph" aria-hidden="true">+</span>
-                </button>
-              </h3>
-              <div class="accordion__panel">
-                <div class="accordion__panel-inner">
-                  <p>A completed Nursing Ausbildung is a state-recognised German qualification, and it opens routes to continued employment, specialisation and further study within German healthcare. We will not promise you a specific job or salary - what we can do is prepare you properly for the qualification.</p>
-                </div>
-              </div>
-            </div>
-            <div class="accordion__item">
-              <h3>
-                <button class="accordion__trigger" aria-expanded="false">
-                  <span class="accordion__index">4.10</span>
-                  <span class="accordion__title">How do I apply to become a CGP student?</span>
-                  <span class="accordion__glyph" aria-hidden="true">+</span>
-                </button>
-              </h3>
-              <div class="accordion__panel">
-                <div class="accordion__panel-inner">
-                  <p>Message us on WhatsApp or send an enquiry through the contact page. We will talk you through the pathway, the requirements and the fees, and assess whether Nursing Ausbildung is the right route for you before anyone commits to anything.</p>
-                </div>
-              </div>
-            </div>
-            </div>
+          <div class="col-right prose reveal">
+            <p>CGP believes in clear and transparent communication with students and their families. Detailed information regarding programme structure, German-language preparation, responsibilities, applicable educational and preparation costs, and payment arrangements is provided directly to prospective candidates before enrolment. No student should enrol without understanding the applicable programme conditions.</p>
+            <p><a class="btn btn--outline" href="contact.html">Request programme information <span class="btn__glyph" aria-hidden="true">&rarr;</span></a></p>
           </div>
         </div>
       </div>
@@ -430,7 +282,7 @@
           <ul>
             <li><a href="index.html">Home</a></li>
             <li><a href="about.html">About CGP</a></li>
-            <li><a href="students.html">Students</a></li>
+            <li><a href="students.html">Students &amp; Parents</a></li>
             <li><a href="partners.html">German Partners</a></li>
             <li><a href="current-students.html">Current Students</a></li>
             <li><a href="resources.html">Resources &amp; Downloads</a></li>
@@ -464,6 +316,6 @@
     </div>
   </footer>
 
-  <script src="js/main.js?v=9"></script>
+  <script src="js/main.js?v=12"></script>
 </body>
 </html>

@@ -8,8 +8,8 @@
   <!-- ?v= is a cache-busting version stamp. Bump ASSET_VERSION in
        build-pages.py (and index.html) whenever CSS or JS changes,
        so returning visitors are not served a stale copy. -->
-  <link rel="stylesheet" href="css/tokens.css?v=9">
-  <link rel="stylesheet" href="css/styles.css?v=9">
+  <link rel="stylesheet" href="css/tokens.css?v=12">
+  <link rel="stylesheet" href="css/styles.css?v=12">
   <link rel="icon" href="assets/images/CGPLogo.png" type="image/png">
 </head>
 <body>
@@ -31,11 +31,34 @@
 
       <nav class="nav" id="site-nav" aria-label="Main navigation">
         <a class="nav__link" href="index.html">Home</a>
-        <a class="nav__link" href="about.html">About CGP</a>
-        <a class="nav__link" href="students.html">Students</a>
+        <div class="nav__item" data-nav-menu>
+          <button class="nav__link nav__toggle" type="button" aria-expanded="false" aria-controls="submenu-about">
+            About CGP <span class="nav__caret" aria-hidden="true">&#9662;</span>
+          </button>
+          <div class="nav__submenu" id="submenu-about">
+            <div class="nav__menu">
+              <a class="nav__sublink" href="about.html#who-we-are">Who We Are</a>
+              <a class="nav__sublink" href="about.html#vision-mission">Vision &amp; Mission</a>
+              <a class="nav__sublink" href="about.html#how-cgp-works">How CGP Works</a>
+              <a class="nav__sublink" href="about.html#our-approach">Our Approach</a>
+            </div>
+          </div>
+        </div>
+        <div class="nav__item" data-nav-menu>
+          <button class="nav__link nav__toggle" type="button" aria-expanded="false" aria-controls="submenu-students">
+            Students &amp; Parents <span class="nav__caret" aria-hidden="true">&#9662;</span>
+          </button>
+          <div class="nav__submenu" id="submenu-students">
+            <div class="nav__menu">
+              <a class="nav__sublink" href="who-can-apply.html">Who Can Apply</a>
+              <a class="nav__sublink" href="complete-pathway.html">Complete Pathway</a>
+              <a class="nav__sublink" href="faq.html">Frequently Asked Questions</a>
+            </div>
+          </div>
+        </div>
         <a class="nav__link" href="partners.html">German Partners</a>
         <a class="nav__link" href="current-students.html" aria-current="page">Current Students</a>
-        <a class="nav__link" href="resources.html">Resources &amp; Downloads</a>
+        <a class="nav__link" href="resources.html">Resources</a>
         <a class="nav__link" href="contact.html">Contact</a>
       </nav>
 
@@ -53,9 +76,9 @@
       <div class="container">
         <div class="grid">
           <div class="page-hero__index">
-            <span class="micro-label">05</span>
+            <span class="micro-label">08</span>
             <span class="micro-label">Current Students</span>
-            <span class="micro-label page-hero__of">Page 05 / 07</span>
+            <span class="micro-label page-hero__of">Page 08 / 10</span>
           </div>
           <h1 class="page-hero__title" id="page-title">Where our students are right now.</h1>
           <div class="page-hero__lede">
@@ -280,7 +303,7 @@
           <ul>
             <li><a href="index.html">Home</a></li>
             <li><a href="about.html">About CGP</a></li>
-            <li><a href="students.html">Students</a></li>
+            <li><a href="students.html">Students &amp; Parents</a></li>
             <li><a href="partners.html">German Partners</a></li>
             <li><a href="current-students.html">Current Students</a></li>
             <li><a href="resources.html">Resources &amp; Downloads</a></li>
@@ -314,6 +337,6 @@
     </div>
   </footer>
 
-  <script src="js/main.js?v=9"></script>
+  <script src="js/main.js?v=12"></script>
 </body>
 </html>

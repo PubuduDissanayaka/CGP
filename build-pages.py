@@ -31,24 +31,126 @@ LOGO = "assets/images/CGPLogo.png"
 
 # Bump this whenever css/ or js/ changes, then re-run, and mirror it in
 # index.html. Forces browsers to fetch the new file instead of a cached one.
-ASSET_VERSION = "9"
+ASSET_VERSION = "12"
 
+# Ten pages as of the 2026-10-15 Students & Parents rebuild: the seven main
+# pages plus the three pages that now sit under the Students & Parents menu.
 PAGES = [
     ("index.html", "Home"),
     ("about.html", "About CGP"),
-    ("students.html", "Students"),
+    ("students.html", "Students &amp; Parents"),
     ("partners.html", "German Partners"),
     ("current-students.html", "Current Students"),
     ("resources.html", "Resources &amp; Downloads"),
     ("contact.html", "Contact"),
 ]
 
+# The pages that sit under the "Students & Parents" dropdown in the main
+# navigation. Also used for the "site number" shown in each page hero, so the
+# running "Page NN / 10" stays true.
+STUDENTS_SUBMENU = [
+    ("who-can-apply.html", "Who Can Apply"),
+    ("complete-pathway.html", "Complete Pathway"),
+    ("faq.html", "Frequently Asked Questions"),
+]
+
+# Page numbers, in menu order. index.html is hand-maintained but its number
+# lives here so the total is written down in one place.
+PAGE_NUMBERS = {
+    "index.html": ("01", 1),
+    "about.html": ("02", 2),
+    "students.html": ("03", 3),
+    "who-can-apply.html": ("04", 4),
+    "complete-pathway.html": ("05", 5),
+    "faq.html": ("06", 6),
+    "partners.html": ("07", 7),
+    "current-students.html": ("08", 8),
+    "resources.html": ("09", 9),
+    "contact.html": ("10", 10),
+}
+
+PAGE_TOTAL = len(PAGE_NUMBERS)
+
+
+def page_hero_of(filename):
+    """The 'Page NN / 10' stamp for a page."""
+    number, _ = PAGE_NUMBERS[filename]
+    return f"Page {number} / {PAGE_TOTAL:02d}"
+
+
+# The main navigation and the footer list the same pages, but the main nav is
+# where "About CGP" expands into its four section links and where
+# "Resources & Downloads" is shortened to "Resources".
+NAV_LABELS = {"resources.html": "Resources"}
+
+ABOUT_SUBMENU = [
+    ("about.html#who-we-are", "Who We Are"),
+    ("about.html#vision-mission", "Vision &amp; Mission"),
+    ("about.html#how-cgp-works", "How CGP Works"),
+    ("about.html#our-approach", "Our Approach"),
+]
+
+
+def dropdown(label, current, toggle_href, items, submenu_id):
+    """A main-nav dropdown (disclosure menu).
+
+    label       - the visible top-level label
+    current     - the page currently being rendered
+    toggle_href - the page that marks the toggle itself as the current page
+    items       - [(href, text)] shown inside the menu
+    submenu_id  - id the toggle points at with aria-controls
+    """
+    cur = ' aria-current="page"' if current == toggle_href else ""
+
+    lines = []
+    for href, text in items:
+        sub_cur = ' aria-current="page"' if href == current else ""
+        lines.append(
+            f'              <a class="nav__sublink" href="{href}"{sub_cur}>{text}</a>'
+        )
+    sub = "\n".join(lines)
+
+    return f"""        <div class="nav__item" data-nav-menu>
+          <button class="nav__link nav__toggle" type="button" aria-expanded="false" aria-controls="{submenu_id}"{cur}>
+            {label} <span class="nav__caret" aria-hidden="true">&#9662;</span>
+          </button>
+          <div class="nav__submenu" id="{submenu_id}">
+            <div class="nav__menu">
+{sub}
+            </div>
+          </div>
+        </div>"""
+
 
 def nav(current):
     out = []
+
     for href, label in PAGES:
-        cur = ' aria-current="page"' if href == current else ""
-        out.append(f'        <a class="nav__link" href="{href}"{cur}>{label}</a>')
+        cur = ' aria-current="page"' if href == current and href != "students.html" else ""
+
+        if href == "about.html":
+            out.append(dropdown("About CGP", current, "about.html", ABOUT_SUBMENU, "submenu-about"))
+            continue
+
+        if href == "students.html":
+            # "Students & Parents" is the section: the label opens the menu, and
+            # the three pages inside it are the section's content. The section
+            # landing page (students.html) is linked from the footer and from
+            # every page inside the section.
+            out.append(
+                dropdown(
+                    "Students &amp; Parents",
+                    current,
+                    "students.html",
+                    STUDENTS_SUBMENU,
+                    "submenu-students",
+                )
+            )
+            continue
+
+        out.append(
+            f'        <a class="nav__link" href="{href}"{cur}>{NAV_LABELS.get(href, label)}</a>'
+        )
     return "\n".join(out)
 
 
@@ -194,10 +296,14 @@ def band(img, alt, caption):
 """
 
 
-def section_head(index, label, meta):
+def section_head(index, label, meta, label_id=None):
+    # label_id lets a section's aria-labelledby point at this heading (see the
+    # partners page "pmodel-title" section). Optional, so every existing call
+    # renders byte-identically.
+    id_attr = f' id="{label_id}"' if label_id else ""
     return f"""        <header class="section-head">
           <span class="section-head__index">{index}</span>
-          <h2 class="section-head__label">{label}</h2>
+          <h2 class="section-head__label"{id_attr}>{label}</h2>
           <span class="section-head__meta">{meta}</span>
         </header>
 """
@@ -250,22 +356,22 @@ about_principles = "\n".join(
 )
 
 ABOUT = page_hero(
-    "02", "Page 02 / 07", "About CGP",
+    "02", page_hero_of("about.html"), "About CGP",
     "Guidance you can hold us to.",
     "Ceylon German Pathway is a Sri Lankan organisation preparing motivated young people for Nursing Ausbildung and professional healthcare careers in Germany - through ethical guidance, structured German language training and support that continues after arrival.",
     [("Based in", "Wilimbula, Henegama, Gampaha District, Sri Lanka"),
      ("Serving", "Sri Lankan students and families nationwide"),
      ("Focus", "Nursing Ausbildung and healthcare careers in Germany")],
 ) + band("students-group.jpg", "Students studying together in a library", "CGP students in preparation") + f"""
-    <section class="section" aria-labelledby="who-title">
+    <section class="section" id="who-we-are" aria-labelledby="who-title">
       <div class="container">
-{section_head("01", "Who we are", "Wilimbula &middot; Gampaha District")}
+{section_head("01", "Who We Are", "Wilimbula &middot; Gampaha District")}
         <div class="grid">
           <div class="col-wide prose reveal">
             <p class="display" id="who-title" style="margin-bottom: var(--space-4);">We don't just recruit students. We prepare them - and stay with them.</p>
             <p>Ceylon German Pathway (CGP) is based in Wilimbula, Henegama, in the Gampaha District, and serves Sri Lankan students and families nationwide. We help motivated young people pursue vocational education and healthcare career opportunities in Germany.</p>
             <p>Most people who come to us are asking the same question: <em>&ldquo;I want to build a healthcare career in Germany, but I don't know how to start, what documents I need, how to learn German, or how to handle the Ausbildung and visa process.&rdquo;</em> Our entire service is built to answer that question properly, in order, with someone accountable at each step.</p>
-            <p>That means candidate selection, German language training, application and document preparation, employer interview coordination, visa guidance, pre-departure orientation, and support once you have arrived in Germany.</p>
+            <p>That means candidate identification, German language preparation, cultural and professional preparation, documentation, partner interviews and selection, pre-departure preparation, and support once you have arrived in Germany.</p>
           </div>
           <figure class="col-narrow reveal">
             <img class="img-bw" src="assets/images/nurse-care.jpg" alt="One person's hands holding another's in a gesture of care and reassurance" width="1600" height="1067" loading="lazy">
@@ -275,12 +381,22 @@ ABOUT = page_hero(
       </div>
     </section>
 
-    <section class="section section--dark" aria-labelledby="believe-title">
+    <section class="section section--dark" id="vision-mission" aria-labelledby="vm-title">
       <div class="container">
-{section_head("02", "What we believe", "Five working principles")}
-        <div class="grid row-gap">
-          <div class="col-wide reveal" style="margin-bottom: var(--space-4);">
-            <p class="display" id="believe-title">Principles, not slogans.</p>
+{section_head("02", "Vision &amp; Mission", "Unsere Vision")}
+        <div class="grid row-gap-lg">
+          <div class="vm reveal">
+            <article class="vm__block">
+              <p class="micro-label vm__label">Vision</p>
+              <p class="vm__statement" id="vm-title">A trusted, sustainable pathway between Sri Lanka and Germany: candidates prepared properly, German partners who can rely on them, and families who know exactly what to expect at every stage.</p>
+            </article>
+            <article class="vm__block">
+              <p class="micro-label vm__label">Mission</p>
+              <p class="vm__statement">We prepare motivated young Sri Lankans for Nursing Ausbildung in Germany - through systematic German language learning, cultural and professional preparation and honest guidance - and we stay with them from their first enquiry to their working life in Germany.</p>
+            </article>
+          </div>
+          <div class="col-full reveal" style="grid-column: 1 / 13; margin-top: var(--space-5);">
+            <p class="display" style="margin-bottom: var(--space-4);">Principles, not slogans.</p>
           </div>
           <div class="col-full grid row-gap" style="grid-column: 1 / 13;">
 {about_principles}
@@ -289,25 +405,26 @@ ABOUT = page_hero(
       </div>
     </section>
 
-    <section class="section" aria-labelledby="diff-title">
+    <section class="section" id="how-cgp-works" aria-labelledby="how-title">
       <div class="container">
-{section_head("03", "What makes us different", "The long view")}
-        <div class="grid">
-          <div class="why__breakout reveal" style="grid-column: 1 / 13;">
-            <blockquote id="diff-title">&ldquo;We don't just recruit students. We prepare and support them through the entire pathway - from candidate selection and German language training to employer interviews, visa preparation, pre-departure orientation, arrival in Germany and integration support - while building long-term relationships with German healthcare institutions.&rdquo;</blockquote>
-            <p class="micro-label">- The CGP model</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" style="padding-top: 0;" aria-labelledby="how-title">
-      <div class="container">
-{section_head("04", "How we work", "Illustrative examples")}
+{section_head("03", "How CGP Works", "Eight stages &middot; Sri Lanka &rarr; Ausbildung")}
         <div class="grid row-gap-lg">
           <div class="col-wide reveal">
-            <p class="display" id="how-title">Two examples of the model in practice.</p>
+            <p class="display" id="how-title">One pathway, eight stages.</p>
+            <p class="lead" style="margin-top: var(--space-3); max-width: 44em;">From the first conversation in Sri Lanka to a training place in Germany - the same sequence for every candidate, and one that students, families and German partner institutions can all follow.</p>
           </div>
+
+          <ol class="pathway reveal" aria-label="The CGP candidate pathway">
+            <li class="pathway__step"><span class="pathway__num">01</span><span class="pathway__label">Candidate Identification</span></li>
+            <li class="pathway__step"><span class="pathway__num">02</span><span class="pathway__label">German Language Preparation</span></li>
+            <li class="pathway__step"><span class="pathway__num">03</span><span class="pathway__label">Cultural &amp; Professional Preparation</span></li>
+            <li class="pathway__step"><span class="pathway__num">04</span><span class="pathway__label">Documentation</span></li>
+            <li class="pathway__step"><span class="pathway__num">05</span><span class="pathway__label">German Partner Interview &amp; Selection</span></li>
+            <li class="pathway__step"><span class="pathway__num">06</span><span class="pathway__label">Pre-departure Preparation</span></li>
+            <li class="pathway__step"><span class="pathway__num">07</span><span class="pathway__label">Germany</span></li>
+            <li class="pathway__step"><span class="pathway__num">08</span><span class="pathway__label">Ausbildung</span></li>
+          </ol>
+
           <div class="col-full reveal" style="grid-column: 1 / 13;">
             <div class="notice">
               <p><strong>Please read:</strong> the two examples below describe how the CGP service model is designed to work. They are illustrative of our process - they are not accounts of specific completed cases, and no outcome is implied or promised. Real, verified case studies will replace them as they are confirmed.</p>
@@ -339,6 +456,10 @@ ABOUT = page_hero(
               </dl>
             </article>
           </div>
+          <div class="why__breakout reveal" style="grid-column: 1 / 13;">
+            <blockquote>&ldquo;We don't just recruit students. We prepare and support them through the entire pathway - from candidate identification and German language preparation to partner interviews, pre-departure preparation, arrival in Germany and integration support - while building long-term relationships with German healthcare institutions.&rdquo;</blockquote>
+            <p class="micro-label">- The CGP model</p>
+          </div>
         </div>
 
         <div class="stats reveal">
@@ -361,6 +482,28 @@ ABOUT = page_hero(
             </div>
           </div>
           <p class="stats__note">Figures shown are working placeholders supplied for layout purposes and will be replaced with verified numbers before launch.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="our-approach" aria-labelledby="approach-title">
+      <div class="container">
+{section_head("04", "Our Approach", "Wie wir arbeiten")}
+        <div class="grid row-gap-lg">
+          <div class="col-wide reveal">
+            <p class="display" id="approach-title">Prepared, guided and monitored - at every stage.</p>
+            <p class="lead" style="margin-top: var(--space-3); max-width: 42em;">Eight commitments that shape how we work with every candidate.</p>
+          </div>
+          <ol class="approach reveal">
+            <li class="approach__item"><span class="approach__index">01</span><span class="approach__text">Starting candidate preparation at an early stage.</span></li>
+            <li class="approach__item"><span class="approach__index">02</span><span class="approach__text">Systematic German-language learning.</span></li>
+            <li class="approach__item"><span class="approach__index">03</span><span class="approach__text">Selecting motivated and suitable candidates.</span></li>
+            <li class="approach__item"><span class="approach__index">04</span><span class="approach__text">Individual guidance and monitoring.</span></li>
+            <li class="approach__item"><span class="approach__index">05</span><span class="approach__text">Cultural and professional preparation.</span></li>
+            <li class="approach__item"><span class="approach__index">06</span><span class="approach__text">Realistic expectations about Ausbildung and life in Germany.</span></li>
+            <li class="approach__item"><span class="approach__index">07</span><span class="approach__text">Preparation before departure.</span></li>
+            <li class="approach__item"><span class="approach__index">08</span><span class="approach__text">Long-term cooperation with German institutions.</span></li>
+          </ol>
         </div>
       </div>
     </section>
@@ -407,34 +550,48 @@ student_rows = "\n".join(
           </div>""" for i, (name, desc) in enumerate(STUDENT_SERVICES, 1)
 )
 
-FAQS = [
-    ("What is Nursing Ausbildung in Germany?",
-     "Ausbildung is Germany's dual vocational training system. For nursing, it combines classroom study with paid, hands-on training inside a real healthcare institution, and leads to a state-recognised German nursing qualification."),
-    ("Do I need to know German before applying?",
-     "You do not need German to make your first enquiry - but you do need it to succeed. German language training is a core part of the CGP pathway, and reaching the level required by employers and authorities is a genuine requirement of the process, not an optional extra."),
-    ("What are the eligibility requirements?",
-     "The pathway suits motivated students, typically around 18 to 25, who want to build a professional healthcare career in Germany and are prepared to commit to language training. Exact requirements depend on the German institution and the current rules that apply to your application, so we confirm them with you during assessment and counselling rather than publishing a generic list."),
-    ("How much does the CGP programme cost?",
-     "There are three fee components: registration, the German language course, and the CGP service fee. The structure is set out on this page, and the exact amounts and payment schedule are confirmed in writing before you commit. There are no hidden charges."),
-    ("What does CGP support me with during the application and visa process?",
-     "Application preparation, document preparation and checking, employer interview coordination and preparation, and step-by-step visa guidance. If something goes wrong or a document is queried, you have a named point of contact rather than being left to work it out alone."),
-    ("How long does the process take?",
-     "It depends mainly on two things: how quickly you progress through German language training, and the timelines of the German institution you are matched with. We give you a realistic timeline during counselling and update it honestly as you progress - we would rather tell you it will take longer than promise a date we cannot control."),
-    ("Will CGP support me after I arrive in Germany?",
-     "Yes. Arrival support and integration support are part of the pathway, and ongoing student support continues while you are settling into your training."),
-    ("Is accommodation available in Germany?",
-     "Accommodation arrangements vary between German healthcare institutions. It is one of the specifics we confirm with the institution for your particular placement, and we cover it fully in pre-departure orientation so you know exactly what applies before you travel."),
-    ("Can I work after completing Nursing Ausbildung?",
-     "A completed Nursing Ausbildung is a state-recognised German qualification, and it opens routes to continued employment, specialisation and further study within German healthcare. We will not promise you a specific job or salary - what we can do is prepare you properly for the qualification."),
-    ("How do I apply to become a CGP student?",
-     "Message us on WhatsApp or send an enquiry through the contact page. We will talk you through the pathway, the requirements and the fees, and assess whether Nursing Ausbildung is the right route for you before anyone commits to anything."),
+STUDENT_FAQ = [
+    ("What is Ausbildung in Germany?",
+     "Ausbildung is Germany's dual vocational training system. It combines classroom study with paid, hands-on training inside a real workplace, and leads to a state-recognised German qualification. It is a training route with a contract and a training allowance - not a university degree, and not a job placement."),
+    ("What is nursing Ausbildung?",
+     "Nursing Ausbildung is the Ausbildung route for nursing. It prepares you for a state-recognised German nursing qualification, combining theory at a training school with supervised practical training inside a hospital, clinic or care institution."),
+    ("How long does nursing Ausbildung take?",
+     "In Germany, nursing Ausbildung is a full vocational training programme and normally runs for three years. The exact duration and structure are set by German law and by the institution that takes you on, so we confirm the specifics for your pathway with you during counselling."),
+    ("Who can apply through CGP?",
+     "CGP works with young Sri Lankans who want to pursue nursing Ausbildung in Germany and who are ready to commit to the preparation it requires. The full picture is on the <a href=\"who-can-apply.html\">Who Can Apply</a> page - educational background, genuine interest in nursing and healthcare, systematic German-language learning, and readiness for professional and cultural preparation."),
+    ("Do I need to know German before joining CGP?",
+     "No. You do not need any German to make your first enquiry or to start with CGP - building that language is the purpose of the programme. You do need it to succeed: reaching the level required by German institutions is a genuine requirement of the process, not an optional extra."),
+    ("What German-language level will I need?",
+     "The level is set by the German institution you apply to, and for nursing Ausbildung it is normally B1 or B2. The CGP pathway runs from A1 to B2 so that you are prepared for what the institution asks of you, and we confirm the exact requirement for your intended institution during assessment."),
+    ("How long does it normally take to reach B2 German?",
+     "It depends on your starting point, how intensively you study and how much practice you get. CGP does not promise a fixed number of months, and you should be sceptical of anyone who does. We assess your progress continuously and give you a realistic timeline during counselling, updated honestly as you go."),
+    ("Does CGP guarantee an Ausbildung position?",
+     "No. CGP prepares and supports candidates; it does not guarantee or sell Ausbildung positions. Final assessment and selection remain with the respective German institution. What we do promise is proper preparation and honest information at every stage."),
+    ("Who makes the final decision on my application?",
+     "The German Ausbildung institution. Its interview panel and admissions team assess your application and decide whether to offer you a training place. CGP's role is to prepare you for that assessment and to submit your documentation correctly."),
+    ("Does CGP guarantee a German visa?",
+     "No, and no one can. The decision is made by the German authorities on the basis of your documents, your training contract and the rules that apply to your case. CGP's role is visa guidance: making sure your file is complete, correct and submitted properly."),
+    ("Will I receive a salary during nursing Ausbildung?",
+     "Yes. Ausbildung in Germany is a paid training contract: trainees receive a monthly training allowance paid by the training institution, which rises with each year of training. The amount is set by the institution or the applicable collective agreement, varies between employers and regions, and is confirmed to you by the institution that offers you a place. CGP does not quote salary figures."),
+    ("What support does CGP provide during preparation?",
+     "German language training from A1 to B2, professional and cultural preparation for living and working in Germany, documentation and application preparation, support with applications to German institutions, interview preparation, visa guidance, pre-departure preparation, arrival support and ongoing student support for as long as you are on the pathway. The <a href=\"complete-pathway.html\">Complete Pathway</a> page sets out the full sequence."),
+    ("What documents will I need for applications?",
+     "Typically your passport, school certificates and transcripts, a curriculum vitae, language certificates, and the medical and other documents the German institution or the authorities ask for. The exact list is set by the institution and the authorities, and translations or certified copies may be required. We confirm the list with you in writing and check everything before it is submitted."),
+    ("Can I apply directly to German institutions?",
+     "Yes. Nothing prevents you from applying directly, and CGP does not claim exclusivity over any institution. What CGP provides is preparation, correct documentation and support through a process that is unfamiliar, conducted in a second language, and assessed by institutions applying their own criteria."),
+    ("What happens after completing nursing Ausbildung in Germany?",
+     "A completed nursing Ausbildung is a state-recognised German qualification. It opens routes to employment as a qualified nursing professional, and to specialisation and further study within German healthcare. We will not promise you a specific job or salary - what we do is prepare you properly for the qualification itself."),
+    ("What responsibilities do students have while following the CGP preparation programme?",
+     "Attendance and active participation in German-language classes and preparation activities, completing the assigned learning tasks, keeping to the timelines agreed with you, providing accurate documents and information, responding to your point of contact, and telling us early if your circumstances or intentions change. Preparation is a two-way commitment: we do our part and you do yours."),
 ]
 
-faq_items = "\n".join(
-    f"""            <div class="accordion__item{' is-open' if i == 1 else ''}">
+
+def faq_items(items, group):
+    return "\n".join(
+        f"""            <div class="accordion__item{' is-open' if i == 1 else ''}">
               <h3>
                 <button class="accordion__trigger" aria-expanded="{'true' if i == 1 else 'false'}">
-                  <span class="accordion__index">4.{i:02d}</span>
+                  <span class="accordion__index">{group}.{i:02d}</span>
                   <span class="accordion__title">{q}</span>
                   <span class="accordion__glyph" aria-hidden="true">+</span>
                 </button>
@@ -444,31 +601,84 @@ faq_items = "\n".join(
                   <p>{a}</p>
                 </div>
               </div>
-            </div>""" for i, (q, a) in enumerate(FAQS, 1)
-)
+            </div>""" for i, (q, a) in enumerate(items, 1)
+    )
 
-STUDENTS = page_hero(
-    "03", "Page 03 / 07", "Students",
-    "The complete Nursing Ausbildung pathway.",
-    "One route, from your first question to your first day of training in Germany - language, applications, documents, interviews, visa, departure and arrival. Everything below is part of the same programme.",
-    [("Best suited to", "Motivated students, around 18&ndash;25, aiming at healthcare in Germany"),
-     ("Core requirement", "Commitment to German language training"),
-     ("Main offering", "Nursing Ausbildung Programme")],
-) + band("nurse-tablet.jpg", "Close view of a healthcare professional in a white coat holding a phone", "A profession, not just a placement") + f"""
-    <section class="section" aria-labelledby="forwhom-title">
+
+students_faq_items = faq_items(STUDENT_FAQ, "1")
+
+# The hero banner artwork supplied by the client (2026-10-15), shown whole and
+# never cropped. Its message is repeated as real text below it.
+STUDENTS_HERO_IMAGE = "hero-students-parents.jpg"
+STUDENTS_HERO_ALT = ("Banner: Students &amp; Parents - Your journey starts with preparation. "
+                     "Four young Sri Lankan students studying German together, with the "
+                     "German flag and the Berlin TV tower behind them.")
+
+STUDENTS = f"""
+    <section class="hero" aria-labelledby="students-hero-title">
+
+      <!-- Client-supplied Students & Parents banner (2026-10-15). It carries
+           its own headline, so it is shown whole - never cropped - and that
+           message is repeated as real text underneath. No call-to-action
+           buttons appear in this banner, by instruction. -->
       <div class="container">
-{section_head("01", "Who this is for", "Be honest with yourself here")}
-        <div class="grid">
-          <div class="col-left prose reveal">
-            <p class="display" id="forwhom-title" style="margin-bottom: var(--space-4);">This pathway asks something of you.</p>
-            <p>Our best students are motivated young people - usually around 18 to 25 - who genuinely want to build a professional healthcare career in Germany, and who need reliable guidance with German language training, applications, documentation, visa preparation and ongoing support.</p>
-            <p>What it is not: a shortcut. Nursing Ausbildung is real vocational training in a second language, inside a demanding profession. The students who do well are the ones who treat the language course as the foundation of everything else.</p>
-            <p>If that sounds like the wrong fit, tell us early and we will say so honestly. That is a better outcome for everyone than a student who commits to a pathway they did not want.</p>
+        <figure class="hero-banner">
+          <img src="assets/images/{STUDENTS_HERO_IMAGE}" alt="{STUDENTS_HERO_ALT}" width="1944" height="809" fetchpriority="high">
+          <figcaption class="hero-banner__caption">
+            <span class="micro-label">Students &amp; Parents</span>
+            <span class="hero-banner__line">Learn German. Prepare Yourself. Build Your Pathway to Germany.</span>
+          </figcaption>
+        </figure>
+
+        <div class="grid hero__head">
+          <div class="hero__head-main">
+            <p class="hero__kicker micro-label">Preparation &middot; Education &middot; Support</p>
+            <h1 class="hero__title" id="students-hero-title">Your journey starts with <em>preparation.</em></h1>
           </div>
-          <figure class="col-right reveal">
-            <img class="img-bw" src="assets/images/student-writing.jpg" alt="A student writing notes by hand in a notebook" width="1600" height="1067" loading="lazy">
-            <figcaption class="small" style="padding-top: var(--space-1); border-bottom: 1px solid var(--color-rule);">Preparation, not shortcuts</figcaption>
-          </figure>
+          <div class="hero__head-side">
+            <p class="lead hero__lede">CGP supports young Sri Lankans through structured German-language education, professional and cultural preparation, and responsible guidance towards vocational training opportunities in Germany.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero__strip">
+        <div class="container">
+          <div class="grid">
+            <p class="hero__fact"><strong>Best suited to</strong> Motivated students, around 18&ndash;25, aiming at healthcare in Germany.</p>
+            <p class="hero__fact"><strong>Core requirement</strong> Commitment to systematic German-language learning.</p>
+            <p class="hero__fact"><strong>Main offering</strong> Nursing Ausbildung Programme.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="start-title">
+      <div class="container">
+{section_head("01", "Start here", "Three pages")}
+        <div class="grid">
+          <div class="col-wide reveal" style="margin-bottom: var(--space-5);">
+            <p class="display" id="start-title">The Students &amp; Parents section, in three pages.</p>
+          </div>
+          <div class="route-cards">
+            <a class="route-card reveal" href="who-can-apply.html">
+              <p class="route-card__index">01</p>
+              <h3 class="route-card__title">Who Can Apply</h3>
+              <p class="route-card__desc">The eligibility and the personal commitment CGP asks for from candidates before anyone enrols.</p>
+              <span class="route-card__more">Read <span aria-hidden="true">&rarr;</span></span>
+            </a>
+            <a class="route-card reveal" href="complete-pathway.html">
+              <p class="route-card__index">02</p>
+              <h3 class="route-card__title">Complete Pathway</h3>
+              <p class="route-card__desc">The whole preparation journey in fifteen stages - and which of them CGP is responsible for.</p>
+              <span class="route-card__more">Read <span aria-hidden="true">&rarr;</span></span>
+            </a>
+            <a class="route-card reveal" href="faq.html">
+              <p class="route-card__index">03</p>
+              <h3 class="route-card__title">Frequently Asked Questions</h3>
+              <p class="route-card__desc">The sixteen questions students and parents ask us most, answered honestly.</p>
+              <span class="route-card__more">Read <span aria-hidden="true">&rarr;</span></span>
+            </a>
+          </div>
         </div>
       </div>
     </section>
@@ -487,64 +697,276 @@ STUDENTS = page_hero(
       </div>
     </section>
 
-    <section class="section" aria-labelledby="fees-title">
+    <section class="section" aria-labelledby="transparency-title">
       <div class="container">
-{section_head("03", "Fees &amp; payment policy", "Transparent by design")}
+{section_head("03", "Programme Information &amp; Transparency", "Before you enrol")}
         <div class="grid">
           <div class="col-left reveal">
-            <p class="display" id="fees-title" style="margin-bottom: var(--space-4);">Three fees. Written down. No surprises.</p>
-            <div class="prose">
-              <p>&ldquo;How much will this cost me, and are there any hidden charges?&rdquo; is the first question almost every family asks us. So here is the structure in full.</p>
-              <p>You receive the exact amounts and the payment schedule in writing before you commit to anything. Nothing is added later.</p>
+            <p class="display" id="transparency-title" style="margin-bottom: var(--space-4);">Clear and transparent communication, before you commit.</p>
+          </div>
+          <div class="col-right prose reveal">
+            <p>CGP believes in clear and transparent communication with students and their families. Detailed information regarding programme structure, German-language preparation, responsibilities, applicable educational and preparation costs, and payment arrangements is provided directly to prospective candidates before enrolment. No student should enrol without understanding the applicable programme conditions.</p>
+            <p><a class="btn btn--outline" href="contact.html">Request programme information <span class="btn__glyph" aria-hidden="true">&rarr;</span></a></p>
+          </div>
+        </div>
+      </div>
+    </section>
+""" + cta_strip("Bereit?", "Start with a conversation.",
+                "No commitment at the enquiry stage - we assess fit first.")
+
+
+# ==========================================================================
+# STUDENTS & PARENTS · WHO CAN APPLY
+# ==========================================================================
+
+WHO_CAN_APPLY_CRITERIA = [
+    ("Interest in nursing Ausbildung in Germany",
+     "CGP works with young Sri Lankans who want to pursue nursing Ausbildung in Germany, and who are interested in building a professional healthcare career there rather than taking a short-term route abroad."),
+    ("An appropriate educational background",
+     "The intended Ausbildung pathway has an educational starting point. German institutions set their own entry requirements, so we review your school certificates and results with you during eligibility assessment, and tell you honestly where you stand."),
+    ("Genuine interest in nursing, healthcare and vocational education",
+     "Nursing Ausbildung is a demanding profession and a real qualification, not a route chosen for the destination alone. We look for candidates who actually want the work."),
+    ("Commitment to systematic German-language learning",
+     "You must be ready to learn German systematically, up to the level required by German institutions. Language is the foundation of everything else in this pathway, and it is not optional."),
+    ("Willingness to participate regularly",
+     "Regular participation in language classes, preparation activities and the learning tasks assigned to you. Progress depends on consistent attendance and work between sessions."),
+    ("Readiness for professional and cultural preparation",
+     "Readiness to undertake professional and cultural preparation for living, studying and working in Germany - including the expectations of a German workplace and daily life away from home."),
+    ("Ability to meet institutional requirements",
+     "The ability and willingness to meet the individual requirements set by German Ausbildung institutions and the relevant authorities, which can differ between institutions and can change over time."),
+]
+
+criteria_rows = "\n".join(
+    f"""          <div class="service-row reveal">
+            <p class="service-row__index">2.{i:02d}</p>
+            <h3 class="service-row__title">{name}</h3>
+            <p class="service-row__desc">{desc}</p>
+          </div>""" for i, (name, desc) in enumerate(WHO_CAN_APPLY_CRITERIA, 1)
+)
+
+WHO_CAN_APPLY = page_hero(
+    "04", page_hero_of("who-can-apply.html"), "Who Can Apply",
+    "Who can apply.",
+    "This page sets out the basic eligibility and the personal commitment CGP asks for from candidates interested in the nursing Ausbildung pathway in Germany - and what meeting those criteria does and does not mean.",
+    [("For", "Young Sri Lankans aiming at nursing Ausbildung in Germany"),
+     ("Core requirement", "Commitment to systematic German-language learning"),
+     ("Decided by", "The German institution - not CGP")],
+)
+
+WHO_CAN_APPLY += band("student-writing.jpg", "A student writing notes by hand in a notebook", "This pathway asks something of you") + f"""
+    <section class="section" aria-labelledby="asks-title">
+      <div class="container">
+{section_head("01", "Who this is for", "Be honest with yourself here")}
+        <div class="grid">
+          <div class="col-wide prose reveal">
+            <p class="display" id="asks-title" style="margin-bottom: var(--space-4);">This pathway asks something of you.</p>
+            <p>Our best students are motivated young people - usually around 18 to 25 - who genuinely want to build a professional healthcare career in Germany, and who need reliable guidance with German language training, applications, documentation, visa preparation and ongoing support.</p>
+            <p>What it is not: a shortcut. Nursing Ausbildung is real vocational training in a second language, inside a demanding profession. The students who do well are the ones who treat the language course as the foundation of everything else.</p>
+            <p>If that sounds like the wrong fit, tell us early and we will say so honestly. That is a better outcome for everyone than a student who commits to a pathway they did not want.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--dark" aria-labelledby="criteria-title">
+      <div class="container">
+{section_head("02", "What we look for", "Seven points")}
+        <div class="grid">
+          <div class="col-wide reveal" style="margin-bottom: var(--space-5);">
+            <p class="display" id="criteria-title">Eligibility and commitment.</p>
+          </div>
+          <div class="service-list">
+{criteria_rows}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="notice-title">
+      <div class="container">
+{section_head("03", "Important notice", "Please read this")}
+        <div class="grid">
+          <div class="col-wide reveal">
+            <div class="notice">
+              <p id="notice-title"><strong>Meeting CGP's initial eligibility criteria does not guarantee an Ausbildung position, employment contract or visa.</strong> Final assessment and selection remain with the respective German institution.</p>
             </div>
           </div>
-          <div class="col-right reveal">
-            <table class="fee-table">
-              <caption>CGP fee structure</caption>
-              <thead>
-                <tr>
-                  <th scope="col">Fee</th>
-                  <th scope="col">What it covers</th>
-                  <th scope="col">Amount</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <th scope="row">Registration</th>
-                  <td>Enrolment as a CGP student, assessment and counselling.</td>
-                  <td class="tbd">On enquiry</td>
-                </tr>
-                <tr>
-                  <th scope="row">German language course</th>
-                  <td>Structured German training towards the required level.</td>
-                  <td class="tbd">On enquiry</td>
-                </tr>
-                <tr>
-                  <th scope="row">CGP service fee</th>
-                  <td>Applications, documents, interview coordination, visa guidance, pre-departure and arrival support.</td>
-                  <td class="tbd">On enquiry</td>
-                </tr>
-              </tbody>
-            </table>
-            <div class="notice" style="margin-top: var(--space-4);">
-              <p><strong>Amounts pending.</strong> Exact fee amounts are being finalised and will be published here. Until then we confirm them directly on enquiry, in writing, before any commitment is made.</p>
+          <div class="col-full reveal" style="margin-top: var(--space-5);">
+            <div class="route-cards">
+              <a class="route-card reveal" href="complete-pathway.html">
+                <p class="route-card__index">Next</p>
+                <h3 class="route-card__title">Complete Pathway</h3>
+                <p class="route-card__desc">See all fifteen stages of the preparation journey, and which of them CGP is responsible for.</p>
+                <span class="route-card__more">Read <span aria-hidden="true">&rarr;</span></span>
+              </a>
+              <a class="route-card reveal" href="faq.html">
+                <p class="route-card__index">Questions</p>
+                <h3 class="route-card__title">Frequently Asked Questions</h3>
+                <p class="route-card__desc">German level, timelines, decisions, costs and support - answered for students and parents.</p>
+                <span class="route-card__more">Read <span aria-hidden="true">&rarr;</span></span>
+              </a>
+              <a class="route-card reveal" href="students.html">
+                <p class="route-card__index">Section</p>
+                <h3 class="route-card__title">Students &amp; Parents</h3>
+                <p class="route-card__desc">Back to the section overview, with the twelve services included in the programme.</p>
+                <span class="route-card__more">Read <span aria-hidden="true">&rarr;</span></span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+""" + cta_strip("Bereit?", "Start with a conversation.",
+                "No commitment at the enquiry stage - we assess fit first.")
+
+
+# ==========================================================================
+# STUDENTS & PARENTS · COMPLETE PATHWAY
+# ==========================================================================
+
+# The fifteen stages, grouped into phases. The client's developer note requires
+# CGP's preparation role to be distinguishable from the German institution's
+# assessment and selection role, so every stage carries an owner badge.
+COMPLETE_PATHWAY_PHASES = [
+    ("Phase 01", "Enquiry &amp; assessment", "Carried out by CGP", [
+        ("01", "Initial Enquiry", "cgp", "CGP"),
+        ("02", "Eligibility Assessment", "cgp", "CGP"),
+    ]),
+    ("Phase 02", "Registration &amp; German language", "Carried out by CGP", [
+        ("03", "Registration with CGP", "cgp", "CGP"),
+        ("04", "German Language &ndash; A1", "cgp", "CGP"),
+        ("05", "German Language &ndash; A2", "cgp", "CGP"),
+        ("06", "German Language &ndash; B1", "cgp", "CGP"),
+        ("07", "German Language &ndash; B2", "cgp", "CGP"),
+    ]),
+    ("Phase 03", "Preparation, documentation &amp; applications", "Carried out by CGP", [
+        ("08", "Professional &amp; Cultural Preparation", "cgp", "CGP"),
+        ("09", "Documentation &amp; Application Preparation", "cgp", "CGP"),
+        ("10", "Applications to German Institutions", "cgp", "CGP"),
+    ]),
+    ("Phase 04", "Assessment &amp; selection", "Carried out by the German institution", [
+        ("11", "Interview &amp; Assessment by German Institution", "de", "German institution"),
+        ("12", "Selection &amp; Ausbildung Contract", "de", "German institution"),
+    ]),
+    ("Phase 05", "Visa, departure &amp; arrival", "CGP prepares, then the training begins", [
+        ("13", "Visa &amp; Pre-Departure Preparation", "cgp", "CGP"),
+        ("14", "Travel to Germany", "cgp", "CGP"),
+        ("15", "Start Nursing Ausbildung", "de", "German institution"),
+    ]),
+]
+
+
+def route_phase(number, label, role, steps):
+    step_rows = "\n".join(
+        f"""            <li class="route__step">
+              <span class="route__num">{num}</span>
+              <span class="route__name">{name}</span>
+              <span class="route__owner route__owner--{owner_class}">{owner_label}</span>
+            </li>""" for num, name, owner_class, owner_label in steps
+    )
+    return f"""          <li class="route__phase">
+            <div class="route__phase-head">
+              <p class="route__phase-label"><span class="micro-label">{number}</span> {label}</p>
+              <span class="micro-label route__phase-role">{role}</span>
+            </div>
+            <ol class="route__steps">
+{step_rows}
+            </ol>
+          </li>"""
+
+
+complete_pathway_rows = "\n".join(
+    route_phase(number, label, role, steps)
+    for number, label, role, steps in COMPLETE_PATHWAY_PHASES
+)
+
+COMPLETE_PATHWAY = page_hero(
+    "05", page_hero_of("complete-pathway.html"), "Complete Pathway",
+    "One pathway, fifteen stages.",
+    "The complete preparation journey, from your first enquiry to your first day of nursing Ausbildung in Germany - with CGP's role and the German institution's role shown separately at every stage.",
+    [("Starts with", "Initial enquiry and eligibility assessment"),
+     ("Prepared by", "CGP - language, preparation and documentation"),
+     ("Decided by", "The German institution - assessment and selection")],
+) + f"""
+    <section class="section" aria-labelledby="route-title">
+      <div class="container">
+{section_head("01", "The complete pathway", "Fifteen stages &middot; five phases")}
+        <div class="grid">
+          <div class="col-wide reveal" style="margin-bottom: var(--space-3);">
+            <p class="display" id="route-title">Every stage, and who is responsible for it.</p>
+            <p class="lead" style="margin-top: var(--space-3);">CGP prepares and supports candidates. It does not guarantee or sell Ausbildung positions - assessment and selection belong to the German institution.</p>
+          </div>
+          <ol class="route reveal">
+{complete_pathway_rows}
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--dark" aria-labelledby="roles-title">
+      <div class="container">
+{section_head("02", "Two roles, one pathway", "Who does what")}
+        <div class="grid">
+          <div class="roles">
+            <div class="roles__block reveal">
+              <h3>What CGP is responsible for</h3>
+              <p>Eligibility assessment and counselling, registration, German language training from A1 to B2, professional and cultural preparation, documentation and application preparation, submitting applications, interview preparation, visa guidance, pre-departure preparation and support after arrival. CGP prepares and supports candidates throughout.</p>
+            </div>
+            <div class="roles__block reveal">
+              <h3>What the German institution is responsible for</h3>
+              <p>Interviewing and assessing applicants, deciding who is selected, offering the Ausbildung contract, and setting the requirements a candidate must meet. The final decision on every application rests with the institution - not with CGP.</p>
+            </div>
+          </div>
+          <div class="col-wide reveal">
+            <div class="notice">
+              <p><strong>CGP prepares and supports candidates; it does not guarantee or sell Ausbildung positions.</strong> Meeting CGP's initial eligibility criteria does not guarantee an Ausbildung position, employment contract or visa. Final assessment and selection remain with the respective German institution.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+""" + cta_strip("Bereit?", "Start with a conversation.",
+                "No commitment at the enquiry stage - we assess fit first.")
+
+
+# ==========================================================================
+# STUDENTS & PARENTS · FREQUENTLY ASKED QUESTIONS
+# ==========================================================================
+
+FAQ_PAGE = page_hero(
+    "06", page_hero_of("faq.html"), "Frequently Asked Questions",
+    "Straight answers.",
+    "The sixteen questions students and parents ask us most - about Ausbildung, German language, timelines, who decides, visas, salary, documents and what we expect of you while you are on the programme.",
+    [("Written for", "Students and parents"),
+     ("Covers", "Ausbildung, language, decisions, costs and support"),
+     ("Still unsure?", f'<a href="mailto:{EMAIL}">{EMAIL}</a>')],
+) + f"""
+    <section class="section" aria-labelledby="faq-title">
+      <div class="container">
+{section_head("01", "Frequently asked questions", "Sixteen questions")}
+        <div class="grid">
+          <div class="col-wide reveal" style="margin-bottom: var(--space-4);">
+            <p class="display" id="faq-title">No promises we cannot keep.</p>
+          </div>
+          <div class="col-full">
+            <div class="accordion--light" data-accordion>
+{students_faq_items}
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="section" style="padding-top: 0;" aria-labelledby="faq-title">
+    <section class="section section--dark" aria-labelledby="transparency-title">
       <div class="container">
-{section_head("04", "Frequently asked questions", "Ten questions we get most")}
+{section_head("02", "Programme Information &amp; Transparency", "Before you enrol")}
         <div class="grid">
-          <div class="col-wide reveal" style="margin-bottom: var(--space-4);">
-            <p class="display" id="faq-title">Straight answers.</p>
-          </div>
-          <div class="col-full" style="grid-column: 1 / 13;">
-            <div class="accordion--light" data-accordion>
-{faq_items}
+          <div class="col-wide reveal">
+            <p class="display" id="transparency-title" style="margin-bottom: var(--space-4);">No student should enrol without understanding the programme.</p>
+            <div class="prose">
+              <p>CGP believes in clear and transparent communication with students and their families. Detailed information regarding programme structure, German-language preparation, responsibilities, applicable educational and preparation costs, and payment arrangements is provided directly to prospective candidates before enrolment. No student should enrol without understanding the applicable programme conditions.</p>
             </div>
+            <p class="lead" style="margin-top: var(--space-4);">Still have a question that is not here? Ask us directly - before you commit to anything.</p>
           </div>
         </div>
       </div>
@@ -602,7 +1024,7 @@ partner_timeline = "\n".join(
 )
 
 PARTNERS = page_hero(
-    "04", "Page 04 / 07", "German Partners",
+    "07", page_hero_of("partners.html"), "German Partners",
     "A partner, not a placement agency.",
     "CGP works with German hospitals, clinics and care institutions as a long-term partner. We select motivated Sri Lankan candidates and prepare them properly - language, professional readiness and documentation - before they ever sit in front of your interview panel.",
     [("For", "German hospitals, clinics and care institutions"),
@@ -641,7 +1063,7 @@ PARTNERS = page_hero(
 
     <section class="section" style="padding-top: 0;" aria-labelledby="pmodel-title">
       <div class="container">
-{section_head("03", "The partnership model", "Illustrative example")}
+{section_head("03", "The partnership model", "Illustrative example", "pmodel-title")}
         <div class="grid row-gap-lg">
           <div class="col-full reveal" style="grid-column: 1 / 13;">
             <div class="notice">
@@ -728,7 +1150,7 @@ PARTNERS = page_hero(
 # ==========================================================================
 
 CURRENT = page_hero(
-    "05", "Page 05 / 07", "Current Students",
+    "08", page_hero_of("current-students.html"), "Current Students",
     "Where our students are right now.",
     "Trust is built on evidence, not adjectives. This page tracks where CGP students currently stand on the pathway - and sets out the support available to you while you are on it.",
     [("For", "Students currently enrolled with CGP"),
@@ -947,25 +1369,10 @@ glossary_items = "\n".join(
             </div>""" for term, gloss, desc in GLOSSARY
 )
 
-resource_faqs = "\n".join(
-    f"""            <div class="accordion__item{' is-open' if i == 1 else ''}">
-              <h3>
-                <button class="accordion__trigger" aria-expanded="{'true' if i == 1 else 'false'}">
-                  <span class="accordion__index">2.{i:02d}</span>
-                  <span class="accordion__title">{q}</span>
-                  <span class="accordion__glyph" aria-hidden="true">+</span>
-                </button>
-              </h3>
-              <div class="accordion__panel">
-                <div class="accordion__panel-inner">
-                  <p>{a}</p>
-                </div>
-              </div>
-            </div>""" for i, (q, a) in enumerate(FAQS, 1)
-)
+resource_faqs = faq_items(STUDENT_FAQ, "2")
 
 RESOURCES = page_hero(
-    "06", "Page 06 / 07", "Resources &amp; Downloads",
+    "09", page_hero_of("resources.html"), "Resources &amp; Downloads",
     "Everything you need to decide.",
     "Guides, checklists and answers - so you can understand the pathway properly before you commit to it. Not ready to apply yet? This page is for you.",
     [("Downloads", "Six guides and checklists, open in your browser"),
@@ -981,7 +1388,7 @@ RESOURCES = page_hero(
           </div>
           <div class="col-full reveal" style="grid-column: 1 / 13; margin-bottom: var(--space-3);">
             <div class="notice">
-              <p><strong>Free to download, no enquiry required.</strong> These documents are written from the same information this website is built on. Each opens in your browser and can be saved or printed as a PDF. A note on fees: exact amounts are being finalised and will be published here; until then they are confirmed directly, in writing, before any commitment is made.</p>
+              <p><strong>Free to download, no enquiry required.</strong> These documents are written from the same information this website is built on. Each opens in your browser and can be saved or printed as a PDF. Detailed information on programme structure, German-language preparation, responsibilities, applicable educational and preparation costs, and payment arrangements is provided directly to prospective candidates before enrolment.</p>
             </div>
           </div>
 {resource_cards}
@@ -1005,7 +1412,7 @@ RESOURCES = page_hero(
 
     <section class="section" aria-labelledby="rfaq-title">
       <div class="container">
-{section_head("02", "Frequently asked questions", "Ten questions we get most")}
+{section_head("02", "Frequently asked questions", "Sixteen questions we get most")}
         <div class="grid">
           <div class="col-wide reveal" style="margin-bottom: var(--space-4);">
             <p class="display" id="rfaq-title">Straight answers.</p>
@@ -1044,7 +1451,7 @@ RESOURCES = page_hero(
 # ==========================================================================
 
 CONTACT = page_hero(
-    "07", "Page 07 / 07", "Contact",
+    "10", page_hero_of("contact.html"), "Contact",
     "Talk to us.",
     "WhatsApp is the quickest way to reach us. If you are not ready to apply yet, use the form below to request information instead - there is no commitment at this stage.",
     [("Email", f'<a href="mailto:{EMAIL}">{EMAIL}</a>'),
@@ -1150,7 +1557,10 @@ CONTACT = page_hero(
 
 DESCRIPTIONS = {
     "about.html": "About Ceylon German Pathway (CGP) - a Sri Lankan organisation preparing students for Nursing Ausbildung in Germany through ethical guidance, transparency and continuous support.",
-    "students.html": "The complete CGP Nursing Ausbildung pathway for Sri Lankan students: German language training, applications, documents, interviews, visa guidance, pre-departure and arrival support, plus transparent fees and FAQs.",
+    "students.html": "Students & Parents - the CGP Nursing Ausbildung pathway for Sri Lankan families: who can apply, the complete fifteen-stage pathway, twelve student services and programme information and transparency.",
+    "who-can-apply.html": "Who can apply for the CGP nursing Ausbildung pathway - the eligibility and personal commitment CGP looks for, including German-language commitment, and what meeting those criteria does not guarantee.",
+    "complete-pathway.html": "The complete CGP pathway in fifteen stages, from initial enquiry through German language A1 to B2, preparation, applications, the German institution's assessment and selection, visa and arrival.",
+    "faq.html": "Frequently asked questions about nursing Ausbildung in Germany with CGP - sixteen straight answers for students and parents on language levels, timelines, decisions, visas, salary and documents.",
     "partners.html": "CGP partners with German hospitals, clinics and care institutions - candidate selection and preparation, employer interview coordination and long-term partnership development.",
     "current-students.html": "Progress of current CGP students across language training, interviews, visa stage and arrival in Germany, plus the support available at every stage.",
     "resources.html": "Free guides, checklists, frequently asked questions and a plain-English German glossary for students considering Nursing Ausbildung in Germany with CGP.",
@@ -1159,7 +1569,10 @@ DESCRIPTIONS = {
 
 TITLES = {
     "about.html": "About CGP - Ceylon German Pathway",
-    "students.html": "Students - Nursing Ausbildung Pathway | Ceylon German Pathway",
+    "students.html": "Students &amp; Parents - Nursing Ausbildung Pathway | Ceylon German Pathway",
+    "who-can-apply.html": "Who Can Apply - Students &amp; Parents | Ceylon German Pathway",
+    "complete-pathway.html": "Complete Pathway - Students &amp; Parents | Ceylon German Pathway",
+    "faq.html": "Frequently Asked Questions - Students &amp; Parents | Ceylon German Pathway",
     "partners.html": "German Partners - Ceylon German Pathway",
     "current-students.html": "Current Students - Ceylon German Pathway",
     "resources.html": "Resources &amp; Downloads - Ceylon German Pathway",
@@ -1169,6 +1582,9 @@ TITLES = {
 CONTENT = {
     "about.html": ABOUT,
     "students.html": STUDENTS,
+    "who-can-apply.html": WHO_CAN_APPLY,
+    "complete-pathway.html": COMPLETE_PATHWAY,
+    "faq.html": FAQ_PAGE,
     "partners.html": PARTNERS,
     "current-students.html": CURRENT,
     "resources.html": RESOURCES,

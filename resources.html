@@ -8,8 +8,8 @@
   <!-- ?v= is a cache-busting version stamp. Bump ASSET_VERSION in
        build-pages.py (and index.html) whenever CSS or JS changes,
        so returning visitors are not served a stale copy. -->
-  <link rel="stylesheet" href="css/tokens.css?v=9">
-  <link rel="stylesheet" href="css/styles.css?v=9">
+  <link rel="stylesheet" href="css/tokens.css?v=12">
+  <link rel="stylesheet" href="css/styles.css?v=12">
   <link rel="icon" href="assets/images/CGPLogo.png" type="image/png">
 </head>
 <body>
@@ -31,11 +31,34 @@
 
       <nav class="nav" id="site-nav" aria-label="Main navigation">
         <a class="nav__link" href="index.html">Home</a>
-        <a class="nav__link" href="about.html">About CGP</a>
-        <a class="nav__link" href="students.html">Students</a>
+        <div class="nav__item" data-nav-menu>
+          <button class="nav__link nav__toggle" type="button" aria-expanded="false" aria-controls="submenu-about">
+            About CGP <span class="nav__caret" aria-hidden="true">&#9662;</span>
+          </button>
+          <div class="nav__submenu" id="submenu-about">
+            <div class="nav__menu">
+              <a class="nav__sublink" href="about.html#who-we-are">Who We Are</a>
+              <a class="nav__sublink" href="about.html#vision-mission">Vision &amp; Mission</a>
+              <a class="nav__sublink" href="about.html#how-cgp-works">How CGP Works</a>
+              <a class="nav__sublink" href="about.html#our-approach">Our Approach</a>
+            </div>
+          </div>
+        </div>
+        <div class="nav__item" data-nav-menu>
+          <button class="nav__link nav__toggle" type="button" aria-expanded="false" aria-controls="submenu-students">
+            Students &amp; Parents <span class="nav__caret" aria-hidden="true">&#9662;</span>
+          </button>
+          <div class="nav__submenu" id="submenu-students">
+            <div class="nav__menu">
+              <a class="nav__sublink" href="who-can-apply.html">Who Can Apply</a>
+              <a class="nav__sublink" href="complete-pathway.html">Complete Pathway</a>
+              <a class="nav__sublink" href="faq.html">Frequently Asked Questions</a>
+            </div>
+          </div>
+        </div>
         <a class="nav__link" href="partners.html">German Partners</a>
         <a class="nav__link" href="current-students.html">Current Students</a>
-        <a class="nav__link" href="resources.html" aria-current="page">Resources &amp; Downloads</a>
+        <a class="nav__link" href="resources.html" aria-current="page">Resources</a>
         <a class="nav__link" href="contact.html">Contact</a>
       </nav>
 
@@ -53,9 +76,9 @@
       <div class="container">
         <div class="grid">
           <div class="page-hero__index">
-            <span class="micro-label">06</span>
+            <span class="micro-label">09</span>
             <span class="micro-label">Resources &amp; Downloads</span>
-            <span class="micro-label page-hero__of">Page 06 / 07</span>
+            <span class="micro-label page-hero__of">Page 09 / 10</span>
           </div>
           <h1 class="page-hero__title" id="page-title">Everything you need to decide.</h1>
           <div class="page-hero__lede">
@@ -92,7 +115,7 @@
           </div>
           <div class="col-full reveal" style="grid-column: 1 / 13; margin-bottom: var(--space-3);">
             <div class="notice">
-              <p><strong>Free to download, no enquiry required.</strong> These documents are written from the same information this website is built on. Each opens in your browser and can be saved or printed as a PDF. A note on fees: exact amounts are being finalised and will be published here; until then they are confirmed directly, in writing, before any commitment is made.</p>
+              <p><strong>Free to download, no enquiry required.</strong> These documents are written from the same information this website is built on. Each opens in your browser and can be saved or printed as a PDF. Detailed information on programme structure, German-language preparation, responsibilities, applicable educational and preparation costs, and payment arrangements is provided directly to prospective candidates before enrolment.</p>
             </div>
           </div>
           <article class="resource-card span-4 reveal">
@@ -166,7 +189,7 @@
         <header class="section-head">
           <span class="section-head__index">02</span>
           <h2 class="section-head__label">Frequently asked questions</h2>
-          <span class="section-head__meta">Ten questions we get most</span>
+          <span class="section-head__meta">Sixteen questions we get most</span>
         </header>
 
         <div class="grid">
@@ -179,13 +202,13 @@
               <h3>
                 <button class="accordion__trigger" aria-expanded="true">
                   <span class="accordion__index">2.01</span>
-                  <span class="accordion__title">What is Nursing Ausbildung in Germany?</span>
+                  <span class="accordion__title">What is Ausbildung in Germany?</span>
                   <span class="accordion__glyph" aria-hidden="true">+</span>
                 </button>
               </h3>
               <div class="accordion__panel">
                 <div class="accordion__panel-inner">
-                  <p>Ausbildung is Germany's dual vocational training system. For nursing, it combines classroom study with paid, hands-on training inside a real healthcare institution, and leads to a state-recognised German nursing qualification.</p>
+                  <p>Ausbildung is Germany's dual vocational training system. It combines classroom study with paid, hands-on training inside a real workplace, and leads to a state-recognised German qualification. It is a training route with a contract and a training allowance - not a university degree, and not a job placement.</p>
                 </div>
               </div>
             </div>
@@ -193,13 +216,13 @@
               <h3>
                 <button class="accordion__trigger" aria-expanded="false">
                   <span class="accordion__index">2.02</span>
-                  <span class="accordion__title">Do I need to know German before applying?</span>
+                  <span class="accordion__title">What is nursing Ausbildung?</span>
                   <span class="accordion__glyph" aria-hidden="true">+</span>
                 </button>
               </h3>
               <div class="accordion__panel">
                 <div class="accordion__panel-inner">
-                  <p>You do not need German to make your first enquiry - but you do need it to succeed. German language training is a core part of the CGP pathway, and reaching the level required by employers and authorities is a genuine requirement of the process, not an optional extra.</p>
+                  <p>Nursing Ausbildung is the Ausbildung route for nursing. It prepares you for a state-recognised German nursing qualification, combining theory at a training school with supervised practical training inside a hospital, clinic or care institution.</p>
                 </div>
               </div>
             </div>
@@ -207,13 +230,13 @@
               <h3>
                 <button class="accordion__trigger" aria-expanded="false">
                   <span class="accordion__index">2.03</span>
-                  <span class="accordion__title">What are the eligibility requirements?</span>
+                  <span class="accordion__title">How long does nursing Ausbildung take?</span>
                   <span class="accordion__glyph" aria-hidden="true">+</span>
                 </button>
               </h3>
               <div class="accordion__panel">
                 <div class="accordion__panel-inner">
-                  <p>The pathway suits motivated students, typically around 18 to 25, who want to build a professional healthcare career in Germany and are prepared to commit to language training. Exact requirements depend on the German institution and the current rules that apply to your application, so we confirm them with you during assessment and counselling rather than publishing a generic list.</p>
+                  <p>In Germany, nursing Ausbildung is a full vocational training programme and normally runs for three years. The exact duration and structure are set by German law and by the institution that takes you on, so we confirm the specifics for your pathway with you during counselling.</p>
                 </div>
               </div>
             </div>
@@ -221,13 +244,13 @@
               <h3>
                 <button class="accordion__trigger" aria-expanded="false">
                   <span class="accordion__index">2.04</span>
-                  <span class="accordion__title">How much does the CGP programme cost?</span>
+                  <span class="accordion__title">Who can apply through CGP?</span>
                   <span class="accordion__glyph" aria-hidden="true">+</span>
                 </button>
               </h3>
               <div class="accordion__panel">
                 <div class="accordion__panel-inner">
-                  <p>There are three fee components: registration, the German language course, and the CGP service fee. The structure is set out on this page, and the exact amounts and payment schedule are confirmed in writing before you commit. There are no hidden charges.</p>
+                  <p>CGP works with young Sri Lankans who want to pursue nursing Ausbildung in Germany and who are ready to commit to the preparation it requires. The full picture is on the <a href="who-can-apply.html">Who Can Apply</a> page - educational background, genuine interest in nursing and healthcare, systematic German-language learning, and readiness for professional and cultural preparation.</p>
                 </div>
               </div>
             </div>
@@ -235,13 +258,13 @@
               <h3>
                 <button class="accordion__trigger" aria-expanded="false">
                   <span class="accordion__index">2.05</span>
-                  <span class="accordion__title">What does CGP support me with during the application and visa process?</span>
+                  <span class="accordion__title">Do I need to know German before joining CGP?</span>
                   <span class="accordion__glyph" aria-hidden="true">+</span>
                 </button>
               </h3>
               <div class="accordion__panel">
                 <div class="accordion__panel-inner">
-                  <p>Application preparation, document preparation and checking, employer interview coordination and preparation, and step-by-step visa guidance. If something goes wrong or a document is queried, you have a named point of contact rather than being left to work it out alone.</p>
+                  <p>No. You do not need any German to make your first enquiry or to start with CGP - building that language is the purpose of the programme. You do need it to succeed: reaching the level required by German institutions is a genuine requirement of the process, not an optional extra.</p>
                 </div>
               </div>
             </div>
@@ -249,13 +272,13 @@
               <h3>
                 <button class="accordion__trigger" aria-expanded="false">
                   <span class="accordion__index">2.06</span>
-                  <span class="accordion__title">How long does the process take?</span>
+                  <span class="accordion__title">What German-language level will I need?</span>
                   <span class="accordion__glyph" aria-hidden="true">+</span>
                 </button>
               </h3>
               <div class="accordion__panel">
                 <div class="accordion__panel-inner">
-                  <p>It depends mainly on two things: how quickly you progress through German language training, and the timelines of the German institution you are matched with. We give you a realistic timeline during counselling and update it honestly as you progress - we would rather tell you it will take longer than promise a date we cannot control.</p>
+                  <p>The level is set by the German institution you apply to, and for nursing Ausbildung it is normally B1 or B2. The CGP pathway runs from A1 to B2 so that you are prepared for what the institution asks of you, and we confirm the exact requirement for your intended institution during assessment.</p>
                 </div>
               </div>
             </div>
@@ -263,13 +286,13 @@
               <h3>
                 <button class="accordion__trigger" aria-expanded="false">
                   <span class="accordion__index">2.07</span>
-                  <span class="accordion__title">Will CGP support me after I arrive in Germany?</span>
+                  <span class="accordion__title">How long does it normally take to reach B2 German?</span>
                   <span class="accordion__glyph" aria-hidden="true">+</span>
                 </button>
               </h3>
               <div class="accordion__panel">
                 <div class="accordion__panel-inner">
-                  <p>Yes. Arrival support and integration support are part of the pathway, and ongoing student support continues while you are settling into your training.</p>
+                  <p>It depends on your starting point, how intensively you study and how much practice you get. CGP does not promise a fixed number of months, and you should be sceptical of anyone who does. We assess your progress continuously and give you a realistic timeline during counselling, updated honestly as you go.</p>
                 </div>
               </div>
             </div>
@@ -277,13 +300,13 @@
               <h3>
                 <button class="accordion__trigger" aria-expanded="false">
                   <span class="accordion__index">2.08</span>
-                  <span class="accordion__title">Is accommodation available in Germany?</span>
+                  <span class="accordion__title">Does CGP guarantee an Ausbildung position?</span>
                   <span class="accordion__glyph" aria-hidden="true">+</span>
                 </button>
               </h3>
               <div class="accordion__panel">
                 <div class="accordion__panel-inner">
-                  <p>Accommodation arrangements vary between German healthcare institutions. It is one of the specifics we confirm with the institution for your particular placement, and we cover it fully in pre-departure orientation so you know exactly what applies before you travel.</p>
+                  <p>No. CGP prepares and supports candidates; it does not guarantee or sell Ausbildung positions. Final assessment and selection remain with the respective German institution. What we do promise is proper preparation and honest information at every stage.</p>
                 </div>
               </div>
             </div>
@@ -291,13 +314,13 @@
               <h3>
                 <button class="accordion__trigger" aria-expanded="false">
                   <span class="accordion__index">2.09</span>
-                  <span class="accordion__title">Can I work after completing Nursing Ausbildung?</span>
+                  <span class="accordion__title">Who makes the final decision on my application?</span>
                   <span class="accordion__glyph" aria-hidden="true">+</span>
                 </button>
               </h3>
               <div class="accordion__panel">
                 <div class="accordion__panel-inner">
-                  <p>A completed Nursing Ausbildung is a state-recognised German qualification, and it opens routes to continued employment, specialisation and further study within German healthcare. We will not promise you a specific job or salary - what we can do is prepare you properly for the qualification.</p>
+                  <p>The German Ausbildung institution. Its interview panel and admissions team assess your application and decide whether to offer you a training place. CGP's role is to prepare you for that assessment and to submit your documentation correctly.</p>
                 </div>
               </div>
             </div>
@@ -305,13 +328,97 @@
               <h3>
                 <button class="accordion__trigger" aria-expanded="false">
                   <span class="accordion__index">2.10</span>
-                  <span class="accordion__title">How do I apply to become a CGP student?</span>
+                  <span class="accordion__title">Does CGP guarantee a German visa?</span>
                   <span class="accordion__glyph" aria-hidden="true">+</span>
                 </button>
               </h3>
               <div class="accordion__panel">
                 <div class="accordion__panel-inner">
-                  <p>Message us on WhatsApp or send an enquiry through the contact page. We will talk you through the pathway, the requirements and the fees, and assess whether Nursing Ausbildung is the right route for you before anyone commits to anything.</p>
+                  <p>No, and no one can. The decision is made by the German authorities on the basis of your documents, your training contract and the rules that apply to your case. CGP's role is visa guidance: making sure your file is complete, correct and submitted properly.</p>
+                </div>
+              </div>
+            </div>
+            <div class="accordion__item">
+              <h3>
+                <button class="accordion__trigger" aria-expanded="false">
+                  <span class="accordion__index">2.11</span>
+                  <span class="accordion__title">Will I receive a salary during nursing Ausbildung?</span>
+                  <span class="accordion__glyph" aria-hidden="true">+</span>
+                </button>
+              </h3>
+              <div class="accordion__panel">
+                <div class="accordion__panel-inner">
+                  <p>Yes. Ausbildung in Germany is a paid training contract: trainees receive a monthly training allowance paid by the training institution, which rises with each year of training. The amount is set by the institution or the applicable collective agreement, varies between employers and regions, and is confirmed to you by the institution that offers you a place. CGP does not quote salary figures.</p>
+                </div>
+              </div>
+            </div>
+            <div class="accordion__item">
+              <h3>
+                <button class="accordion__trigger" aria-expanded="false">
+                  <span class="accordion__index">2.12</span>
+                  <span class="accordion__title">What support does CGP provide during preparation?</span>
+                  <span class="accordion__glyph" aria-hidden="true">+</span>
+                </button>
+              </h3>
+              <div class="accordion__panel">
+                <div class="accordion__panel-inner">
+                  <p>German language training from A1 to B2, professional and cultural preparation for living and working in Germany, documentation and application preparation, support with applications to German institutions, interview preparation, visa guidance, pre-departure preparation, arrival support and ongoing student support for as long as you are on the pathway. The <a href="complete-pathway.html">Complete Pathway</a> page sets out the full sequence.</p>
+                </div>
+              </div>
+            </div>
+            <div class="accordion__item">
+              <h3>
+                <button class="accordion__trigger" aria-expanded="false">
+                  <span class="accordion__index">2.13</span>
+                  <span class="accordion__title">What documents will I need for applications?</span>
+                  <span class="accordion__glyph" aria-hidden="true">+</span>
+                </button>
+              </h3>
+              <div class="accordion__panel">
+                <div class="accordion__panel-inner">
+                  <p>Typically your passport, school certificates and transcripts, a curriculum vitae, language certificates, and the medical and other documents the German institution or the authorities ask for. The exact list is set by the institution and the authorities, and translations or certified copies may be required. We confirm the list with you in writing and check everything before it is submitted.</p>
+                </div>
+              </div>
+            </div>
+            <div class="accordion__item">
+              <h3>
+                <button class="accordion__trigger" aria-expanded="false">
+                  <span class="accordion__index">2.14</span>
+                  <span class="accordion__title">Can I apply directly to German institutions?</span>
+                  <span class="accordion__glyph" aria-hidden="true">+</span>
+                </button>
+              </h3>
+              <div class="accordion__panel">
+                <div class="accordion__panel-inner">
+                  <p>Yes. Nothing prevents you from applying directly, and CGP does not claim exclusivity over any institution. What CGP provides is preparation, correct documentation and support through a process that is unfamiliar, conducted in a second language, and assessed by institutions applying their own criteria.</p>
+                </div>
+              </div>
+            </div>
+            <div class="accordion__item">
+              <h3>
+                <button class="accordion__trigger" aria-expanded="false">
+                  <span class="accordion__index">2.15</span>
+                  <span class="accordion__title">What happens after completing nursing Ausbildung in Germany?</span>
+                  <span class="accordion__glyph" aria-hidden="true">+</span>
+                </button>
+              </h3>
+              <div class="accordion__panel">
+                <div class="accordion__panel-inner">
+                  <p>A completed nursing Ausbildung is a state-recognised German qualification. It opens routes to employment as a qualified nursing professional, and to specialisation and further study within German healthcare. We will not promise you a specific job or salary - what we do is prepare you properly for the qualification itself.</p>
+                </div>
+              </div>
+            </div>
+            <div class="accordion__item">
+              <h3>
+                <button class="accordion__trigger" aria-expanded="false">
+                  <span class="accordion__index">2.16</span>
+                  <span class="accordion__title">What responsibilities do students have while following the CGP preparation programme?</span>
+                  <span class="accordion__glyph" aria-hidden="true">+</span>
+                </button>
+              </h3>
+              <div class="accordion__panel">
+                <div class="accordion__panel-inner">
+                  <p>Attendance and active participation in German-language classes and preparation activities, completing the assigned learning tasks, keeping to the timelines agreed with you, providing accurate documents and information, responding to your point of contact, and telling us early if your circumstances or intentions change. Preparation is a two-way commitment: we do our part and you do yours.</p>
                 </div>
               </div>
             </div>
@@ -413,7 +520,7 @@
           <ul>
             <li><a href="index.html">Home</a></li>
             <li><a href="about.html">About CGP</a></li>
-            <li><a href="students.html">Students</a></li>
+            <li><a href="students.html">Students &amp; Parents</a></li>
             <li><a href="partners.html">German Partners</a></li>
             <li><a href="current-students.html">Current Students</a></li>
             <li><a href="resources.html">Resources &amp; Downloads</a></li>
@@ -447,6 +554,6 @@
     </div>
   </footer>
 
-  <script src="js/main.js?v=9"></script>
+  <script src="js/main.js?v=12"></script>
 </body>
 </html>
