@@ -180,6 +180,7 @@ menu structure change (see the menu structure change request below). It follows
 | 2026-10-15 | `71a47df` | Students & Parents rebuild + 2026-10-12 home page / About CGP changes |
 | 2026-10-15 | `9dc4f8d` | Menu structure: client's proposed navigation, German Partners section menu, navigating labels, anchor offset |
 | 2026-10-15 | `9dbb26d` | Follow-up: the Students & Parents page listed in its own menu as **Overview** |
+| 2026-10-16 | `51d1059` | Footer credits: **Developed by DevTenent** link, new tab → devtenent.com |
 
 **Rollback:** `git reset --hard 6975a46` on the server returns the site to the
 build that was live before the menu work; `git reset --hard f3ecd16` keeps the
@@ -495,4 +496,60 @@ or a "Security Verification" interstitial to Chrome-like User-Agents coming from
 IP, which makes headless verification of this site unreliable. Requests with curl's default
 User-Agent pass, which is why the probes above use it. This is a probing artefact — a normal
 browser on a normal connection renders the site.
+
+## ✦ Client change request — 2026-10-16 (footer credits)
+
+Requested on the issue: *"Update footer note. Update the footer credits also add another
+developed by DevTenent hyperlink new tab open to devtenent.com."*
+
+**Change** — one new line in `div.footer__bottom`, on all ten pages:
+
+```html
+<p class="footer__credit">Developed by <a href="https://devtenent.com" target="_blank" rel="noopener" style="text-decoration: underline">DevTenent</a></p>
+```
+
+- **Nothing was removed.** The two existing lines (`© 2026 Ceylon German Pathway. All rights
+  reserved.` and `Sri Lanka → Deutschland`) are untouched; the credit is added after them.
+- The link opens in a new tab, matching the footer's existing Facebook / Instagram / WhatsApp
+  links (`target="_blank" rel="noopener"`).
+- **The underline is an inline style, deliberately.** `a { color: inherit; text-decoration: none }`
+  would otherwise leave the link identical to the text around it, which fails WCAG 1.4.1; without
+  an underline the only difference would be that it is clickable. A stylesheet rule was avoided
+  because `css/` is owned by the in-flight performance work (`?v=14`, `css/styles.min.css`) — an
+  inline style renders the same before and after that deploy and there is no CSP to block it. The
+  paragraph keeps the `.footer__credit` class so a rule in `css/styles.css` can replace the inline
+  style later without touching the markup.
+- `.footer__bottom` is `display:flex; justify-content:space-between`: at desktop width the three
+  items read **left → centre → right** (© … / *Sri Lanka → Deutschland* / *Developed by DevTenent*);
+  at 390 px the copyright takes its own row and the tagline and credit share the next. Measured
+  in a real browser at 1440 px and 390 px: no horizontal overflow (`scrollWidth == innerWidth` at
+  both) and no overlap.
+- Accessibility: the credit inherits `.footer__bottom`'s `#9B9B9B` on the black footer —
+  contrast **7.56 : 1** (WCAG AA needs 4.5 : 1) — and the underline keeps the link identifiable
+  without relying on colour.
+- Mirrored in `build-pages.py`'s footer template (line 367) so regenerating the nine generated
+  pages keeps the line; `index.html` is hand-maintained and was edited directly. Verified by
+  diff: **+1 line on each of the eleven files, nothing else changed.**
+
+**Deployment and verification**
+
+- Repo commit `51d1059` on `main` (`482eccb` → `51d1059`, 11 files, +11 lines); the docroot
+  pulled `--ff-only` and is clean at `51d1059`.
+- Probed from outside with a cache-busting query string: all **11** page URLs return `200` and
+  carry exactly one `footer__credit` line with the exact `href` / `target` / `rel`; the six
+  `downloads/` printables (which have their own footer) are unchanged and still `200` — 17 of 17.
+- Byte delta: **+163 bytes per page**.
+- **Same edge-cache caveat as every previous deploy:** straight after the push, `/`,
+  `/index.html`, `/about.html` and `/contact.html` were still serving the pre-change copy with
+  `expires` up to 24 h ahead (the file on the host is current — the `?cb=` probe shows the new
+  line). A StackCP **Edge Caching → purge** shows it to visitors at once; otherwise it clears
+  itself within 24 h.
+- **Rollback:** `ssh … 'cd ~/cgp.lk && git reset --hard 482eccb'`, or `git revert 51d1059`.
+  Local snapshot before the edit:
+  `website-build-files/ceylon-german-pathway-cgp-website-pre-footer-credit-20261016-083124.tar.gz`.
+
+**Noticed, not changed** — the footer's Contact column on `index.html` carries the WhatsApp
+number `+94 70 400 8952` while the nine generated pages' footers do not (their list is email,
+address, district, hours). This predates this change and lives in `build-pages.py`'s footer
+template; it is left exactly as it was rather than fixed without being asked.
 
