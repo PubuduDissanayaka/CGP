@@ -66,8 +66,15 @@ Home · About CGP ▾ · Students & Parents ▾ · German Partners ▾ · Curren
   a menu, and no top-level item is a dead end.
 - **About CGP** → Who We Are · Vision & Mission · How CGP Works · Our Approach —
   the client's four items, anchored to sections on `about.html`.
-- **Students & Parents** → Who Can Apply · Complete Pathway · Frequently Asked
-  Questions — the client's three pages, and only those three.
+- **Students & Parents** → Overview · Who Can Apply · Complete Pathway ·
+  Frequently Asked Questions. The client's three content pages are exactly those
+  three, and only those three; the client's instruction that the dropdown
+  contain only them (and that the Fee & Payment Policy page come off the menu)
+  is met. The leading **Overview** entry is the section's own landing page —
+  the page carrying the client's hero banner. It is there because this is the
+  one section menu whose items are all *other* pages: without it, the section's
+  own page appeared nowhere in the menu. Read the comment on `STUDENTS_SUBMENU`
+  in `build-pages.py` before removing it.
 - **German Partners** → Partnership services · How the partnership works · The
   partnership model · Why work with CGP. The client's proposed navigation shows
   this as a dropdown but has not named its items, so the page's own section
@@ -90,7 +97,8 @@ flowchart LR
   A --> A3[How CGP Works]
   A --> A4[Our Approach]
   H --> S[Students &amp; Parents]
-  S --> S1[Who Can Apply]
+  S  --> S0[Overview]
+  S  --> S1[Who Can Apply]
   S --> S2[Complete Pathway]
   S --> S3[Frequently Asked Questions]
   H --> P[German Partners]
@@ -409,8 +417,9 @@ exactly and follows one rule everywhere.
   About CGP and Students & Parents were `<button>`s that only opened a menu, so `students.html`
   — the section landing page, and the only place the client's Students & Parents hero banner
   lives — was reachable from the footer and from inside the section but not from the main
-  navigation at all. The label now goes to the page; the caret opens the menu. No menu item was
-  added: the Students & Parents menu still holds the client's three pages and nothing else.
+  navigation at all. The label now goes to the page; the caret opens the menu. The Students
+  & Parents menu keeps the client's three content pages and adds nothing to that list (its
+  leading **Overview** entry is the section's own page — see *Follow-up* below).
 - Menu item text is the target section's own heading, always, so an item and the page it points
   at cannot drift apart.
 - `partners.html` sections gained the ids the new menu anchors to (`partnership-services`,
@@ -444,4 +453,43 @@ exactly and follows one rule everywhere.
   is a different surface and was left alone rather than changed without being asked.
 - The German Partners item ordering and wording are a developer choice standing in for the
   client's, not a client decision — flagged on the Multica issue.
+
+## ✦ Follow-up — the Students page was not listed in the menu
+
+Reported on the issue straight after the menu deploy: *"I cannot see student page."* The page
+itself was fine — `https://cgp.lk/students.html` served the correct Students & Parents page
+(title `Students & Parents - Nursing Ausbildung Pathway`, `<h1>` "Your journey starts with
+preparation."). What was wrong was that the page appeared nowhere in the menu:
+
+- The other two section menus list places **on** their own page (About CGP's four anchors,
+  German Partners' four anchors), so opening either of them shows you the section's content.
+- The Students & Parents menu lists three **other** pages. Its own page — the one carrying the
+  client's hero banner — was not an item, so it could only be reached by clicking the caret
+  label itself, and not at all from the previous build's menu (where that label was a button).
+
+**Change:** `STUDENTS_SUBMENU` now starts with `("students.html", "Overview")`. The client's
+three content pages are untouched and still exactly three; the new first entry is the section's
+own page. This is the one item in the menu that is not a client-supplied label, and it is the
+first thing to remove if the client objects. The reasoning is written into `build-pages.py`
+next to the list, and `verify-menu.py` now asserts that the section's own page is linked.
+
+No CSS or JS changed, so `ASSET_VERSION` stayed at **13**.
+
+**Why the report could not be reproduced from the server:** the deployment itself was correct —
+all eleven URLs serve the new markup when fetched past the CDN (probed with `?cb=<timestamp>`).
+Two things can still show a visitor the previous build, and both produce exactly this symptom,
+because in the previous build the Students & Parents item is a button with no link to the
+students page:
+
+1. **StackCDN** was still serving the previous build on six of the eleven clean URLs
+   (`index.html`, `students.html`, `who-can-apply.html`, `partners.html`, `resources.html`,
+   `contact.html`) with 24-hour TTLs. Needs an **Edge Caching → purge** in the StackCP panel.
+2. **The visitor's own browser** holds the same pages for up to 24 h under the same
+   `max-age=86400`, so a hard refresh (Ctrl/Cmd + Shift + R) is needed even after a purge.
+
+A note for anyone probing cgp.lk from a script: StackProtect (the host's WAF) returns **403**
+or a "Security Verification" interstitial to Chrome-like User-Agents coming from a datacenter
+IP, which makes headless verification of this site unreliable. Requests with curl's default
+User-Agent pass, which is why the probes above use it. This is a probing artefact — a normal
+browser on a normal connection renders the site.
 

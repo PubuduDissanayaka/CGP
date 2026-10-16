@@ -50,7 +50,17 @@ PAGES = [
 # The pages that sit under the "Students & Parents" dropdown in the main
 # navigation. Also used for the "site number" shown in each page hero, so the
 # running "Page NN / 10" stays true.
+#
+# The section's own landing page is the first item. The client's §1 lists the
+# three content pages and asks for the fee page to go; the three are exactly
+# those, unchanged. This first entry is added because the other two section
+# menus point at places *on* their section's page (About CGP's four anchors,
+# German Partners' four anchors) - every destination in those menus is on the
+# section, so the section is reachable by clicking the label. The Students
+# & Parents menu instead holds three *other* pages, so without this entry the
+# section's own page would appear nowhere in the menu at all.
 STUDENTS_SUBMENU = [
+    ("students.html", "Overview"),
     ("who-can-apply.html", "Who Can Apply"),
     ("complete-pathway.html", "Complete Pathway"),
     ("faq.html", "Frequently Asked Questions"),

@@ -89,7 +89,9 @@ about_ids = set(re.findall(r'\sid="([^"]+)"', (ROOT / "about.html").read_text())
 partners_ids = set(re.findall(r'\sid="([^"]+)"', (ROOT / "partners.html").read_text()))
 
 sublinks = re.findall(r'<a class="nav__sublink" href="([^"]+)"[^>]*>([^<]+)</a>', nav)
-check(len(sublinks) == 11, f"three section menus carry 4 + 3 + 4 = 11 links (got {len(sublinks)})")
+check(len(sublinks) == 12, f"three section menus carry 4 + 4 + 4 = 12 links (got {len(sublinks)})")
+check("students.html" in [h for h, _ in sublinks],
+      "the Students & Parents menu links the section's own page")
 for href, text in sublinks:
     page, _, frag = href.partition("#")
     check((ROOT / page).exists(), f"menu item '{text}' -> {page} exists")
