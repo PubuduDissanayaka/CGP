@@ -182,6 +182,7 @@ menu structure change (see the menu structure change request below). It follows
 | 2026-10-15 | `9dbb26d` | Follow-up: the Students & Parents page listed in its own menu as **Overview** |
 | 2026-10-16 | `51d1059` | Footer credits: **Developed by DevTenent** link, new tab → devtenent.com |
 | 2026-10-16 | `c35105e` | **Performance pass** (DEVT-87): 109 responsive WebP/JPEG derivatives in `assets/images/opt/`, every `<img>` rewritten as `<picture>` with `srcset`/`sizes`, minified merged stylesheet + JS, `?v=14`, below-fold images deferred, plus `.htaccess` caching/MIME rules. Home page 3,614 KB → 798 KB, site 8.22 MB → 1.83 MB, Lighthouse mobile 0.75 → 0.99, LCP 12.5 s → 2.3 s, text unchanged on all ten pages |
+| 2026-10-16 | `67c59a9` | **Generated imagery**: the twelve Unsplash placeholder photographs replaced with purpose-generated images under `assets/images/gen/` + `opt/gen/`; `make-opt.py` + `images-gen.json` added. Client artwork (`hero-banner-01..03`, `hero-students-parents`) deliberately unchanged. Home page 798 KB → 648 KB, site 1.83 MB → 1.48 MB |
 
 **Rollback:** `git reset --hard 6975a46` on the server returns the site to the
 build that was live before the menu work; `git reset --hard f3ecd16` keeps the
