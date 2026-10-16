@@ -181,11 +181,22 @@ menu structure change (see the menu structure change request below). It follows
 | 2026-10-15 | `9dc4f8d` | Menu structure: client's proposed navigation, German Partners section menu, navigating labels, anchor offset |
 | 2026-10-15 | `9dbb26d` | Follow-up: the Students & Parents page listed in its own menu as **Overview** |
 | 2026-10-16 | `51d1059` | Footer credits: **Developed by DevTenent** link, new tab → devtenent.com |
+| 2026-10-16 | `c35105e` | **Performance pass** (DEVT-87): 109 responsive WebP/JPEG derivatives in `assets/images/opt/`, every `<img>` rewritten as `<picture>` with `srcset`/`sizes`, minified merged stylesheet + JS, `?v=14`, below-fold images deferred, plus `.htaccess` caching/MIME rules. Home page 3,614 KB → 798 KB, site 8.22 MB → 1.83 MB, Lighthouse mobile 0.75 → 0.99, LCP 12.5 s → 2.3 s, text unchanged on all ten pages |
 
 **Rollback:** `git reset --hard 6975a46` on the server returns the site to the
 build that was live before the menu work; `git reset --hard f3ecd16` keeps the
-menu change and drops only the follow-up item. One line either way — the docroot
-is a clean clone.
+menu change and drops only the follow-up item. `git reset --hard f72931a`
+undoes the 2026-10-16 performance pass. One line either way — the docroot
+is a clean clone. Note that a host-only reset is undone by the next
+`git pull` once the commit is on `origin/main`: to revert permanently, push a
+revert commit and pull — never force-push this client repository.
+
+Full deploy record, probe transcripts and measurement reports for the
+performance pass: `../deploy-log/2026-10-16-cgp-perf-pass-deploy.md`. Baseline
+and the re-runnable measurement method: `../perf-baseline-20261016/README.md`
+(measured with `measure-page-weight.py` in this folder — pass `--bust` when
+measuring the live site, because StackCDN serves a cached `.html` for up to
+24 h and will otherwise report the previous build's numbers).
 
 ## ✦ Structure
 
@@ -198,12 +209,17 @@ is a clean clone.
 ├── js/
 │   └── main.js                 Nav, accordions, tabs, journey rail, form, scroll reveal
 ├── assets/
-│   ├── images/                 Photography (local) + logo, JPEG + WebP pairs
+│   ├── images/                 Photography masters + logo (JPEG + WebP pairs)
+│   │   ├── gen/                Generated masters, 2026-10-16 — see §Generated imagery
+│   │   └── opt/                Responsive derivatives the pages actually load
+│   │       └── gen/            Derivatives of the generated masters
 │   ├── fonts/                  Empty — the site uses the native Helvetica stack
 │   └── icons/                  Reserved
 ├── downloads/                  Six printable PDF-style guides (self-contained HTML)
 ├── Hero-Slide/                 Client-supplied banner artwork (PNG masters)
 ├── build-pages.py              Optional dev tool — generates the shared chrome
+├── make-opt.py                 Optional dev tool — builds assets/images/opt/ derivatives
+├── images-gen.json             Manifest for make-opt.py (the generated image set)
 ├── verify-menu.py              Menu contract check — run after any nav change
 ├── Changes Home page.docx      Client change request, 2026-10-12
 ├── Website - Students.docx     Client change request, 2026-10-15
@@ -246,10 +262,89 @@ Swiss International Typographic Style: a strict 12-column modular grid, flush-le
 | **Logo** | `assets/images/CGPLogo.png` | Live in header, footer and favicon |
 | **Testimonials** | `current-students.html` | Clearly labelled "Sample testimonials" — replace with real, verified quotes |
 | **Statistics** | About, Current Students | Client-supplied working placeholders, each with a visible footnote. The counters on the **home** page's About section were removed at the client's request (2026-10-12) |
-| **Photography** | `assets/images/` | Unsplash placeholders as visual direction for the real shoot. The Students & Parents hero banner is the client's own supplied artwork (`Hero-Slide/ChatGPT Image Oct 15, 2026, 03_34_38 PM.png` → `hero-students-parents.jpg/.webp`) |
+| **Photography** | `assets/images/` | The Unsplash placeholders were replaced on **2026-10-16** by purpose-generated photography — see *§Generated imagery* below. The Students & Parents hero banner **and** the three home-page slider banners remain the client's own supplied artwork (`Hero-Slide/*.png` → `hero-students-parents.*`, `hero-banner-01..03.*`) and were deliberately not regenerated |
 | **Favicon** | `<link rel="icon">` | Currently points at `CGPLogo.png`; a square mark-only export would be sharper |
 
 **Enquiry form:** `contact.html` opens the visitor's email app pre-filled (static site, no backend). Before launch, consider pointing `form.action` at a form service (Formspree, Netlify Forms…) so enquiries arrive reliably — handler marked in `js/main.js`.
+
+## ✦ Generated imagery — 2026-10-16
+
+Twelve of the site's content photographs were replaced with purpose-generated
+photography. The brief was *"generated images relevant to the website content, at the right
+places"*, with two hard exclusions.
+
+**Deliberately not touched** (client-supplied artwork, verified byte-identical before/after):
+
+| Kept | Where |
+|------|-------|
+| `hero-banner-01..03.{jpg,webp}` | Home page slider — from `Hero-Slide/` |
+| `hero-students-parents.{jpg,webp}` | Students & Parents page banner — from `Hero-Slide/` |
+
+**Replaced** — the Unsplash placeholders that were only ever "visual direction":
+
+| New master | Widths served | Page / slot |
+|---|---|---|
+| `gen/students-group` | 640/1024/1600 | about.html band · home "Current Students" tab |
+| `gen/student-writing` | 640/1024/1600 | who-can-apply.html band · home tab |
+| `gen/books-study` | 640/1024/1600 | resources.html band |
+| `gen/clinical-review` | 640/1024/1600 | partners.html figure |
+| `gen/medical-team` | 640/1024/1600 | partners.html band · home "German Partners" |
+| `gen/hero-nurse` | 640/1024/1600 | contact.html figure |
+| `gen/students-laptop` | 640/1024 | current-students tab 1 · home "About CGP" |
+| `gen/documents-desk` | 640/1024 | current-students tab 2 · home tab |
+| `gen/airport-departure` | 640/1024 | current-students tab 3 (visa stage) |
+| `gen/germany-berlin` | 640/1024 | current-students tab 4 (in Germany) · home tab |
+| `gen/germany-town` | 640/1024 | home "Why Germany" |
+| `gen/nurse-care` | 640/1024 | about.html "Who We Are" figure |
+
+### Why new filenames instead of overwriting
+
+`.htaccess` marks `assets/images/opt/*` as `max-age=31536000, immutable`, so overwriting a
+file at an existing URL would leave returning visitors on the old placeholder for up to a
+year. The new set therefore lives under **`gen/`** — a new namespace, new URLs, no stale
+cache — and every old file is left on disk untouched, which also makes the change revertible
+by swapping attribute values back.
+
+### Rebuilding the derivatives
+
+`make-opt.py` is the tool that was missing from the 2026-10-16 performance pass. It reads
+`images-gen.json` and produces, per image, a JPEG + WebP master and the `opt/` derivatives:
+
+```bash
+python3 make-opt.py --manifest images-gen.json          # build
+python3 make-opt.py --manifest images-gen.json --check  # verify only
+```
+
+It refuses rather than upscales: a requested width above the master width is an error. JPEG
+`-q:v 4` and WebP `-quality 78` were calibrated against the pre-existing derivative set, not
+guessed.
+
+### Provenance and cost
+
+Masters, the exact prompts, the generation harness and two rejected attempts live outside
+this repo, in `../../image-generation-20261016/` — i.e. `Website/image-generation-20261016/`
+on the dev host, a sibling of `website-build-files/` (mirrored to the other runtime through
+`hermes-sync`, never published). Prompts asked for black-and-white-friendly documentary
+photography in the site's Swiss-institutional register, with no text, signage, logos or
+watermarks. Twelve images were produced with **OpenAI `gpt-image-2`** at `medium`, sized to
+each slot's largest served derivative (1600×1072 for full-bleed bands, 1056×704 for column
+figures) so nothing is upscaled. The `gemini` connection was the intended provider for the
+six column figures but its API key is free-tier and reports `limit: 0` for every image
+model, so it produced nothing.
+
+### Effect on weight
+
+Every page whose images changed got **lighter**, because the generated photographs are
+tonally flatter than the colour stock photos they replace. Local measurement
+(`measure-page-weight.py`, 16 URLs):
+
+| | before | after |
+|---|---|---|
+| home page | 865 KB | **715 KB** |
+| site total | 2.40 MB | **2.06 MB** |
+
+`students.html`, `complete-pathway.html`, `faq.html` and the six `downloads/` pages are
+byte-identical to the previous build.
 
 ## ✦ Content & compliance
 

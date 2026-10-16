@@ -1,0 +1,116 @@
+[
+  {
+    "key": "students-laptop",
+    "src": "/root/Customers/CGP/Website/image-generation-20261016/out/students-laptop.png",
+    "base": "gen/students-laptop",
+    "widths": [
+      640,
+      1024
+    ]
+  },
+  {
+    "key": "documents-desk",
+    "src": "/root/Customers/CGP/Website/image-generation-20261016/out/documents-desk.png",
+    "base": "gen/documents-desk",
+    "widths": [
+      640,
+      1024
+    ]
+  },
+  {
+    "key": "airport-departure",
+    "src": "/root/Customers/CGP/Website/image-generation-20261016/out/airport-departure.png",
+    "base": "gen/airport-departure",
+    "widths": [
+      640,
+      1024
+    ]
+  },
+  {
+    "key": "germany-town",
+    "src": "/root/Customers/CGP/Website/image-generation-20261016/out/germany-town.png",
+    "base": "gen/germany-town",
+    "widths": [
+      640,
+      1024
+    ]
+  },
+  {
+    "key": "germany-berlin",
+    "src": "/root/Customers/CGP/Website/image-generation-20261016/out/germany-berlin.png",
+    "base": "gen/germany-berlin",
+    "widths": [
+      640,
+      1024
+    ]
+  },
+  {
+    "key": "nurse-care",
+    "src": "/root/Customers/CGP/Website/image-generation-20261016/out/nurse-care.png",
+    "base": "gen/nurse-care",
+    "widths": [
+      640,
+      1024
+    ]
+  },
+  {
+    "key": "students-group",
+    "src": "/root/Customers/CGP/Website/image-generation-20261016/out/students-group.png",
+    "base": "gen/students-group",
+    "widths": [
+      640,
+      1024,
+      1600
+    ]
+  },
+  {
+    "key": "student-writing",
+    "src": "/root/Customers/CGP/Website/image-generation-20261016/out/student-writing.png",
+    "base": "gen/student-writing",
+    "widths": [
+      640,
+      1024,
+      1600
+    ]
+  },
+  {
+    "key": "books-study",
+    "src": "/root/Customers/CGP/Website/image-generation-20261016/out/books-study.png",
+    "base": "gen/books-study",
+    "widths": [
+      640,
+      1024,
+      1600
+    ]
+  },
+  {
+    "key": "clinical-review",
+    "src": "/root/Customers/CGP/Website/image-generation-20261016/out/clinical-review.png",
+    "base": "gen/clinical-review",
+    "widths": [
+      640,
+      1024,
+      1600
+    ]
+  },
+  {
+    "key": "medical-team",
+    "src": "/root/Customers/CGP/Website/image-generation-20261016/out/medical-team.png",
+    "base": "gen/medical-team",
+    "widths": [
+      640,
+      1024,
+      1600
+    ]
+  },
+  {
+    "key": "hero-nurse",
+    "src": "/root/Customers/CGP/Website/image-generation-20261016/out/hero-nurse.png",
+    "base": "gen/hero-nurse",
+    "widths": [
+      640,
+      1024,
+      1600
+    ]
+  }
+]

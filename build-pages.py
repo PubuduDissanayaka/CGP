@@ -401,11 +401,11 @@ def page_hero(index, of, label, title, lede, aside_items, meta=""):
 """
 
 
-def band(img, alt, caption):
+def band(img, alt, caption, height=1072):
     base = img.rsplit(".", 1)[0]
     return f"""
     <figure class="page-band">
-{picture(base, alt, [640, 1024, 1600], BAND_SIZES, cls="img-bw", loading="lazy", width=1600, height=1067, indent=6)}
+{picture(base, alt, [640, 1024, 1600], BAND_SIZES, cls="img-bw", loading="lazy", width=1600, height=height, indent=6)}
       <figcaption>{caption}</figcaption>
     </figure>
 """
@@ -477,7 +477,7 @@ ABOUT = page_hero(
     [("Based in", "Wilimbula, Henegama, Gampaha District, Sri Lanka"),
      ("Serving", "Sri Lankan students and families nationwide"),
      ("Focus", "Nursing Ausbildung and healthcare careers in Germany")],
-) + band("students-group.jpg", "Students studying together in a library", "CGP students in preparation") + f"""
+) + band("gen/students-group.jpg", "Five students studying together around a table in a library reading room", "CGP students in preparation") + f"""
     <section class="section" id="who-we-are" aria-labelledby="who-title">
       <div class="container">
 {section_head("01", "Who We Are", "Wilimbula &middot; Gampaha District")}
@@ -489,7 +489,7 @@ ABOUT = page_hero(
             <p>That means candidate identification, German language preparation, cultural and professional preparation, documentation, partner interviews and selection, pre-departure preparation, and support once you have arrived in Germany.</p>
           </div>
           <figure class="col-narrow reveal">
-{picture("nurse-care", "One person's hands holding another's in a gesture of care and reassurance", [640, 1024], COL_SIZES, cls="img-bw", loading="lazy", width=1600, height=1067, indent=12)}
+{picture("gen/nurse-care", "A student sitting with a notebook in a bright consultation room, listening attentively", [640, 1024], COL_SIZES, cls="img-bw", loading="lazy", width=1056, height=704, indent=12)}
             <figcaption class="small" style="padding-top: var(--space-1); border-bottom: 1px solid var(--color-rule);">Student welfare first</figcaption>
           </figure>
         </div>
@@ -881,7 +881,7 @@ WHO_CAN_APPLY = page_hero(
      ("Decided by", "The German institution - not CGP")],
 )
 
-WHO_CAN_APPLY += band("student-writing.jpg", "A student writing notes by hand in a notebook", "This pathway asks something of you") + f"""
+WHO_CAN_APPLY += band("gen/student-writing.jpg", "A hand writing in an open notebook on a desk beside a phone", "This pathway asks something of you") + f"""
     <section class="section" aria-labelledby="asks-title">
       <div class="container">
 {section_head("01", "Who this is for", "Be honest with yourself here")}
@@ -1159,7 +1159,7 @@ PARTNERS = page_hero(
      ("Model", "Long-term partnership, not one-off recruitment"),
      ("Contact", f'<a href="mailto:{EMAIL}">{EMAIL}</a>')],
     meta="F&uuml;r Partnereinrichtungen",
-) + band("medical-team.jpg", "A team of healthcare professionals in surgical dress viewed from below", "Partnering with German healthcare institutions") + f"""
+) + band("gen/medical-team.jpg", "A team of healthcare professionals in scrubs, surgical caps and masks, viewed from below", "Partnering with German healthcare institutions") + f"""
     <section class="section section--dark" id="partnership-services" aria-labelledby="pservices-title">
       <div class="container">
 {section_head("01", "Partnership services", "What we provide")}
@@ -1212,7 +1212,7 @@ PARTNERS = page_hero(
             </article>
           </div>
           <figure class="col-right reveal">
-{picture("clinical-review", "Two clinicians reviewing medical imaging together on a screen", [640, 1024, 1600], COL_SIZES, cls="img-bw", loading="lazy", width=1600, height=1067, indent=12)}
+{picture("gen/clinical-review", "Two clinicians reviewing medical imaging together on a monitor", [640, 1024, 1600], COL_SIZES, cls="img-bw", loading="lazy", width=1600, height=1072, indent=12)}
             <figcaption class="small" style="padding-top: var(--space-1); border-bottom: 1px solid var(--color-rule);">Professionally prepared candidates</figcaption>
           </figure>
         </div>
@@ -1311,7 +1311,7 @@ CURRENT = page_hero(
                 <p>Working through structured German coursework and healthcare career preparation at CGP, building from beginner level towards employer-ready proficiency.</p>
               </div>
               <figure class="tab-panel__media">
-{picture("students-laptop", "Students studying together at a laptop", [640, 1024], COL_SIZES, cls="img-bw", loading="lazy", width=1600, height=1067, indent=16)}
+{picture("gen/students-laptop", "Two students studying together at a laptop, a notebook and pen beside them", [640, 1024], COL_SIZES, cls="img-bw", loading="lazy", width=1056, height=704, indent=16)}
               </figure>
             </div>
 
@@ -1324,7 +1324,7 @@ CURRENT = page_hero(
                 <p>Documents complete, now being coordinated with German healthcare institutions for employer interviews and preparation.</p>
               </div>
               <figure class="tab-panel__media">
-{picture("documents-desk", "Application documents and notes laid out on a desk", [640, 1024], COL_SIZES, cls="img-bw", loading="lazy", width=1600, height=1068, indent=16)}
+{picture("gen/documents-desk", "A candidate at a desk with blank application papers, a pen and reading glasses", [640, 1024], COL_SIZES, cls="img-bw", loading="lazy", width=1056, height=704, indent=16)}
               </figure>
             </div>
 
@@ -1337,7 +1337,7 @@ CURRENT = page_hero(
                 <p>Training position confirmed, now preparing visa applications and completing pre-departure orientation with CGP guidance.</p>
               </div>
               <figure class="tab-panel__media">
-{picture("airport-departure", "View of an aircraft wing above the clouds", [640, 1024], COL_SIZES, cls="img-bw", loading="lazy", width=1600, height=1063, indent=16)}
+{picture("gen/airport-departure", "A passenger looking out of an aircraft window at the wing above the clouds", [640, 1024], COL_SIZES, cls="img-bw", loading="lazy", width=1056, height=704, indent=16)}
               </figure>
             </div>
 
@@ -1350,7 +1350,7 @@ CURRENT = page_hero(
                 <p>Arrived in Germany and begun Nursing Ausbildung, with CGP integration support continuing on the ground.</p>
               </div>
               <figure class="tab-panel__media">
-{picture("germany-berlin", "Berlin skyline at night with the television tower", [640, 1024], COL_SIZES, cls="img-bw", loading="lazy", width=1600, height=1067, indent=16)}
+{picture("gen/germany-berlin", "Three young people with backpacks looking across the river at the Berlin skyline at dusk", [640, 1024], COL_SIZES, cls="img-bw", loading="lazy", width=1056, height=704, indent=16)}
               </figure>
             </div>
 
@@ -1506,7 +1506,7 @@ RESOURCES = page_hero(
     [("Downloads", "Six guides and checklists, open in your browser"),
      ("Also here", "Full FAQ and a plain-English German glossary"),
      ("Cost", "Free - no enquiry required")],
-) + band("books-study.jpg", "Long library shelves filled with books under hanging lights", "Read before you commit") + f"""
+) + band("gen/books-study.jpg", "A long library aisle between tall shelves of books under hanging lights", "Read before you commit") + f"""
     <section class="section" aria-labelledby="dl-title">
       <div class="container">
 {section_head("01", "Downloads", "Guides &amp; checklists")}
@@ -1671,7 +1671,7 @@ CONTACT = page_hero(
             </p>
           </div>
           <figure class="col-right reveal">
-{picture("hero-nurse", "A healthcare professional in a white coat standing outdoors", [640, 1024, 1600], COL_SIZES, cls="img-bw", loading="lazy", width=1600, height=1067, indent=12)}
+{picture("gen/hero-nurse", "A nurse in a plain white uniform standing outdoors, looking off to the side", [640, 1024, 1600], COL_SIZES, cls="img-bw", loading="lazy", width=1600, height=1072, indent=12)}
           </figure>
         </div>
       </div>

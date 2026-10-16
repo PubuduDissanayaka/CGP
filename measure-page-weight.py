@@ -16,6 +16,7 @@ import json
 import re
 import subprocess
 import sys
+import uuid
 from urllib.parse import urljoin
 
 PAGES = [
@@ -31,6 +32,7 @@ PAGES = [
 ]
 
 # css/js/img references in markup, both plain and inside srcset
+BUST = False
 ASSET_RE = re.compile(
     r'(?:href|src|srcset)="([^"]+?\.(?:css|js|png|jpe?g|webp|svg|gif|ico|avif))'
     r'(?:\?[^"\s,]*)?(?:\s+[^",]+)?(?:,|")')
@@ -45,10 +47,19 @@ def _curl(args, binary=False):
     return r.stdout if binary else r.stdout.decode("utf-8", "replace")
 
 
+def bust(url):
+    """Force past an edge cache. StackCDN holds .html for 24 h, so a clean URL
+    can serve a build that is a day old — measuring without this reports the
+    previous deploy's numbers on a site that has already been updated."""
+    if not BUST or "127.0.0.1" in url or "localhost" in url:
+        return url
+    return url + ("&" if "?" in url else "?") + "cb=" + uuid.uuid4().hex[:8]
+
+
 def fetch(url):
     """Return (body_text, transfer_bytes) for a URL, honouring compression."""
     out = subprocess.run(
-        ["curl", "-sS", "--compressed", "-w", "\n__SIZE__%{size_download}", url],
+        ["curl", "-sS", "--compressed", "-w", "\n__SIZE__%{size_download}", bust(url)],
         capture_output=True, text=True).stdout
     body, _, size = out.rpartition("\n__SIZE__")
     try:
@@ -64,9 +75,9 @@ def size_of(url):
     if url.endswith(TEXT_EXT):
         n = fetch(url)[1]
     else:
-        head = subprocess.run(["curl", "-sSI", url], capture_output=True, text=True).stdout
+        head = subprocess.run(["curl", "-sSI", bust(url)], capture_output=True, text=True).stdout
         m = re.search(r"content-length:\s*(\d+)", head, re.I)
-        n = int(m.group(1)) if m else len(_curl([url], binary=True))
+        n = int(m.group(1)) if m else len(_curl([bust(url)], binary=True))
     _cache[url] = n
     return n
 
@@ -109,7 +120,10 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--base", default="https://cgp.lk/")
     ap.add_argument("--json", help="write the full report to this path")
+    ap.add_argument("--bust", action="store_true", help="cache-bust every URL (use for live CDN-fronted sites)")
     args = ap.parse_args()
+    global BUST
+    BUST = args.bust
 
     r = measure(args.base)
     print(f"{'page':52} {'html':>8} {'css':>8} {'js':>7} {'images':>10} {'total':>10}")
