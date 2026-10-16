@@ -179,9 +179,12 @@ menu structure change (see the menu structure change request below). It follows
 | 2026-08-24 | `3777054` | Initial release of the seven-page site (was live until 2026-10-15) |
 | 2026-10-15 | `71a47df` | Students & Parents rebuild + 2026-10-12 home page / About CGP changes |
 | 2026-10-15 | `9dc4f8d` | Menu structure: client's proposed navigation, German Partners section menu, navigating labels, anchor offset |
+| 2026-10-15 | `9dbb26d` | Follow-up: the Students & Parents page listed in its own menu as **Overview** |
 
-**Rollback for the menu change:** `git reset --hard 6975a46` on the server (the
-commit that was live before it) — one line, and the docroot is a clean clone.
+**Rollback:** `git reset --hard 6975a46` on the server returns the site to the
+build that was live before the menu work; `git reset --hard f3ecd16` keeps the
+menu change and drops only the follow-up item. One line either way — the docroot
+is a clean clone.
 
 ## ✦ Structure
 
