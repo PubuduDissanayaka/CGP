@@ -1,0 +1,104 @@
+/* ==========================================================================
+   CEYLON GERMAN PATHWAY - DESIGN TOKENS
+   Single source of truth for colour, type, spacing, grid, borders, motion.
+   Reference these variables everywhere. Never hard-code values in styles.css.
+   ========================================================================== */
+
+:root {
+
+  /* ------------------------------------------------------------------
+     COLOUR - brand override: German flag palette on Swiss black/white
+     ------------------------------------------------------------------ */
+  --color-black:        #000000;   /* brand black - text, blocks, footer   */
+  --color-red:          #DD0000;   /* brand red - the single bold accent   */
+  --color-gold:         #FFCE00;   /* brand gold - used sparingly, flat    */
+  --color-white:        #FFFFFF;   /* base background                      */
+
+  --color-grey-900:     #1A1A1A;   /* near-black surfaces                  */
+  --color-grey-600:     #555555;   /* secondary text on white              */
+  --color-grey-400:     #9B9B9B;   /* muted labels, captions               */
+  --color-grey-150:     #E6E6E6;   /* hairline rules on white              */
+  --color-grey-075:     #F4F4F4;   /* subtle panel background              */
+
+  /* Semantic aliases */
+  --color-bg:           var(--color-white);
+  --color-ink:          var(--color-black);
+  --color-ink-2:        var(--color-grey-600);
+  --color-ink-3:        var(--color-grey-400);
+  --color-accent:       var(--color-red);
+  --color-accent-2:     var(--color-gold);
+  --color-rule:         var(--color-grey-150);
+  --color-rule-dark:    #2E2E2E;   /* hairline rules on black              */
+  --color-panel:        var(--color-grey-075);
+
+  /* ------------------------------------------------------------------
+     TYPOGRAPHY - Helvetica / Neue Haas Grotesk only, weight-differentiated
+     ------------------------------------------------------------------ */
+  --font-sans: "Neue Haas Grotesk Display Pro", "Neue Haas Grotesk",
+               "Helvetica Now Display", "Helvetica Neue", Helvetica,
+               "Liberation Sans", Arial, sans-serif;
+
+  --weight-regular:     400;
+  --weight-medium:      500;
+  --weight-bold:        700;
+
+  /* Type scale - strong contrast between display and body */
+  --text-giant:         clamp(2.75rem, 7vw, 6.25rem);   /* hero headline   */
+  --text-display:       clamp(2.25rem, 5.5vw, 4.5rem);  /* section heads   */
+  --text-title:         clamp(1.5rem, 2.6vw, 2.25rem);  /* sub-heads       */
+  --text-lead:          clamp(1.1875rem, 1.7vw, 1.5rem);
+  --text-body:          1.125rem;
+  --text-small:         0.9375rem;
+  --text-micro:         0.75rem;                        /* labels, indices */
+  --text-stat:          clamp(2.75rem, 5.5vw, 4.75rem); /* big numbers     */
+
+  --leading-tight:      0.95;      /* display type                         */
+  --leading-snug:       1.15;
+  --leading-body:       1.6;
+
+  --tracking-wide:      0.14em;    /* uppercase micro labels               */
+  --tracking-tight:     -0.02em;   /* display type                         */
+
+  /* ------------------------------------------------------------------
+     SPACING - 8px base, modular
+     ------------------------------------------------------------------ */
+  --space-1:            0.5rem;    /*   8px */
+  --space-2:            1rem;      /*  16px */
+  --space-3:            1.5rem;    /*  24px */
+  --space-4:            2rem;      /*  32px */
+  --space-5:            3rem;      /*  48px */
+  --space-6:            4rem;      /*  64px */
+  --space-7:            6rem;      /*  96px */
+  --space-8:            8rem;      /* 128px */
+
+  --section-pad:        clamp(4rem, 9vw, 8.5rem);   /* vertical rhythm     */
+
+  /* ------------------------------------------------------------------
+     GRID - strict 12-column modular grid
+     ------------------------------------------------------------------ */
+  --grid-columns:       12;
+  --grid-gutter:        clamp(1rem, 2vw, 1.5rem);
+  --container-max:      90rem;      /* 1440px */
+  --container-pad:      clamp(1.25rem, 4vw, 3.5rem);
+
+  /* ------------------------------------------------------------------
+     BORDERS & RADII - sharp corners, thin rules. No rounding. No shadows.
+     ------------------------------------------------------------------ */
+  --radius-none:        0;
+  --rule-thin:          1px;
+  --rule-thick:         3px;
+
+  /* ------------------------------------------------------------------
+     MOTION - rational, restrained
+     ------------------------------------------------------------------ */
+  --ease-out:           cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-fast:      150ms;
+  --duration-base:      300ms;
+  --duration-slow:      600ms;
+
+  /* ------------------------------------------------------------------
+     LAYERS
+     ------------------------------------------------------------------ */
+  --z-header:           100;
+  --z-overlay:          200;
+}

@@ -1,0 +1,118 @@
+{
+  "base": "http://127.0.0.1:4173/",
+  "pages": {
+    "index.html": {
+      "html": 34623,
+      "css": 66915,
+      "js": 14618,
+      "images": 3671392,
+      "total": 3787548
+    },
+    "about.html": {
+      "html": 22515,
+      "css": 66915,
+      "js": 14618,
+      "images": 619345,
+      "total": 723393
+    },
+    "students.html": {
+      "html": 18021,
+      "css": 66915,
+      "js": 14618,
+      "images": 423800,
+      "total": 523354
+    },
+    "who-can-apply.html": {
+      "html": 17015,
+      "css": 66915,
+      "js": 14618,
+      "images": 338776,
+      "total": 437324
+    },
+    "complete-pathway.html": {
+      "html": 17773,
+      "css": 66915,
+      "js": 14618,
+      "images": 167227,
+      "total": 266533
+    },
+    "faq.html": {
+      "html": 26185,
+      "css": 66915,
+      "js": 14618,
+      "images": 167227,
+      "total": 274945
+    },
+    "partners.html": {
+      "html": 19370,
+      "css": 66915,
+      "js": 14618,
+      "images": 765449,
+      "total": 866352
+    },
+    "current-students.html": {
+      "html": 19244,
+      "css": 66915,
+      "js": 14618,
+      "images": 1243267,
+      "total": 1344044
+    },
+    "resources.html": {
+      "html": 32759,
+      "css": 66915,
+      "js": 14618,
+      "images": 401967,
+      "total": 516259
+    },
+    "contact.html": {
+      "html": 14022,
+      "css": 66915,
+      "js": 14618,
+      "images": 535994,
+      "total": 631549
+    },
+    "downloads/nursing-ausbildung-pathway-guide.html": {
+      "html": 12807,
+      "css": 0,
+      "js": 0,
+      "images": 0,
+      "total": 12807
+    },
+    "downloads/document-checklist.html": {
+      "html": 11198,
+      "css": 0,
+      "js": 0,
+      "images": 0,
+      "total": 11198
+    },
+    "downloads/frequently-asked-questions.html": {
+      "html": 8760,
+      "css": 0,
+      "js": 0,
+      "images": 0,
+      "total": 8760
+    },
+    "downloads/german-language-getting-started.html": {
+      "html": 9531,
+      "css": 0,
+      "js": 0,
+      "images": 0,
+      "total": 9531
+    },
+    "downloads/pre-departure-checklist.html": {
+      "html": 10715,
+      "css": 0,
+      "js": 0,
+      "images": 0,
+      "total": 10715
+    },
+    "downloads/fees-and-payment-policy.html": {
+      "html": 7552,
+      "css": 0,
+      "js": 0,
+      "images": 0,
+      "total": 7552
+    }
+  },
+  "site_total": 9431864
+}

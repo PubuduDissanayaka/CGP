@@ -33,7 +33,81 @@ LOGO = "assets/images/CGPLogo.png"
 
 # Bump this whenever css/ or js/ changes, then re-run, and mirror it in
 # index.html. Forces browsers to fetch the new file instead of a cached one.
-ASSET_VERSION = "13"
+ASSET_VERSION = "14"
+
+# --------------------------------------------------------------------------
+# OPTIMISED RESPONSIVE IMAGES (2026-10-16 performance pass)
+#
+# Every image is emitted as a <picture>: a WebP <source> plus a JPEG (or PNG)
+# fallback, each carrying a srcset of the real display widths and a sizes
+# hint. The optimised derivatives live in assets/images/opt/; the originals in
+# assets/images/ are untouched (client-owned). Widths are chosen per image
+# from its actual display context:
+#   hero banners   (full-bleed, container-capped ~1328px) 640 / 960 / 1440 / 1942
+#   content, wide  (full-bleed band or 6-col figure)      640 / 1024 / 1600
+#   content, narrow (4-5 col figure, ~540px max)          640 / 1024
+# --------------------------------------------------------------------------
+
+# Logo (header + footer). The original CGPLogo.png (923x387) is served at
+# 3.5rem-5.5rem tall, i.e. ~134-210px wide, so 1x/2x WebP + PNG are enough.
+LOGO_WEBP_1X = "assets/images/opt/CGPLogo-210w.webp"
+LOGO_WEBP_2X = "assets/images/opt/CGPLogo-420w.webp"
+LOGO_PNG_1X = "assets/images/opt/CGPLogo-210w.png"
+LOGO_PNG_2X = "assets/images/opt/CGPLogo-420w.png"
+LOGO_SIZES = "210px"
+FAVICON = "assets/images/opt/CGPLogo-64w.png"
+
+# sizes hints, shared by all call sites
+HERO_SIZES = "(min-width: 90rem) 83rem, 100vw"   # full-bleed inside the 90rem container
+BAND_SIZES = "100vw"                            # full-bleed page-band (no container)
+COL_SIZES = "(min-width: 62rem) 34rem, 100vw"   # 4-6 column figure, full-width below 62rem
+
+
+def _srcset(base, widths, fmt):
+    """'assets/images/opt/<base>-640w.webp 640w, ...' for each width."""
+    return ", ".join(
+        f"assets/images/opt/{base}-{w}w.{fmt} {w}w" for w in widths
+    )
+
+
+def picture(base, alt, widths, sizes, cls="", loading="", fetchpriority="",
+            width=None, height=None, fmt="jpg", indent=0):
+    """A responsive <picture> — WebP <source> + {fmt} fallback <img>.
+
+    alt text is passed through byte-for-byte. width/height are the intrinsic
+    (source) dimensions, preserved as aspect-ratio hints and never resized.
+    The returned block is indented by `indent` spaces on every line.
+    """
+    cls_attr = f' class="{cls}"' if cls else ""
+    load_attr = f' loading="{loading}"' if loading else ""
+    fp_attr = f' fetchpriority="{fetchpriority}"' if fetchpriority else ""
+    wh_attr = f' width="{width}" height="{height}"' if (width and height) else ""
+    src = f"assets/images/opt/{base}-{widths[0]}w.{fmt}"
+    pad = " " * indent
+    return (
+        f"{pad}<picture>\n"
+        f"{pad}  <source type=\"image/webp\" srcset=\"{_srcset(base, widths, 'webp')}\" sizes=\"{sizes}\">\n"
+        f"{pad}  <img{cls_attr} src=\"{src}\" srcset=\"{_srcset(base, widths, fmt)}\" sizes=\"{sizes}\" "
+        f"alt=\"{alt}\"{wh_attr}{load_attr}{fp_attr} decoding=\"async\">\n"
+        f"{pad}</picture>"
+    )
+
+
+def logo_picture(indent=0, loading=""):
+    """The header/footer logo as a WebP/PNG picture at 1x and 2x.
+
+    The header logo sits in the first viewport and stays eager; the footer
+    logo is below the fold, so pass loading="lazy" for it.
+    """
+    pad = " " * indent
+    load_attr = f' loading="{loading}"' if loading else ""
+    return (
+        f"{pad}<picture>\n"
+        f"{pad}  <source type=\"image/webp\" srcset=\"{LOGO_WEBP_1X} 210w, {LOGO_WEBP_2X} 420w\" sizes=\"{LOGO_SIZES}\">\n"
+        f"{pad}  <img class=\"logo__img\" src=\"{LOGO_PNG_1X}\" srcset=\"{LOGO_PNG_1X} 210w, {LOGO_PNG_2X} 420w\" sizes=\"{LOGO_SIZES}\" "
+        f"alt=\"Ceylon German Pathway\" width=\"210\" height=\"88\"{load_attr} decoding=\"async\">\n"
+        f"{pad}</picture>"
+    )
 
 # Ten pages as of the 2026-10-15 Students & Parents rebuild: the seven main
 # pages plus the three pages that now sit under the Students & Parents menu.
@@ -210,9 +284,8 @@ SHELL = """<!DOCTYPE html>
   <!-- ?v= is a cache-busting version stamp. Bump ASSET_VERSION in
        build-pages.py (and index.html) whenever CSS or JS changes,
        so returning visitors are not served a stale copy. -->
-  <link rel="stylesheet" href="css/tokens.css?v={version}">
-  <link rel="stylesheet" href="css/styles.css?v={version}">
-  <link rel="icon" href="{logo}" type="image/png">
+  <link rel="stylesheet" href="css/styles.min.css?v={version}">
+{preload}  <link rel="icon" href="{favicon}" type="image/png">
 </head>
 <body>
 
@@ -224,7 +297,7 @@ SHELL = """<!DOCTYPE html>
     <div class="container header__bar">
 
       <a class="logo" href="index.html" aria-label="Ceylon German Pathway - home">
-        <img class="logo__img" src="{logo}" alt="Ceylon German Pathway">
+{logo_header}
         <span class="logo__fallback" aria-hidden="true">
           <span class="logo__mark">CGP</span>
           <span class="logo__type">Ceylon German Pathway</span>
@@ -253,7 +326,7 @@ SHELL = """<!DOCTYPE html>
 
         <div class="footer__brand">
           <a class="logo" href="index.html" aria-label="Ceylon German Pathway - home">
-            <img class="logo__img" src="{logo}" alt="Ceylon German Pathway">
+{logo_footer}
             <span class="logo__fallback" aria-hidden="true">
               <span class="logo__mark">CGP</span>
               <span class="logo__type">Ceylon German Pathway</span>
@@ -296,7 +369,7 @@ SHELL = """<!DOCTYPE html>
     </div>
   </footer>
 
-  <script src="js/main.js?v={version}"></script>
+  <script src="js/main.min.js?v={version}"></script>
 </body>
 </html>
 """
@@ -329,9 +402,10 @@ def page_hero(index, of, label, title, lede, aside_items, meta=""):
 
 
 def band(img, alt, caption):
+    base = img.rsplit(".", 1)[0]
     return f"""
     <figure class="page-band">
-      <img class="img-bw" src="assets/images/{img}" alt="{alt}" width="1600" height="1067">
+{picture(base, alt, [640, 1024, 1600], BAND_SIZES, cls="img-bw", loading="lazy", width=1600, height=1067, indent=6)}
       <figcaption>{caption}</figcaption>
     </figure>
 """
@@ -415,7 +489,7 @@ ABOUT = page_hero(
             <p>That means candidate identification, German language preparation, cultural and professional preparation, documentation, partner interviews and selection, pre-departure preparation, and support once you have arrived in Germany.</p>
           </div>
           <figure class="col-narrow reveal">
-            <img class="img-bw" src="assets/images/nurse-care.jpg" alt="One person's hands holding another's in a gesture of care and reassurance" width="1600" height="1067" loading="lazy">
+{picture("nurse-care", "One person's hands holding another's in a gesture of care and reassurance", [640, 1024], COL_SIZES, cls="img-bw", loading="lazy", width=1600, height=1067, indent=12)}
             <figcaption class="small" style="padding-top: var(--space-1); border-bottom: 1px solid var(--color-rule);">Student welfare first</figcaption>
           </figure>
         </div>
@@ -650,10 +724,23 @@ students_faq_items = faq_items(STUDENT_FAQ, "1")
 
 # The hero banner artwork supplied by the client (2026-10-15), shown whole and
 # never cropped. Its message is repeated as real text below it.
-STUDENTS_HERO_IMAGE = "hero-students-parents.jpg"
+STUDENTS_HERO_BASE = "hero-students-parents"
 STUDENTS_HERO_ALT = ("Banner: Students &amp; Parents - Your journey starts with preparation. "
                      "Four young Sri Lankan students studying German together, with the "
                      "German flag and the Berlin TV tower behind them.")
+
+# LCP preload per page. Only pages whose first hero banner is the LCP element
+# get one; the string is placed in <head> before the favicon and carries a
+# trailing newline so empty preloads leave the head unchanged.
+STUDENTS_HERO_PRELOAD = (
+    '  <link rel="preload" as="image" type="image/webp" '
+    'imagesrcset="assets/images/opt/hero-students-parents-640w.webp 640w, '
+    'assets/images/opt/hero-students-parents-960w.webp 960w, '
+    'assets/images/opt/hero-students-parents-1440w.webp 1440w, '
+    'assets/images/opt/hero-students-parents-1944w.webp 1944w" '
+    'imagesizes="(min-width: 90rem) 83rem, 100vw">\n'
+)
+PRELOAD = {"students.html": STUDENTS_HERO_PRELOAD}
 
 STUDENTS = f"""
     <section class="hero" aria-labelledby="students-hero-title">
@@ -664,7 +751,7 @@ STUDENTS = f"""
            buttons appear in this banner, by instruction. -->
       <div class="container">
         <figure class="hero-banner">
-          <img src="assets/images/{STUDENTS_HERO_IMAGE}" alt="{STUDENTS_HERO_ALT}" width="1944" height="809" fetchpriority="high">
+{picture(STUDENTS_HERO_BASE, STUDENTS_HERO_ALT, [640, 960, 1440, 1944], HERO_SIZES, fetchpriority="high", width=1944, height=809, indent=10)}
           <figcaption class="hero-banner__caption">
             <span class="micro-label">Students &amp; Parents</span>
             <span class="hero-banner__line">Learn German. Prepare Yourself. Build Your Pathway to Germany.</span>
@@ -1125,7 +1212,7 @@ PARTNERS = page_hero(
             </article>
           </div>
           <figure class="col-right reveal">
-            <img class="img-bw" src="assets/images/clinical-review.jpg" alt="Two clinicians reviewing medical imaging together on a screen" width="1600" height="1067" loading="lazy">
+{picture("clinical-review", "Two clinicians reviewing medical imaging together on a screen", [640, 1024, 1600], COL_SIZES, cls="img-bw", loading="lazy", width=1600, height=1067, indent=12)}
             <figcaption class="small" style="padding-top: var(--space-1); border-bottom: 1px solid var(--color-rule);">Professionally prepared candidates</figcaption>
           </figure>
         </div>
@@ -1224,7 +1311,7 @@ CURRENT = page_hero(
                 <p>Working through structured German coursework and healthcare career preparation at CGP, building from beginner level towards employer-ready proficiency.</p>
               </div>
               <figure class="tab-panel__media">
-                <img class="img-bw" src="assets/images/students-laptop.jpg" alt="Students studying together at a laptop" width="1600" height="1067" loading="lazy">
+{picture("students-laptop", "Students studying together at a laptop", [640, 1024], COL_SIZES, cls="img-bw", loading="lazy", width=1600, height=1067, indent=16)}
               </figure>
             </div>
 
@@ -1237,7 +1324,7 @@ CURRENT = page_hero(
                 <p>Documents complete, now being coordinated with German healthcare institutions for employer interviews and preparation.</p>
               </div>
               <figure class="tab-panel__media">
-                <img class="img-bw" src="assets/images/documents-desk.jpg" alt="Application documents and notes laid out on a desk" width="1600" height="1068" loading="lazy">
+{picture("documents-desk", "Application documents and notes laid out on a desk", [640, 1024], COL_SIZES, cls="img-bw", loading="lazy", width=1600, height=1068, indent=16)}
               </figure>
             </div>
 
@@ -1250,7 +1337,7 @@ CURRENT = page_hero(
                 <p>Training position confirmed, now preparing visa applications and completing pre-departure orientation with CGP guidance.</p>
               </div>
               <figure class="tab-panel__media">
-                <img class="img-bw" src="assets/images/airport-departure.jpg" alt="View of an aircraft wing above the clouds" width="1600" height="1063" loading="lazy">
+{picture("airport-departure", "View of an aircraft wing above the clouds", [640, 1024], COL_SIZES, cls="img-bw", loading="lazy", width=1600, height=1063, indent=16)}
               </figure>
             </div>
 
@@ -1263,7 +1350,7 @@ CURRENT = page_hero(
                 <p>Arrived in Germany and begun Nursing Ausbildung, with CGP integration support continuing on the ground.</p>
               </div>
               <figure class="tab-panel__media">
-                <img class="img-bw" src="assets/images/germany-berlin.jpg" alt="Berlin skyline at night with the television tower" width="1600" height="1067" loading="lazy">
+{picture("germany-berlin", "Berlin skyline at night with the television tower", [640, 1024], COL_SIZES, cls="img-bw", loading="lazy", width=1600, height=1067, indent=16)}
               </figure>
             </div>
 
@@ -1584,7 +1671,7 @@ CONTACT = page_hero(
             </p>
           </div>
           <figure class="col-right reveal">
-            <img class="img-bw" src="assets/images/hero-nurse.jpg" alt="A healthcare professional in a white coat standing outdoors" width="1600" height="1067" loading="lazy">
+{picture("hero-nurse", "A healthcare professional in a white coat standing outdoors", [640, 1024, 1600], COL_SIZES, cls="img-bw", loading="lazy", width=1600, height=1067, indent=12)}
           </figure>
         </div>
       </div>
@@ -1644,7 +1731,10 @@ if __name__ == "__main__":
             email=EMAIL,
             facebook=FACEBOOK,
             instagram=INSTAGRAM,
-            logo=LOGO,
+            favicon=FAVICON,
+            logo_header=logo_picture(8),
+            logo_footer=logo_picture(12, loading="lazy"),
+            preload=PRELOAD.get(filename, ""),
             version=ASSET_VERSION,
         )
         (ROOT / filename).write_text(html)

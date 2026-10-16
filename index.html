@@ -8,9 +8,9 @@
   <!-- ?v= is a cache-busting version stamp. Bump it here and in
        build-pages.py whenever CSS or JS changes, so returning visitors
        are not served a stale copy. -->
-  <link rel="stylesheet" href="css/tokens.css?v=13">
-  <link rel="stylesheet" href="css/styles.css?v=13">
-  <link rel="icon" href="assets/images/CGPLogo.png" type="image/png">
+  <link rel="stylesheet" href="css/styles.min.css?v=14">
+  <link rel="preload" as="image" type="image/webp" imagesrcset="assets/images/opt/hero-banner-01-640w.webp 640w, assets/images/opt/hero-banner-01-960w.webp 960w, assets/images/opt/hero-banner-01-1440w.webp 1440w, assets/images/opt/hero-banner-01-1942w.webp 1942w" imagesizes="(min-width: 90rem) 83rem, 100vw">
+  <link rel="icon" href="assets/images/opt/CGPLogo-64w.png" type="image/png">
 </head>
 <body>
 
@@ -23,7 +23,10 @@
     <div class="container header__bar">
 
       <a class="logo" href="index.html" aria-label="Ceylon German Pathway - home">
-        <img class="logo__img" src="assets/images/CGPLogo.png" alt="Ceylon German Pathway">
+        <picture>
+          <source type="image/webp" srcset="assets/images/opt/CGPLogo-210w.webp 210w, assets/images/opt/CGPLogo-420w.webp 420w" sizes="210px">
+          <img class="logo__img" src="assets/images/opt/CGPLogo-210w.png" srcset="assets/images/opt/CGPLogo-210w.png 210w, assets/images/opt/CGPLogo-420w.png 420w" sizes="210px" alt="Ceylon German Pathway" width="210" height="88" decoding="async">
+        </picture>
         <span class="logo__fallback" aria-hidden="true">
           <span class="logo__mark">CGP</span>
           <span class="logo__type">Ceylon German Pathway</span>
@@ -108,7 +111,10 @@
             <div class="hero-slider__track" data-slider-track>
 
               <figure class="hero-slide" role="group" aria-roledescription="slide" aria-label="1 of 3 - About CGP">
-                <img src="assets/images/hero-banner-01.jpg" alt="Banner: Together, we secure futures. For all. - Sri Lankan students and a range of professions beside nurses and German landmarks." width="1942" height="810" fetchpriority="high">
+                <picture>
+                  <source type="image/webp" srcset="assets/images/opt/hero-banner-01-640w.webp 640w, assets/images/opt/hero-banner-01-960w.webp 960w, assets/images/opt/hero-banner-01-1440w.webp 1440w, assets/images/opt/hero-banner-01-1942w.webp 1942w" sizes="(min-width: 90rem) 83rem, 100vw">
+                  <img src="assets/images/opt/hero-banner-01-640w.jpg" srcset="assets/images/opt/hero-banner-01-640w.jpg 640w, assets/images/opt/hero-banner-01-960w.jpg 960w, assets/images/opt/hero-banner-01-1440w.jpg 1440w, assets/images/opt/hero-banner-01-1942w.jpg 1942w" sizes="(min-width: 90rem) 83rem, 100vw" alt="Banner: Together, we secure futures. For all. - Sri Lankan students and a range of professions beside nurses and German landmarks." width="1942" height="810" fetchpriority="high" decoding="async">
+                </picture>
                 <figcaption class="hero-slide__caption">
                   <span class="hero-slide__index micro-label">01 - About CGP</span>
                   <span class="hero-slide__line">A structured pathway from Sri Lanka to Ausbildung opportunities in Germany.</span>
@@ -117,7 +123,10 @@
               </figure>
 
               <figure class="hero-slide" role="group" aria-roledescription="slide" aria-label="2 of 3 - Students &amp; Parents">
-                <img src="assets/images/hero-banner-02.jpg" alt="Banner: A better future for your child starts with the right path. - A Sri Lankan family with their daughter beside the Brandenburg Gate and Berlin skyline." width="1942" height="809" loading="lazy">
+                <picture>
+                  <source type="image/webp" srcset="assets/images/opt/hero-banner-02-640w.webp 640w, assets/images/opt/hero-banner-02-960w.webp 960w, assets/images/opt/hero-banner-02-1440w.webp 1440w, assets/images/opt/hero-banner-02-1942w.webp 1942w" sizes="(min-width: 90rem) 83rem, 100vw">
+                  <img src="assets/images/opt/hero-banner-02-640w.jpg" srcset="assets/images/opt/hero-banner-02-640w.jpg 640w, assets/images/opt/hero-banner-02-960w.jpg 960w, assets/images/opt/hero-banner-02-1440w.jpg 1440w, assets/images/opt/hero-banner-02-1942w.jpg 1942w" sizes="(min-width: 90rem) 83rem, 100vw" alt="Banner: A better future for your child starts with the right path. - A Sri Lankan family with their daughter beside the Brandenburg Gate and Berlin skyline." width="1942" height="809" loading="lazy" decoding="async">
+                </picture>
                 <figcaption class="hero-slide__caption">
                   <span class="hero-slide__index micro-label">02 - Students &amp; Parents</span>
                   <span class="hero-slide__line">Preparing young Sri Lankans from an early stage - German language learning, guidance and preparation for future Ausbildung.</span>
@@ -126,7 +135,10 @@
               </figure>
 
               <figure class="hero-slide" role="group" aria-roledescription="slide" aria-label="3 of 3 - German Partners">
-                <img src="assets/images/hero-banner-03.jpg" alt="Banner: Looking for motivated young talent? Let's build their future in Germany. - Sri Lankan graduates and nurses with a German nursing colleague at a training hospital." width="1944" height="809" loading="lazy">
+                <picture>
+                  <source type="image/webp" srcset="assets/images/opt/hero-banner-03-640w.webp 640w, assets/images/opt/hero-banner-03-960w.webp 960w, assets/images/opt/hero-banner-03-1440w.webp 1440w, assets/images/opt/hero-banner-03-1944w.webp 1944w" sizes="(min-width: 90rem) 83rem, 100vw">
+                  <img src="assets/images/opt/hero-banner-03-640w.jpg" srcset="assets/images/opt/hero-banner-03-640w.jpg 640w, assets/images/opt/hero-banner-03-960w.jpg 960w, assets/images/opt/hero-banner-03-1440w.jpg 1440w, assets/images/opt/hero-banner-03-1944w.jpg 1944w" sizes="(min-width: 90rem) 83rem, 100vw" alt="Banner: Looking for motivated young talent? Let's build their future in Germany. - Sri Lankan graduates and nurses with a German nursing colleague at a training hospital." width="1944" height="809" loading="lazy" decoding="async">
+                </picture>
                 <figcaption class="hero-slide__caption">
                   <span class="hero-slide__index micro-label">03 - German Partners</span>
                   <span class="hero-slide__line">Sustainable cooperation with German Ausbildung providers, healthcare institutions and other partners.</span>
@@ -201,7 +213,10 @@
           </div>
           <aside class="about__aside reveal">
             <figure>
-              <img class="img-bw" src="assets/images/students-laptop.jpg" alt="Two students studying together at a laptop" width="1600" height="1067">
+              <picture>
+                <source type="image/webp" srcset="assets/images/opt/students-laptop-640w.webp 640w, assets/images/opt/students-laptop-1024w.webp 1024w" sizes="(min-width: 62rem) 34rem, 100vw">
+                <img class="img-bw" src="assets/images/opt/students-laptop-640w.jpg" srcset="assets/images/opt/students-laptop-640w.jpg 640w, assets/images/opt/students-laptop-1024w.jpg 1024w" sizes="(min-width: 62rem) 34rem, 100vw" alt="Two students studying together at a laptop" width="1600" height="1067" loading="lazy" decoding="async">
+              </picture>
               <figcaption>CGP students in preparation</figcaption>
             </figure>
             <ul class="about__principles">
@@ -231,7 +246,10 @@
           </div>
 
           <figure class="germany__media reveal">
-            <img class="img-bw" src="assets/images/germany-town.jpg" alt="Historic street in a German town with half-timbered houses" width="1600" height="1068">
+            <picture>
+              <source type="image/webp" srcset="assets/images/opt/germany-town-640w.webp 640w, assets/images/opt/germany-town-1024w.webp 1024w" sizes="(min-width: 62rem) 34rem, 100vw">
+              <img class="img-bw" src="assets/images/opt/germany-town-640w.jpg" srcset="assets/images/opt/germany-town-640w.jpg 640w, assets/images/opt/germany-town-1024w.jpg 1024w" sizes="(min-width: 62rem) 34rem, 100vw" alt="Historic street in a German town with half-timbered houses" width="1600" height="1068" loading="lazy" decoding="async">
+            </picture>
             <figcaption>Deutschland</figcaption>
           </figure>
 
@@ -422,7 +440,10 @@
 
         <div class="grid">
           <figure class="partners__media reveal">
-            <img class="img-bw" src="assets/images/medical-team.jpg" alt="Team of healthcare professionals in surgical dress, viewed from below" width="1600" height="1600">
+            <picture>
+              <source type="image/webp" srcset="assets/images/opt/medical-team-640w.webp 640w, assets/images/opt/medical-team-1024w.webp 1024w" sizes="(min-width: 62rem) 34rem, 100vw">
+              <img class="img-bw" src="assets/images/opt/medical-team-640w.jpg" srcset="assets/images/opt/medical-team-640w.jpg 640w, assets/images/opt/medical-team-1024w.jpg 1024w" sizes="(min-width: 62rem) 34rem, 100vw" alt="Team of healthcare professionals in surgical dress, viewed from below" width="1600" height="1600" loading="lazy" decoding="async">
+            </picture>
           </figure>
           <div class="partners__content reveal">
             <p class="display">Prepared candidates. Reliable partnership.</p>
@@ -472,7 +493,10 @@
                 <p>Students working through structured German coursework and healthcare career preparation at CGP, building from beginner level towards employer-ready proficiency.</p>
               </div>
               <figure class="tab-panel__media">
-                <img class="img-bw" src="assets/images/students-group.jpg" alt="Group of young students studying together" width="1600" height="1067" loading="lazy">
+                <picture>
+                  <source type="image/webp" srcset="assets/images/opt/students-group-640w.webp 640w, assets/images/opt/students-group-1024w.webp 1024w" sizes="(min-width: 62rem) 34rem, 100vw">
+                  <img class="img-bw" src="assets/images/opt/students-group-640w.jpg" srcset="assets/images/opt/students-group-640w.jpg 640w, assets/images/opt/students-group-1024w.jpg 1024w" sizes="(min-width: 62rem) 34rem, 100vw" alt="Group of young students studying together" width="1600" height="1067" loading="lazy" decoding="async">
+                </picture>
               </figure>
             </div>
 
@@ -485,7 +509,10 @@
                 <p>Candidates whose documents are complete and who are being coordinated with German healthcare institutions for employer interviews.</p>
               </div>
               <figure class="tab-panel__media">
-                <img class="img-bw" src="assets/images/documents-desk.jpg" alt="Application documents and notes laid out on a desk" width="1600" height="1068" loading="lazy">
+                <picture>
+                  <source type="image/webp" srcset="assets/images/opt/documents-desk-640w.webp 640w, assets/images/opt/documents-desk-1024w.webp 1024w" sizes="(min-width: 62rem) 34rem, 100vw">
+                  <img class="img-bw" src="assets/images/opt/documents-desk-640w.jpg" srcset="assets/images/opt/documents-desk-640w.jpg 640w, assets/images/opt/documents-desk-1024w.jpg 1024w" sizes="(min-width: 62rem) 34rem, 100vw" alt="Application documents and notes laid out on a desk" width="1600" height="1068" loading="lazy" decoding="async">
+                </picture>
               </figure>
             </div>
 
@@ -498,7 +525,10 @@
                 <p>Students with confirmed training positions, now preparing visa applications and pre-departure orientation with CGP guidance.</p>
               </div>
               <figure class="tab-panel__media">
-                <img class="img-bw" src="assets/images/student-writing.jpg" alt="Close-up of a hand writing notes in a notebook" width="1600" height="1067" loading="lazy">
+                <picture>
+                  <source type="image/webp" srcset="assets/images/opt/student-writing-640w.webp 640w, assets/images/opt/student-writing-1024w.webp 1024w" sizes="(min-width: 62rem) 34rem, 100vw">
+                  <img class="img-bw" src="assets/images/opt/student-writing-640w.jpg" srcset="assets/images/opt/student-writing-640w.jpg 640w, assets/images/opt/student-writing-1024w.jpg 1024w" sizes="(min-width: 62rem) 34rem, 100vw" alt="Close-up of a hand writing notes in a notebook" width="1600" height="1067" loading="lazy" decoding="async">
+                </picture>
               </figure>
             </div>
 
@@ -511,7 +541,10 @@
                 <p>Students who have arrived in Germany and begun their Nursing Ausbildung, with CGP integration support continuing on the ground.</p>
               </div>
               <figure class="tab-panel__media">
-                <img class="img-bw" src="assets/images/germany-berlin.jpg" alt="Berlin skyline at night with the television tower" width="1600" height="1067" loading="lazy">
+                <picture>
+                  <source type="image/webp" srcset="assets/images/opt/germany-berlin-640w.webp 640w, assets/images/opt/germany-berlin-1024w.webp 1024w" sizes="(min-width: 62rem) 34rem, 100vw">
+                  <img class="img-bw" src="assets/images/opt/germany-berlin-640w.jpg" srcset="assets/images/opt/germany-berlin-640w.jpg 640w, assets/images/opt/germany-berlin-1024w.jpg 1024w" sizes="(min-width: 62rem) 34rem, 100vw" alt="Berlin skyline at night with the television tower" width="1600" height="1067" loading="lazy" decoding="async">
+                </picture>
               </figure>
             </div>
 
@@ -557,7 +590,10 @@
 
         <div class="footer__brand">
           <a class="logo" href="index.html" aria-label="Ceylon German Pathway - home">
-            <img class="logo__img" src="assets/images/CGPLogo.png" alt="Ceylon German Pathway">
+            <picture>
+              <source type="image/webp" srcset="assets/images/opt/CGPLogo-210w.webp 210w, assets/images/opt/CGPLogo-420w.webp 420w" sizes="210px">
+              <img class="logo__img" src="assets/images/opt/CGPLogo-210w.png" srcset="assets/images/opt/CGPLogo-210w.png 210w, assets/images/opt/CGPLogo-420w.png 420w" sizes="210px" alt="Ceylon German Pathway" width="210" height="88" loading="lazy" decoding="async">
+            </picture>
             <span class="logo__fallback" aria-hidden="true">
               <span class="logo__mark">CGP</span>
               <span class="logo__type">Ceylon German Pathway</span>
@@ -607,6 +643,6 @@
     </div>
   </footer>
 
-  <script src="js/main.js?v=13"></script>
+  <script src="js/main.min.js?v=14"></script>
 </body>
 </html>

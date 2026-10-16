@@ -8,9 +8,8 @@
   <!-- ?v= is a cache-busting version stamp. Bump ASSET_VERSION in
        build-pages.py (and index.html) whenever CSS or JS changes,
        so returning visitors are not served a stale copy. -->
-  <link rel="stylesheet" href="css/tokens.css?v=13">
-  <link rel="stylesheet" href="css/styles.css?v=13">
-  <link rel="icon" href="assets/images/CGPLogo.png" type="image/png">
+  <link rel="stylesheet" href="css/styles.min.css?v=14">
+  <link rel="icon" href="assets/images/opt/CGPLogo-64w.png" type="image/png">
 </head>
 <body>
 
@@ -22,7 +21,10 @@
     <div class="container header__bar">
 
       <a class="logo" href="index.html" aria-label="Ceylon German Pathway - home">
-        <img class="logo__img" src="assets/images/CGPLogo.png" alt="Ceylon German Pathway">
+        <picture>
+          <source type="image/webp" srcset="assets/images/opt/CGPLogo-210w.webp 210w, assets/images/opt/CGPLogo-420w.webp 420w" sizes="210px">
+          <img class="logo__img" src="assets/images/opt/CGPLogo-210w.png" srcset="assets/images/opt/CGPLogo-210w.png 210w, assets/images/opt/CGPLogo-420w.png 420w" sizes="210px" alt="Ceylon German Pathway" width="210" height="88" decoding="async">
+        </picture>
         <span class="logo__fallback" aria-hidden="true">
           <span class="logo__mark">CGP</span>
           <span class="logo__type">Ceylon German Pathway</span>
@@ -149,7 +151,10 @@
                 <p>Working through structured German coursework and healthcare career preparation at CGP, building from beginner level towards employer-ready proficiency.</p>
               </div>
               <figure class="tab-panel__media">
-                <img class="img-bw" src="assets/images/students-laptop.jpg" alt="Students studying together at a laptop" width="1600" height="1067" loading="lazy">
+                <picture>
+                  <source type="image/webp" srcset="assets/images/opt/students-laptop-640w.webp 640w, assets/images/opt/students-laptop-1024w.webp 1024w" sizes="(min-width: 62rem) 34rem, 100vw">
+                  <img class="img-bw" src="assets/images/opt/students-laptop-640w.jpg" srcset="assets/images/opt/students-laptop-640w.jpg 640w, assets/images/opt/students-laptop-1024w.jpg 1024w" sizes="(min-width: 62rem) 34rem, 100vw" alt="Students studying together at a laptop" width="1600" height="1067" loading="lazy" decoding="async">
+                </picture>
               </figure>
             </div>
 
@@ -162,7 +167,10 @@
                 <p>Documents complete, now being coordinated with German healthcare institutions for employer interviews and preparation.</p>
               </div>
               <figure class="tab-panel__media">
-                <img class="img-bw" src="assets/images/documents-desk.jpg" alt="Application documents and notes laid out on a desk" width="1600" height="1068" loading="lazy">
+                <picture>
+                  <source type="image/webp" srcset="assets/images/opt/documents-desk-640w.webp 640w, assets/images/opt/documents-desk-1024w.webp 1024w" sizes="(min-width: 62rem) 34rem, 100vw">
+                  <img class="img-bw" src="assets/images/opt/documents-desk-640w.jpg" srcset="assets/images/opt/documents-desk-640w.jpg 640w, assets/images/opt/documents-desk-1024w.jpg 1024w" sizes="(min-width: 62rem) 34rem, 100vw" alt="Application documents and notes laid out on a desk" width="1600" height="1068" loading="lazy" decoding="async">
+                </picture>
               </figure>
             </div>
 
@@ -175,7 +183,10 @@
                 <p>Training position confirmed, now preparing visa applications and completing pre-departure orientation with CGP guidance.</p>
               </div>
               <figure class="tab-panel__media">
-                <img class="img-bw" src="assets/images/airport-departure.jpg" alt="View of an aircraft wing above the clouds" width="1600" height="1063" loading="lazy">
+                <picture>
+                  <source type="image/webp" srcset="assets/images/opt/airport-departure-640w.webp 640w, assets/images/opt/airport-departure-1024w.webp 1024w" sizes="(min-width: 62rem) 34rem, 100vw">
+                  <img class="img-bw" src="assets/images/opt/airport-departure-640w.jpg" srcset="assets/images/opt/airport-departure-640w.jpg 640w, assets/images/opt/airport-departure-1024w.jpg 1024w" sizes="(min-width: 62rem) 34rem, 100vw" alt="View of an aircraft wing above the clouds" width="1600" height="1063" loading="lazy" decoding="async">
+                </picture>
               </figure>
             </div>
 
@@ -188,7 +199,10 @@
                 <p>Arrived in Germany and begun Nursing Ausbildung, with CGP integration support continuing on the ground.</p>
               </div>
               <figure class="tab-panel__media">
-                <img class="img-bw" src="assets/images/germany-berlin.jpg" alt="Berlin skyline at night with the television tower" width="1600" height="1067" loading="lazy">
+                <picture>
+                  <source type="image/webp" srcset="assets/images/opt/germany-berlin-640w.webp 640w, assets/images/opt/germany-berlin-1024w.webp 1024w" sizes="(min-width: 62rem) 34rem, 100vw">
+                  <img class="img-bw" src="assets/images/opt/germany-berlin-640w.jpg" srcset="assets/images/opt/germany-berlin-640w.jpg 640w, assets/images/opt/germany-berlin-1024w.jpg 1024w" sizes="(min-width: 62rem) 34rem, 100vw" alt="Berlin skyline at night with the television tower" width="1600" height="1067" loading="lazy" decoding="async">
+                </picture>
               </figure>
             </div>
 
@@ -311,7 +325,10 @@
 
         <div class="footer__brand">
           <a class="logo" href="index.html" aria-label="Ceylon German Pathway - home">
-            <img class="logo__img" src="assets/images/CGPLogo.png" alt="Ceylon German Pathway">
+            <picture>
+              <source type="image/webp" srcset="assets/images/opt/CGPLogo-210w.webp 210w, assets/images/opt/CGPLogo-420w.webp 420w" sizes="210px">
+              <img class="logo__img" src="assets/images/opt/CGPLogo-210w.png" srcset="assets/images/opt/CGPLogo-210w.png 210w, assets/images/opt/CGPLogo-420w.png 420w" sizes="210px" alt="Ceylon German Pathway" width="210" height="88" loading="lazy" decoding="async">
+            </picture>
             <span class="logo__fallback" aria-hidden="true">
               <span class="logo__mark">CGP</span>
               <span class="logo__type">Ceylon German Pathway</span>
@@ -360,6 +377,6 @@
     </div>
   </footer>
 
-  <script src="js/main.js?v=13"></script>
+  <script src="js/main.min.js?v=14"></script>
 </body>
 </html>

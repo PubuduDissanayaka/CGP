@@ -1,0 +1,53 @@
+# Ceylon German Pathway (cgp.lk) -- host caching, MIME and encoding rules.
+#
+# Deployed with the site, so it lands at the docroot root as ~/cgp.lk/.htaccess.
+# Rollback: delete this one file; the host's defaults return immediately.
+#
+# Scope: caching, MIME and encoding ONLY. There are deliberately no rewrite
+# rules, redirects, authentication, PHP directives or ErrorDocument overrides.
+# Every directive sits behind an <IfModule> guard, so a module missing on the
+# host leaves the response byte-identical to today's instead of producing a 500.
+#
+# Why SetEnvIf + "Header set ... env=" and not <FilesMatch>:
+# mod_headers resolves two `Header set` directives for the SAME field in
+# container-merge order, not document order, so a top-level rule can never
+# override a <FilesMatch> one. Measured on this live host on 2026-10-16: a
+# top-level `Header set Cache-Control ... env=` lost to a <FilesMatch> rule
+# that appeared before it. Sibling rules at the SAME level DO follow document
+# order, so every Cache-Control decision is made here as a sibling and the last
+# matching rule wins.
+
+# -- 1. Classify the request -------------------------------------------------
+<IfModule mod_setenvif.c>
+  # Any static image asset, at any depth.
+  SetEnvIf Request_URI "\.(jpe?g|png|webp|avif|gif|ico|svg)(\?|$)" CGP_CC_ASSET=1
+  # Version-stamped code: css/ and js/ are referenced with ?v= stamps, so a URL
+  # never changes meaning.
+  SetEnvIf Request_URI "\.(css|js)(\?|$)"                         CGP_CC_IMMUTABLE=1
+  # Version-independent image namespace: new files are published under a new
+  # name, never by overwriting a URL.
+  SetEnvIf Request_URI "^/assets/images/opt/"                     CGP_CC_IMMUTABLE=1
+  # HTML documents, including the directory index served at /.
+  SetEnvIf Request_URI "\.html(\?|$)"                             CGP_CC_HTML=1
+  SetEnvIf Request_URI "^/$"                                      CGP_CC_HTML=1
+</IfModule>
+
+# -- 2. Apply, lowest precedence first (the last matching rule wins) ---------
+<IfModule mod_headers.c>
+  # Legacy assets/images/* filenames. Kept working and cached for a week: these
+  # URLs are not version-stamped, so they must not be cached as immutable.
+  Header set Cache-Control "public, max-age=604800" env=CGP_CC_ASSET
+  # HTML: lowered from the host's max-age=86400 to one hour, so a deploy is
+  # picked up within the hour rather than up to a day later. Never longer than
+  # the host's current value.
+  Header set Cache-Control "public, max-age=3600" env=CGP_CC_HTML
+  # Immutable tier: css/, js/ (?v= stamped) and assets/images/opt/.
+  Header set Cache-Control "public, max-age=31536000, immutable" env=CGP_CC_IMMUTABLE
+</IfModule>
+
+# -- 3. MIME -----------------------------------------------------------------
+# The host already serves .webp as image/webp; pin it so the type never depends
+# on the host's defaults.
+<IfModule mod_mime.c>
+  AddType image/webp .webp
+</IfModule>

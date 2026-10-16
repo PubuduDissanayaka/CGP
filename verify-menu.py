@@ -39,7 +39,7 @@ for p in PAGES:
 for p in PAGES:
     txt = (ROOT / p).read_text()
     vs = set(re.findall(r"\?v=(\d+)", txt))
-    check(vs == {"13"}, f"{p} asset stamp is ?v=13 only (found {sorted(vs)})")
+    check(vs == {"14"}, f"{p} asset stamp is ?v=14 only (found {sorted(vs)})")
 
 # --- 3. page integrity ----------------------------------------------------
 for p in PAGES:

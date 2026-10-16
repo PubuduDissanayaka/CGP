@@ -1,0 +1,2785 @@
+/* ==========================================================================
+   CEYLON GERMAN PATHWAY - STYLESHEET
+   Swiss International Typographic Style.
+   Strict 12-column grid / flush-left ragged-right / thin rules / no ornament.
+   All values come from css/tokens.css.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. RESET & BASE
+   -------------------------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: var(--text-body);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-body);
+  color: var(--color-ink);
+  background: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Hard-cropped black & white photography, per style */
+.img-bw {
+  filter: grayscale(1) contrast(1.08);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: var(--rule-thick) solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: var(--color-gold);
+  color: var(--color-black);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: var(--space-2);
+  z-index: var(--z-overlay);
+  padding: var(--space-1) var(--space-2);
+  background: var(--color-black);
+  color: var(--color-white);
+  font-size: var(--text-small);
+}
+
+.skip-link:focus {
+  top: var(--space-1);
+}
+
+/* --------------------------------------------------------------------------
+   2. LAYOUT - container & 12-column grid
+   -------------------------------------------------------------------------- */
+.container {
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--container-pad);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-columns), 1fr);
+  column-gap: var(--grid-gutter);
+}
+
+.section {
+  padding-block: var(--section-pad);
+}
+
+/* Numbered section header - index, label, hairline rule */
+.section-head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  padding-bottom: var(--space-2);
+  border-bottom: var(--rule-thin) solid var(--color-rule);
+  margin-bottom: clamp(var(--space-5), 6vw, var(--space-7));
+}
+
+.section-head__index {
+  font-size: var(--text-micro);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-wide);
+  color: var(--color-accent);
+}
+
+.section-head__label {
+  font-size: var(--text-micro);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+}
+
+.section-head__meta {
+  margin-left: auto;
+  font-size: var(--text-micro);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--color-ink-3);
+}
+
+/* Dark sections */
+.section--dark {
+  background: var(--color-black);
+  color: var(--color-white);
+}
+
+.section--dark .section-head {
+  border-color: var(--color-rule-dark);
+}
+
+.section--dark .section-head__meta {
+  color: var(--color-grey-400);
+}
+
+/* --------------------------------------------------------------------------
+   3. TYPOGRAPHY
+   -------------------------------------------------------------------------- */
+h1, h2, h3, h4,
+.display, .title {
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--leading-tight);
+  text-wrap: balance;
+  /* Long German compounds (Zusammenarbeit, Pflegefachfrau) are wider than a
+     narrow viewport at display sizes - let them break rather than scroll. */
+  overflow-wrap: break-word;
+}
+
+.hero__title,
+.page-hero__title,
+.cta__title {
+  overflow-wrap: break-word;
+}
+
+.display {
+  font-size: var(--text-display);
+}
+
+.title {
+  font-size: var(--text-title);
+  line-height: var(--leading-snug);
+}
+
+.lead {
+  font-size: var(--text-lead);
+  line-height: 1.45;
+  max-width: 34em;
+}
+
+.small {
+  font-size: var(--text-small);
+  color: var(--color-ink-2);
+}
+
+.micro-label {
+  font-size: var(--text-micro);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+}
+
+.accent {
+  color: var(--color-accent);
+}
+
+/* --------------------------------------------------------------------------
+   4. BUTTONS - flat, sharp, typographic
+   -------------------------------------------------------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 0.9375rem 1.75rem;
+  font-size: var(--text-small);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  border: var(--rule-thin) solid var(--color-black);
+  border-radius: var(--radius-none);
+  transition: background-color var(--duration-fast) var(--ease-out),
+              color var(--duration-fast) var(--ease-out),
+              border-color var(--duration-fast) var(--ease-out);
+}
+
+.btn--solid {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-white);
+}
+
+.btn--solid:hover {
+  background: var(--color-black);
+  border-color: var(--color-black);
+}
+
+.btn--outline:hover {
+  background: var(--color-black);
+  color: var(--color-white);
+}
+
+.btn--inverse {
+  border-color: var(--color-white);
+  color: var(--color-white);
+}
+
+.btn--inverse:hover {
+  background: var(--color-white);
+  color: var(--color-black);
+}
+
+.btn--gold {
+  background: var(--color-gold);
+  border-color: var(--color-gold);
+  color: var(--color-black);
+}
+
+.btn--gold:hover {
+  background: var(--color-white);
+  border-color: var(--color-white);
+}
+
+.btn__glyph {
+  font-weight: var(--weight-bold);
+}
+
+/* --------------------------------------------------------------------------
+   5. HEADER
+   -------------------------------------------------------------------------- */
+/* German tricolour - the one permitted decorative element, used as a rule */
+.flag-rule {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  height: 4px;
+}
+
+.flag-rule span:nth-child(1) { background: var(--color-black); }
+.flag-rule span:nth-child(2) { background: var(--color-red); }
+.flag-rule span:nth-child(3) { background: var(--color-gold); }
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-header);
+  background: var(--color-white);
+  border-bottom: var(--rule-thin) solid var(--color-rule);
+}
+
+/* The header is sticky and 5rem tall, so a section link that jumps to an
+   anchor would otherwise park its heading behind the header. Every menu item
+   in the main navigation is an anchor or a page link, so the offset lives
+   here, once, rather than as a margin on each target. */
+html {
+  scroll-padding-top: 6rem;
+}
+
+.header__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  height: 5rem;
+}
+
+/* --------------------------------------------------------------------------
+   LOGO
+   Primary asset: assets/images/CGPLogo.png. If that file is missing, main.js
+   adds .logo--fallback and the typographic lockup below is shown instead,
+   so the header never renders a broken-image icon.
+   -------------------------------------------------------------------------- */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-tight);
+  line-height: 1.05;
+}
+
+/* The supplied lockup is roughly 2:1 with three stacked words plus a
+   tagline, so it needs generous height to stay legible in the header.
+   A horizontal one-line export would allow this to be smaller. */
+.logo__img {
+  display: block;
+  height: 3.5rem;
+  width: auto;
+  max-width: 18rem;
+  object-fit: contain;
+  flex-shrink: 0;   /* never let the flex header squash the logo */
+}
+
+/* The footer is black and the logo wordmark is black, so the logo sits on a
+   flat white plate. This preserves the exact brand colours - a CSS invert
+   would turn the red cyan and the gold blue - and reads as deliberate here. */
+.footer .logo {
+  background: var(--color-white);
+  padding: var(--space-2);
+  align-self: flex-start;
+}
+
+.footer .logo__img {
+  height: 5.5rem;
+  max-width: 20rem;
+}
+
+/* Typographic fallback - hidden unless the logo file cannot be loaded */
+.logo__fallback {
+  display: none;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.logo--fallback .logo__fallback {
+  display: flex;
+}
+
+.footer .logo--fallback {
+  background: none;
+  padding: 0;
+}
+
+@media (max-width: 62rem) {
+  .logo__img {
+    height: 3rem;
+    max-width: 13rem;
+  }
+
+  .footer .logo__img {
+    height: 4.5rem;
+  }
+}
+
+.logo__mark {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  background: var(--color-black);
+  color: var(--color-gold);
+  font-size: var(--text-micro);
+  font-weight: var(--weight-bold);
+  letter-spacing: 0.05em;
+}
+
+.logo__type {
+  font-size: var(--text-small);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.logo__type small {
+  display: block;
+  font-size: var(--text-micro);
+  font-weight: var(--weight-regular);
+  letter-spacing: var(--tracking-wide);
+  color: var(--color-ink-3);
+  white-space: nowrap;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: clamp(var(--space-2), 2vw, var(--space-4));
+}
+
+.nav__link {
+  font-size: 0.875rem;
+  font-weight: var(--weight-medium);
+  white-space: nowrap;
+  padding-block: 0.25rem;
+  border-bottom: 2px solid transparent;
+  transition: border-color var(--duration-fast) var(--ease-out);
+}
+
+.nav__link:hover {
+  border-color: var(--color-ink-3);
+}
+
+.nav__link[aria-current] {
+  font-weight: var(--weight-bold);
+  border-color: var(--color-accent);
+}
+
+.header__cta {
+  padding: 0.625rem 1.25rem;
+}
+
+/* --------------------------------------------------------------------------
+   NAV DROPDOWN - section menu inside the main navigation.
+   The label is a normal link to the section's own page; the caret beside it is
+   a separate button that opens the menu, so "go to the page" and "show what is
+   in it" stay two separate actions. Opens on hover and on the button, which
+   carries aria-expanded, so keyboard and screen-reader users get the same menu.
+   Mobile renders it inline.
+   -------------------------------------------------------------------------- */
+.nav__item {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.nav__row {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.nav__toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem 0.125rem;
+  color: inherit;
+  border-bottom: 2px solid transparent;
+  transition: border-color var(--duration-fast) var(--ease-out);
+}
+
+.nav__toggle:hover {
+  border-color: var(--color-ink-3);
+}
+
+.nav__caret {
+  font-size: 0.625rem;
+  line-height: 1;
+  transition: transform var(--duration-fast) var(--ease-out);
+}
+
+.nav__item.is-open .nav__caret {
+  transform: rotate(180deg);
+}
+
+.nav__item.is-open .nav__link {
+  border-color: var(--color-accent);
+}
+
+.nav__submenu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: var(--z-overlay);
+  display: none;
+  flex-direction: column;
+  min-width: 16rem;
+  padding-top: 0.75rem;
+}
+
+.nav__item.is-open .nav__submenu {
+  display: flex;
+}
+
+.nav__menu {
+  display: flex;
+  flex-direction: column;
+  background: var(--color-white);
+  border: var(--rule-thin) solid var(--color-rule);
+  border-top: var(--rule-thick) solid var(--color-black);
+}
+
+.nav__sublink {
+  padding: var(--space-2) var(--space-3);
+  font-size: 0.875rem;
+  font-weight: var(--weight-medium);
+  white-space: nowrap;
+  border-bottom: var(--rule-thin) solid var(--color-rule);
+  transition: background var(--duration-fast) var(--ease-out);
+}
+
+.nav__sublink:last-child {
+  border-bottom: none;
+}
+
+.nav__sublink:hover {
+  background: var(--color-panel);
+}
+
+.nav__sublink[aria-current="page"] {
+  color: var(--color-accent);
+}
+
+/* Mobile navigation */
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+.nav-toggle span {
+  display: block;
+  height: 2px;
+  background: var(--color-black);
+  transition: transform var(--duration-base) var(--ease-out),
+              opacity var(--duration-base) var(--ease-out);
+}
+
+@media (max-width: 62rem) {
+  .nav-toggle {
+    display: flex;
+  }
+
+  .header .header__cta {
+    display: none;
+  }
+
+  .nav {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    background: var(--color-white);
+    border-bottom: var(--rule-thick) solid var(--color-black);
+    display: none;
+  }
+
+  .nav.is-open {
+    display: flex;
+  }
+
+  .nav__link {
+    width: 100%;
+    padding: var(--space-2) var(--container-pad);
+    border-bottom: var(--rule-thin) solid var(--color-rule);
+    font-size: var(--text-body);
+  }
+
+  .nav__item {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  /* The label and its caret share one full-width row; the row carries the
+     rule and the caret keeps a full-size touch target. */
+  .nav__row {
+    border-bottom: var(--rule-thin) solid var(--color-rule);
+  }
+
+  .nav__row .nav__link {
+    flex: 1;
+    width: auto;
+    border-bottom: none;
+  }
+
+  .nav__toggle {
+    min-width: 2.75rem;
+    min-height: 2.75rem;
+    padding: var(--space-2) var(--container-pad);
+    border-bottom: none;
+  }
+
+  .nav__item.is-open .nav__row {
+    border-bottom-color: var(--color-accent);
+  }
+
+  .nav__submenu {
+    position: static;
+    min-width: 0;
+    padding-top: 0;
+  }
+
+  .nav__menu {
+    background: var(--color-panel);
+    border: none;
+    border-bottom: var(--rule-thin) solid var(--color-rule);
+  }
+
+  .nav__sublink {
+    padding-left: calc(var(--container-pad) + var(--space-3));
+    border-bottom: none;
+  }
+
+  .nav-toggle[aria-expanded="true"] span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+
+  .nav-toggle[aria-expanded="true"] span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .nav-toggle[aria-expanded="true"] span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   6. HERO - asymmetric, oversized type, hard-cropped image on the grid
+   -------------------------------------------------------------------------- */
+.hero {
+  border-bottom: var(--rule-thin) solid var(--color-rule);
+}
+
+/* Headline band below the rotating banners - keeps the page's H1, the
+   positioning line and the enquiry actions as the section that follows
+   the banner slider. */
+.hero__head {
+  align-items: end;
+  row-gap: var(--space-4);
+  border-top: var(--rule-thin) solid var(--color-rule);
+  padding-block: var(--space-5);
+}
+
+.hero__head-main {
+  grid-column: 1 / 8;
+}
+
+.hero__head-side {
+  grid-column: 9 / 13;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-3);
+}
+
+.hero__kicker {
+  margin-bottom: var(--space-4);
+}
+
+.hero__kicker .micro-label span {
+  color: var(--color-ink-3);
+}
+
+.hero__title {
+  font-size: var(--text-giant);
+  text-wrap: balance;
+}
+
+.hero__title em {
+  font-style: normal;
+  color: var(--color-accent);
+}
+
+.hero__lede {
+  margin-bottom: 0;
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+/* --------------------------------------------------------------------------
+   6.1 HERO BANNER SLIDER - three rotating banners.
+   The supplied banner artwork carries its own headline, so each banner is
+   shown whole (never cropped) and the headline is repeated as real text in
+   the caption underneath - which is what mobile visitors actually read.
+   -------------------------------------------------------------------------- */
+.hero-slider {
+  padding-top: 0;
+  border-top: 0;
+}
+
+.hero-slider__viewport {
+  overflow: hidden;
+  background: var(--color-white);
+  touch-action: pan-y;
+}
+
+.hero-slider__track {
+  display: flex;
+  transition: transform var(--duration-slow) var(--ease-out);
+}
+
+.hero-slide {
+  flex: 0 0 100%;
+  min-width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.hero-slide img {
+  flex: none;
+  width: 100%;
+  height: auto;
+}
+
+.hero-slide__caption {
+  margin-top: auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-1) var(--space-3);
+  padding-block: var(--space-2);
+  border-top: var(--rule-thin) solid var(--color-rule);
+}
+
+.hero-slide__index {
+  color: var(--color-accent);
+  font-weight: var(--weight-bold);
+}
+
+.hero-slide__line {
+  flex: 1 1 22rem;
+  font-size: var(--text-small);
+  color: var(--color-ink-2);
+}
+
+.hero-slide__link {
+  font-size: var(--text-small);
+  font-weight: var(--weight-medium);
+  white-space: nowrap;
+  border-bottom: var(--rule-thin) solid var(--color-ink);
+  transition: color var(--duration-fast) var(--ease-out),
+              border-color var(--duration-fast) var(--ease-out);
+}
+
+.hero-slide__link:hover {
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+/* Controls - flat ruler marks, red on the active banner */
+.hero-slider__controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding-block: var(--space-2);
+  border-top: var(--rule-thin) solid var(--color-rule);
+}
+
+.hero-slider__dots {
+  display: flex;
+  gap: var(--space-1);
+}
+
+.hero-slider__dot {
+  width: 3rem;
+  height: 0.25rem;
+  background: var(--color-rule);
+  transition: background var(--duration-fast) var(--ease-out);
+}
+
+.hero-slider__dot:hover {
+  background: var(--color-ink-3);
+}
+
+.hero-slider__dot[aria-current="true"] {
+  background: var(--color-accent);
+}
+
+.hero-slider__nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.hero-slider__btn {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: var(--rule-thin) solid var(--color-rule);
+  background: var(--color-white);
+  transition: border-color var(--duration-fast) var(--ease-out),
+              background var(--duration-fast) var(--ease-out);
+}
+
+.hero-slider__btn:hover {
+  border-color: var(--color-ink);
+  background: var(--color-panel);
+}
+
+/* Hero data strip - thin-ruled columns under the headline */
+.hero__strip {
+  border-top: var(--rule-thin) solid var(--color-rule);
+}
+
+.hero__strip .grid {
+  row-gap: 0;
+}
+
+.hero__fact {
+  grid-column: span 4;
+  padding-block: var(--space-3);
+  padding-right: var(--space-3);
+  border-right: var(--rule-thin) solid var(--color-rule);
+  font-size: var(--text-small);
+  color: var(--color-ink-2);
+}
+
+.hero__fact:last-child {
+  border-right: none;
+}
+
+.hero__fact strong {
+  display: block;
+  color: var(--color-ink);
+  font-size: var(--text-body);
+  margin-bottom: 0.125rem;
+}
+
+@media (max-width: 62rem) {
+  .hero__head-main,
+  .hero__head-side {
+    grid-column: 1 / -1;
+  }
+
+  .hero__head-side {
+    margin-top: var(--space-3);
+  }
+
+  .hero__fact {
+    grid-column: 1 / -1;
+    border-right: none;
+    border-bottom: var(--rule-thin) solid var(--color-rule);
+    padding-block: var(--space-2);
+  }
+
+  .hero__fact:last-child {
+    border-bottom: none;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   7. ABOUT - asymmetric two-column with stat rail
+   -------------------------------------------------------------------------- */
+.about__statement {
+  grid-column: 1 / 8;
+}
+
+.about__statement .display {
+  margin-bottom: var(--space-4);
+}
+
+.about__cta {
+  margin-top: var(--space-4);
+}
+
+.about__body {
+  max-width: 38em;
+  display: grid;
+  gap: var(--space-3);
+  color: var(--color-ink-2);
+}
+
+.about__aside {
+  grid-column: 9 / 13;
+  display: flex;
+  flex-direction: column;
+}
+
+.about__aside figure {
+  position: relative;
+}
+
+.about__aside figcaption {
+  padding: var(--space-1) 0;
+  font-size: var(--text-micro);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--color-ink-3);
+  border-bottom: var(--rule-thin) solid var(--color-rule);
+}
+
+.about__principles {
+  margin-top: var(--space-4);
+}
+
+.about__principles li {
+  display: flex;
+  gap: var(--space-2);
+  padding-block: var(--space-2);
+  border-bottom: var(--rule-thin) solid var(--color-rule);
+  font-size: var(--text-small);
+}
+
+.about__principles .idx {
+  font-weight: var(--weight-bold);
+  color: var(--color-accent);
+}
+
+/* Stat band - oversized numerals on a hairline grid */
+.stats {
+  margin-top: clamp(var(--space-6), 8vw, var(--space-8));
+  border-top: var(--rule-thin) solid var(--color-ink);
+}
+
+.stat {
+  grid-column: span 3;
+  padding-block: var(--space-4);
+  padding-right: var(--space-3);
+  border-right: var(--rule-thin) solid var(--color-rule);
+}
+
+.stat:last-child {
+  border-right: none;
+}
+
+.stat__value {
+  font-size: var(--text-stat);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-tight);
+  line-height: 1;
+}
+
+.stat__value sup {
+  font-size: 0.45em;
+  color: var(--color-accent);
+  top: -0.9em;
+}
+
+.stat__label {
+  margin-top: var(--space-1);
+  font-size: var(--text-small);
+  color: var(--color-ink-2);
+}
+
+.stats__note {
+  padding-top: var(--space-2);
+  font-size: var(--text-micro);
+  color: var(--color-ink-3);
+}
+
+@media (max-width: 62rem) {
+  .about__statement,
+  .about__aside {
+    grid-column: 1 / -1;
+  }
+
+  .about__aside {
+    margin-top: var(--space-5);
+  }
+
+  .stat {
+    grid-column: span 6;
+    border-right: none;
+    border-bottom: var(--rule-thin) solid var(--color-rule);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   8. WHY GERMANY - dark full-bleed, numbered accordion against image column
+   -------------------------------------------------------------------------- */
+.germany__intro {
+  grid-column: 1 / 7;
+  margin-bottom: var(--space-6);
+}
+
+.germany__intro .display {
+  margin-bottom: var(--space-3);
+}
+
+.germany__intro p {
+  color: var(--color-grey-400);
+  max-width: 30em;
+}
+
+.germany__media {
+  grid-column: 8 / 13;
+  grid-row: 1 / 3;
+  position: relative;
+}
+
+.germany__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.germany__media figcaption {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: var(--color-gold);
+  color: var(--color-black);
+  padding: var(--space-1) var(--space-2);
+  font-size: var(--text-micro);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+}
+
+.germany__list {
+  grid-column: 1 / 7;
+  border-top: var(--rule-thin) solid var(--color-rule-dark);
+}
+
+.accordion__item {
+  border-bottom: var(--rule-thin) solid var(--color-rule-dark);
+}
+
+.accordion__trigger {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  width: 100%;
+  padding-block: var(--space-3);
+  text-align: left;
+}
+
+.accordion__index {
+  font-size: var(--text-micro);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-wide);
+  color: var(--color-gold);
+}
+
+.accordion__title {
+  font-size: var(--text-title);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--leading-snug);
+  flex: 1;
+}
+
+.accordion__glyph {
+  font-size: var(--text-title);
+  font-weight: var(--weight-regular);
+  color: var(--color-grey-400);
+  transition: transform var(--duration-base) var(--ease-out);
+}
+
+.accordion__item.is-open .accordion__glyph {
+  transform: rotate(45deg);
+  color: var(--color-accent);
+}
+
+.accordion__panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--duration-base) var(--ease-out);
+}
+
+.accordion__item.is-open .accordion__panel {
+  grid-template-rows: 1fr;
+}
+
+.accordion__panel-inner {
+  overflow: hidden;
+}
+
+.accordion__panel p {
+  padding: 0 0 var(--space-3) calc(var(--space-3) + 2ch);
+  color: var(--color-grey-400);
+  max-width: 34em;
+  font-size: var(--text-small);
+  line-height: var(--leading-body);
+}
+
+@media (max-width: 62rem) {
+  .germany__intro,
+  .germany__list {
+    grid-column: 1 / -1;
+  }
+
+  .germany__media {
+    grid-column: 1 / -1;
+    grid-row: auto;
+    margin-top: var(--space-5);
+    min-height: 55vw;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   9. WHY CGP - uneven modular grid of numbered reasons + red breakout
+   -------------------------------------------------------------------------- */
+.why__grid {
+  row-gap: var(--grid-gutter);
+}
+
+.why-card {
+  border: var(--rule-thin) solid var(--color-rule);
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  min-height: 16rem;
+}
+
+.why-card__index {
+  font-size: var(--text-micro);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-wide);
+  color: var(--color-accent);
+}
+
+.why-card h3 {
+  font-size: var(--text-title);
+}
+
+.why-card p:not(.why-card__index) {
+  font-size: var(--text-small);
+  color: var(--color-ink-2);
+  max-width: 30em;
+  margin-top: auto;
+}
+
+/* Uneven, asymmetric placement - no two rows identical */
+.why-card:nth-child(1) { grid-column: 1 / 6; }
+.why-card:nth-child(2) { grid-column: 6 / 10; }
+.why-card:nth-child(3) { grid-column: 10 / 13; }
+.why-card:nth-child(4) { grid-column: 1 / 4; }
+.why-card:nth-child(5) { grid-column: 4 / 8; }
+.why-card:nth-child(6) { grid-column: 8 / 13; }
+
+/* Red breakout - full-width flat block with the differentiator statement */
+.why__breakout {
+  grid-column: 1 / 13;
+  background: var(--color-accent);
+  color: var(--color-white);
+  padding: clamp(var(--space-4), 5vw, var(--space-7));
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  column-gap: var(--grid-gutter);
+  row-gap: var(--space-4);
+}
+
+.why__breakout blockquote {
+  grid-column: 1 / 10;
+  font-size: var(--text-title);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--leading-snug);
+  text-wrap: balance;
+}
+
+.why__breakout .micro-label {
+  grid-column: 10 / 13;
+  align-self: end;
+  justify-self: end;
+  text-align: right;
+  color: var(--color-gold);
+}
+
+@media (max-width: 62rem) {
+  .why-card {
+    grid-column: 1 / -1 !important;
+    min-height: 0;
+  }
+
+  .why__breakout blockquote,
+  .why__breakout .micro-label {
+    grid-column: 1 / -1;
+    justify-self: start;
+    text-align: left;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   10. JOURNEY - horizontal scroll rail of numbered steps
+   -------------------------------------------------------------------------- */
+.journey {
+  border-top: var(--rule-thin) solid var(--color-rule);
+  border-bottom: var(--rule-thin) solid var(--color-rule);
+  background: var(--color-panel);
+}
+
+.journey__head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: var(--space-5);
+}
+
+.journey__controls {
+  display: flex;
+  gap: var(--space-1);
+}
+
+.journey__btn {
+  width: 3rem;
+  height: 3rem;
+  display: grid;
+  place-items: center;
+  border: var(--rule-thin) solid var(--color-black);
+  font-size: var(--text-body);
+  font-weight: var(--weight-bold);
+  transition: background-color var(--duration-fast) var(--ease-out),
+              color var(--duration-fast) var(--ease-out),
+              opacity var(--duration-fast) var(--ease-out);
+}
+
+.journey__btn:hover {
+  background: var(--color-black);
+  color: var(--color-white);
+}
+
+.journey__btn:disabled {
+  opacity: 0.25;
+  pointer-events: none;
+}
+
+.journey__track {
+  display: flex;
+  gap: var(--grid-gutter);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  cursor: grab;
+}
+
+.journey__track::-webkit-scrollbar {
+  display: none;
+}
+
+.journey__track.is-dragging {
+  cursor: grabbing;
+  scroll-snap-type: none;
+}
+
+.journey-step {
+  flex: 0 0 clamp(16rem, 24vw, 21rem);
+  scroll-snap-align: start;
+  background: var(--color-white);
+  border: var(--rule-thin) solid var(--color-rule);
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  min-height: 19rem;
+  user-select: none;
+}
+
+.journey-step__index {
+  font-size: var(--text-stat);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-tight);
+  line-height: 1;
+  color: var(--color-rule);
+  transition: color var(--duration-base) var(--ease-out);
+}
+
+.journey-step:hover .journey-step__index {
+  color: var(--color-accent);
+}
+
+.journey-step h3 {
+  font-size: var(--text-lead);
+  margin-top: var(--space-4);
+  margin-bottom: var(--space-2);
+}
+
+.journey-step p:not(.journey-step__index) {
+  font-size: var(--text-small);
+  color: var(--color-ink-2);
+  margin-top: auto;
+}
+
+.journey-step--terminal {
+  background: var(--color-black);
+  border-color: var(--color-black);
+  color: var(--color-white);
+}
+
+.journey-step--terminal .journey-step__index {
+  color: var(--color-gold);
+}
+
+.journey-step--terminal p:not(.journey-step__index) {
+  color: var(--color-grey-400);
+}
+
+.journey__progress {
+  margin-top: var(--space-4);
+  height: 2px;
+  background: var(--color-rule);
+  position: relative;
+}
+
+.journey__progress-bar {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 12%;
+  background: var(--color-accent);
+  transition: width var(--duration-fast) linear;
+}
+
+/* --------------------------------------------------------------------------
+   11. PARTNERS - inverted split with overlapping image
+   -------------------------------------------------------------------------- */
+.partners__media {
+  grid-column: 1 / 6;
+  position: relative;
+  margin-top: calc(-1 * var(--section-pad) / 2);   /* overlaps section edge */
+}
+
+.partners__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.partners__content {
+  grid-column: 7 / 13;
+  padding-block: var(--space-2);
+}
+
+.partners__content .display {
+  margin-bottom: var(--space-3);
+}
+
+.partners__content > p {
+  color: var(--color-grey-400);
+  max-width: 34em;
+  margin-bottom: var(--space-4);
+}
+
+.partners__list {
+  border-top: var(--rule-thin) solid var(--color-rule-dark);
+  margin-bottom: var(--space-5);
+}
+
+.partners__list li {
+  display: grid;
+  grid-template-columns: 3ch 1fr;
+  gap: var(--space-2);
+  padding-block: var(--space-2);
+  border-bottom: var(--rule-thin) solid var(--color-rule-dark);
+  font-size: var(--text-small);
+}
+
+.partners__list .idx {
+  font-weight: var(--weight-bold);
+  color: var(--color-gold);
+}
+
+@media (max-width: 62rem) {
+  .partners__media {
+    grid-column: 1 / -1;
+    margin-top: 0;
+    min-height: 55vw;
+  }
+
+  .partners__content {
+    grid-column: 1 / -1;
+    margin-top: var(--space-5);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   12. CURRENT STUDENTS - tabbed progress board
+   -------------------------------------------------------------------------- */
+.students__intro {
+  grid-column: 1 / 7;
+  margin-bottom: var(--space-5);
+}
+
+.students__intro .display {
+  margin-bottom: var(--space-3);
+}
+
+.students__intro p {
+  color: var(--color-ink-2);
+  max-width: 32em;
+}
+
+.students__panel-wrap {
+  grid-column: 1 / 13;
+}
+
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  border-bottom: var(--rule-thick) solid var(--color-black);
+}
+
+.tab {
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--text-small);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  border-right: var(--rule-thin) solid var(--color-rule);
+  transition: background-color var(--duration-fast) var(--ease-out),
+              color var(--duration-fast) var(--ease-out);
+}
+
+.tab[aria-selected="true"] {
+  background: var(--color-black);
+  color: var(--color-gold);
+}
+
+.tab:hover:not([aria-selected="true"]) {
+  background: var(--color-panel);
+}
+
+.tab-panel {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  column-gap: var(--grid-gutter);
+  row-gap: var(--space-4);
+  padding-block: var(--space-5);
+}
+
+.tab-panel[hidden] {
+  display: none;
+}
+
+.tab-panel__count {
+  grid-column: 1 / 4;
+}
+
+.tab-panel__count .stat__value {
+  color: var(--color-accent);
+}
+
+/* Unknown figure - must not read as a giant red dash */
+.stat__value--pending {
+  font-size: var(--text-title);
+  color: var(--color-ink-3);
+  letter-spacing: 0;
+}
+
+.tab-panel__count .stat__value--pending {
+  color: var(--color-ink-3);
+}
+
+.tab-panel__desc {
+  grid-column: 4 / 9;
+  align-self: end;
+}
+
+.tab-panel__desc p {
+  font-size: var(--text-small);
+  color: var(--color-ink-2);
+  max-width: 30em;
+}
+
+.tab-panel__media {
+  grid-column: 9 / 13;
+  grid-row: 1 / 3;
+}
+
+.tab-panel__media img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.students__note {
+  grid-column: 1 / 13;
+  border-top: var(--rule-thin) solid var(--color-rule);
+  padding-top: var(--space-2);
+  font-size: var(--text-micro);
+  color: var(--color-ink-3);
+}
+
+@media (max-width: 62rem) {
+  .students__intro,
+  .tab-panel__count,
+  .tab-panel__desc,
+  .tab-panel__media {
+    grid-column: 1 / -1;
+  }
+
+  .tab-panel__media {
+    grid-row: auto;
+  }
+
+  .tab {
+    flex: 1 1 auto;
+    text-align: center;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   13. START YOUR JOURNEY - full-bleed red CTA
+   -------------------------------------------------------------------------- */
+.cta {
+  background: var(--color-accent);
+  color: var(--color-white);
+}
+
+.cta .section-head {
+  border-color: rgb(255 255 255 / 0.35);
+}
+
+.cta .section-head__index {
+  color: var(--color-gold);
+}
+
+.cta .section-head__meta {
+  color: rgb(255 255 255 / 0.7);
+}
+
+.cta__title {
+  grid-column: 1 / 11;
+  font-size: var(--text-giant);
+  line-height: var(--leading-tight);
+  margin-bottom: var(--space-5);
+}
+
+.cta__title .de {
+  color: var(--color-black);
+  display: block;
+}
+
+.cta__actions {
+  grid-column: 1 / 7;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--space-2);
+}
+
+.cta__contact {
+  grid-column: 8 / 13;
+  border-top: var(--rule-thin) solid rgb(255 255 255 / 0.35);
+}
+
+.cta__contact li {
+  display: grid;
+  grid-template-columns: 8rem 1fr;
+  gap: var(--space-2);
+  padding-block: var(--space-2);
+  border-bottom: var(--rule-thin) solid rgb(255 255 255 / 0.35);
+  font-size: var(--text-small);
+}
+
+.cta__contact .micro-label {
+  color: var(--color-gold);
+}
+
+.cta__contact a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 62rem) {
+  .cta__title,
+  .cta__actions,
+  .cta__contact {
+    grid-column: 1 / -1;
+  }
+
+  .cta__contact {
+    margin-top: var(--space-4);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   14. FOOTER
+   -------------------------------------------------------------------------- */
+.footer {
+  background: var(--color-black);
+  color: var(--color-white);
+  padding-block: var(--space-6) var(--space-4);
+}
+
+.footer__grid {
+  row-gap: var(--space-5);
+}
+
+.footer__brand {
+  grid-column: 1 / 5;
+}
+
+.footer__brand .logo__mark {
+  background: var(--color-white);
+  color: var(--color-black);
+}
+
+.footer__brand p {
+  margin-top: var(--space-3);
+  font-size: var(--text-small);
+  color: var(--color-grey-400);
+  max-width: 26em;
+}
+
+.footer__col {
+  grid-column: span 2;
+}
+
+.footer__col--wide {
+  grid-column: span 3;
+}
+
+.footer__col h4 {
+  font-size: var(--text-micro);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--color-grey-400);
+  margin-bottom: var(--space-2);
+}
+
+.footer__col li {
+  padding-block: 0.25rem;
+  font-size: var(--text-small);
+}
+
+.footer__col a:hover {
+  text-decoration: underline;
+  text-decoration-color: var(--color-gold);
+}
+
+/* Long unbroken strings (email addresses, URLs) must not force a
+   horizontal scrollbar on narrow screens. */
+.footer__col a,
+.contact-block dd,
+.cta__contact a,
+.page-hero__aside dd,
+.service-row__desc {
+  overflow-wrap: anywhere;
+}
+
+.footer__bottom {
+  margin-top: var(--space-6);
+  padding-top: var(--space-3);
+  border-top: var(--rule-thin) solid var(--color-rule-dark);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-2);
+  font-size: var(--text-micro);
+  color: var(--color-grey-400);
+}
+
+@media (max-width: 62rem) {
+  .footer__brand,
+  .footer__col,
+  .footer__col--wide {
+    grid-column: 1 / -1;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   15. REVEAL ON SCROLL - restrained, respects reduced motion
+   -------------------------------------------------------------------------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(1.25rem);
+  transition: opacity var(--duration-slow) var(--ease-out),
+              transform var(--duration-slow) var(--ease-out);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .accordion__panel {
+    transition: none;
+  }
+
+  .hero-slider__track {
+    transition: none;
+  }
+}
+
+/* ==========================================================================
+   16. INNER-PAGE COMPONENTS
+   Used by about / students / partners / current-students / resources / contact
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   16.1 PAGE HERO - asymmetric masthead for sub-pages
+   -------------------------------------------------------------------------- */
+.page-hero {
+  border-bottom: var(--rule-thin) solid var(--color-rule);
+  padding-block: clamp(var(--space-5), 7vw, var(--space-7)) 0;
+}
+
+.page-hero__index {
+  grid-column: 1 / 13;
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  padding-bottom: var(--space-3);
+  margin-bottom: var(--space-4);
+  border-bottom: var(--rule-thin) solid var(--color-rule);
+}
+
+.page-hero__index .micro-label:first-child {
+  color: var(--color-accent);
+}
+
+.page-hero__index .page-hero__of {
+  margin-left: auto;
+  color: var(--color-ink-3);
+}
+
+.page-hero__title {
+  grid-column: 1 / 9;
+  font-size: var(--text-giant);
+}
+
+.page-hero__lede {
+  grid-column: 1 / 8;
+  margin-top: var(--space-4);
+  padding-bottom: clamp(var(--space-5), 6vw, var(--space-6));
+}
+
+.page-hero__aside {
+  grid-column: 9 / 13;
+  align-self: end;
+  padding-bottom: clamp(var(--space-5), 6vw, var(--space-6));
+  border-left: var(--rule-thin) solid var(--color-rule);
+  padding-left: var(--space-3);
+}
+
+.page-hero__aside dt {
+  font-size: var(--text-micro);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--color-ink-3);
+  margin-bottom: 0.25rem;
+}
+
+.page-hero__aside dd {
+  font-size: var(--text-small);
+  margin-bottom: var(--space-3);
+}
+
+.page-hero__aside dd:last-child {
+  margin-bottom: 0;
+}
+
+/* Full-bleed image band directly under a page hero */
+.page-band {
+  position: relative;
+  height: clamp(14rem, 34vw, 26rem);
+  overflow: hidden;
+  border-bottom: var(--rule-thin) solid var(--color-rule);
+}
+
+.page-band img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.page-band figcaption {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  padding: var(--space-1) var(--space-2);
+  background: var(--color-black);
+  color: var(--color-white);
+  font-size: var(--text-micro);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+}
+
+@media (max-width: 62rem) {
+  .page-hero__title,
+  .page-hero__lede,
+  .page-hero__aside {
+    grid-column: 1 / -1;
+  }
+
+  .page-hero__lede {
+    padding-bottom: var(--space-4);
+  }
+
+  .page-hero__aside {
+    border-left: none;
+    padding-left: 0;
+    border-top: var(--rule-thin) solid var(--color-rule);
+    padding-top: var(--space-3);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   16.2 SERVICE ROWS - numbered index / title / description on hairlines
+   -------------------------------------------------------------------------- */
+.service-list {
+  grid-column: 1 / 13;
+  border-top: var(--rule-thin) solid var(--color-ink);
+}
+
+.service-row {
+  display: grid;
+  grid-template-columns: 5rem 1fr 1.4fr;
+  gap: var(--space-3);
+  align-items: start;
+  padding-block: var(--space-3);
+  border-bottom: var(--rule-thin) solid var(--color-rule);
+  transition: background-color var(--duration-fast) var(--ease-out);
+}
+
+.service-row:hover {
+  background: var(--color-panel);
+}
+
+.service-row__index {
+  font-size: var(--text-micro);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-wide);
+  color: var(--color-accent);
+  padding-top: 0.35rem;
+}
+
+.service-row__title {
+  font-size: var(--text-lead);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--leading-snug);
+}
+
+.service-row__desc {
+  font-size: var(--text-small);
+  color: var(--color-ink-2);
+  max-width: 42em;
+}
+
+.section--dark .service-list {
+  border-top-color: var(--color-white);
+}
+
+.section--dark .service-row {
+  border-bottom-color: var(--color-rule-dark);
+}
+
+.section--dark .service-row:hover {
+  background: var(--color-grey-900);
+}
+
+.section--dark .service-row__desc {
+  color: var(--color-grey-400);
+}
+
+.section--dark .service-row__index {
+  color: var(--color-gold);
+}
+
+@media (max-width: 48rem) {
+  .service-row {
+    grid-template-columns: 3.5rem 1fr;
+    row-gap: var(--space-1);
+  }
+
+  .service-row__desc {
+    grid-column: 2 / 3;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   16.3 FEE TABLE - transparent pricing, Swiss table
+   -------------------------------------------------------------------------- */
+.fee-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.fee-table caption {
+  text-align: left;
+  font-size: var(--text-micro);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--color-ink-3);
+  padding-bottom: var(--space-2);
+}
+
+.fee-table th,
+.fee-table td {
+  padding: var(--space-2) var(--space-2) var(--space-2) 0;
+  border-bottom: var(--rule-thin) solid var(--color-rule);
+  vertical-align: top;
+  font-size: var(--text-small);
+}
+
+.fee-table thead th {
+  border-bottom: var(--rule-thick) solid var(--color-black);
+  font-size: var(--text-micro);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+}
+
+.fee-table tbody th {
+  font-weight: var(--weight-bold);
+  font-size: var(--text-body);
+  width: 34%;
+}
+
+.fee-table td:last-child {
+  white-space: nowrap;
+  font-weight: var(--weight-bold);
+}
+
+.fee-table .tbd {
+  color: var(--color-accent);
+}
+
+@media (max-width: 48rem) {
+  .fee-table thead {
+    display: none;
+  }
+
+  .fee-table tbody th,
+  .fee-table td {
+    display: block;
+    width: auto;
+    border-bottom: none;
+    padding-bottom: 0.25rem;
+  }
+
+  .fee-table tbody tr {
+    display: block;
+    padding-block: var(--space-2);
+    border-bottom: var(--rule-thin) solid var(--color-rule);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   16.4 NOTICE - honest disclaimers for placeholder content
+   -------------------------------------------------------------------------- */
+.notice {
+  display: flex;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  border: var(--rule-thin) solid var(--color-rule);
+  border-left: var(--rule-thick) solid var(--color-accent);
+  background: var(--color-panel);
+  font-size: var(--text-small);
+  color: var(--color-ink-2);
+  max-width: 60em;
+}
+
+.notice strong {
+  color: var(--color-ink);
+}
+
+.section--dark .notice {
+  background: var(--color-grey-900);
+  border-color: var(--color-rule-dark);
+  border-left-color: var(--color-gold);
+  color: var(--color-grey-400);
+}
+
+.section--dark .notice strong {
+  color: var(--color-white);
+}
+
+/* --------------------------------------------------------------------------
+   16.5 CASE STUDY - situation / action / result
+   -------------------------------------------------------------------------- */
+.case-study {
+  border-top: var(--rule-thick) solid var(--color-black);
+  padding-top: var(--space-3);
+}
+
+.case-study h3 {
+  font-size: var(--text-title);
+  margin-bottom: var(--space-3);
+}
+
+.case-study dl {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.case-study dt {
+  font-size: var(--text-micro);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.case-study dd {
+  font-size: var(--text-small);
+  color: var(--color-ink-2);
+  padding-bottom: var(--space-2);
+  border-bottom: var(--rule-thin) solid var(--color-rule);
+  max-width: 44em;
+}
+
+/* --------------------------------------------------------------------------
+   16.6 TIMELINE - vertical numbered process
+   -------------------------------------------------------------------------- */
+.timeline {
+  border-top: var(--rule-thin) solid var(--color-rule);
+}
+
+.timeline__item {
+  display: grid;
+  grid-template-columns: 6rem 1fr;
+  gap: var(--space-3);
+  padding-block: var(--space-4);
+  border-bottom: var(--rule-thin) solid var(--color-rule);
+}
+
+.timeline__index {
+  font-size: var(--text-stat);
+  font-weight: var(--weight-bold);
+  line-height: 0.8;
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-rule);
+}
+
+.timeline__item:hover .timeline__index {
+  color: var(--color-accent);
+}
+
+.timeline__body h3 {
+  font-size: var(--text-title);
+  margin-bottom: var(--space-2);
+}
+
+.timeline__body p {
+  font-size: var(--text-small);
+  color: var(--color-ink-2);
+  max-width: 44em;
+}
+
+.section--dark .timeline,
+.section--dark .timeline__item {
+  border-color: var(--color-rule-dark);
+}
+
+.section--dark .timeline__index {
+  color: var(--color-rule-dark);
+}
+
+.section--dark .timeline__item:hover .timeline__index {
+  color: var(--color-gold);
+}
+
+.section--dark .timeline__body p {
+  color: var(--color-grey-400);
+}
+
+@media (max-width: 48rem) {
+  .timeline__item {
+    grid-template-columns: 1fr;
+    gap: var(--space-1);
+  }
+
+  .timeline__index {
+    font-size: var(--text-title);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   16.7 RESOURCE CARDS - downloads with honest availability status
+   -------------------------------------------------------------------------- */
+.resource-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  border: var(--rule-thin) solid var(--color-rule);
+  min-height: 12rem;
+}
+
+.resource-card__meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.resource-card__type {
+  font-size: var(--text-micro);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-wide);
+  color: var(--color-ink-3);
+}
+
+.badge {
+  padding: 0.25rem 0.5rem;
+  font-size: var(--text-micro);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+}
+
+.badge--pending {
+  background: var(--color-gold);
+  color: var(--color-black);
+}
+
+.badge--ready {
+  background: var(--color-accent);
+  color: var(--color-white);
+}
+
+.badge--available {
+  background: var(--color-black);
+  color: var(--color-white);
+}
+
+.resource-card h3 {
+  font-size: var(--text-lead);
+}
+
+.resource-card p {
+  font-size: var(--text-small);
+  color: var(--color-ink-2);
+  margin-top: auto;
+}
+
+/* --------------------------------------------------------------------------
+   16.8 FORM - request information
+   -------------------------------------------------------------------------- */
+.form {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-3);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.field--full {
+  grid-column: 1 / -1;
+}
+
+.field label {
+  font-size: var(--text-micro);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+}
+
+.field .req {
+  color: var(--color-accent);
+}
+
+.field input,
+.field select,
+.field textarea {
+  font: inherit;
+  font-size: var(--text-small);
+  padding: 0.75rem;
+  border: var(--rule-thin) solid var(--color-ink-3);
+  border-radius: var(--radius-none);
+  background: var(--color-white);
+  color: var(--color-ink);
+  transition: border-color var(--duration-fast) var(--ease-out);
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  border-color: var(--color-accent);
+}
+
+.field textarea {
+  resize: vertical;
+  min-height: 8rem;
+}
+
+.field__hint {
+  font-size: var(--text-micro);
+  color: var(--color-ink-3);
+}
+
+.form__actions {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.form__status {
+  font-size: var(--text-small);
+  color: var(--color-ink-2);
+}
+
+@media (max-width: 48rem) {
+  .form {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   16.9 CONTACT BLOCKS & GLOSSARY
+   -------------------------------------------------------------------------- */
+.contact-block {
+  border-top: var(--rule-thick) solid var(--color-black);
+  padding-top: var(--space-2);
+}
+
+.contact-block dt {
+  font-size: var(--text-micro);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--color-ink-3);
+  padding-top: var(--space-2);
+}
+
+.contact-block dd {
+  font-size: var(--text-body);
+  padding-bottom: var(--space-2);
+  border-bottom: var(--rule-thin) solid var(--color-rule);
+}
+
+.contact-block a:hover {
+  text-decoration: underline;
+  text-decoration-color: var(--color-accent);
+}
+
+.glossary {
+  border-top: var(--rule-thin) solid var(--color-rule);
+}
+
+.glossary > div {
+  display: grid;
+  grid-template-columns: 14rem 1fr;
+  gap: var(--space-3);
+  padding-block: var(--space-2);
+  border-bottom: var(--rule-thin) solid var(--color-rule);
+}
+
+.glossary dt {
+  font-weight: var(--weight-bold);
+  font-size: var(--text-body);
+}
+
+.glossary dt span {
+  display: block;
+  font-weight: var(--weight-regular);
+  font-size: var(--text-micro);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--color-ink-3);
+}
+
+.glossary dd {
+  font-size: var(--text-small);
+  color: var(--color-ink-2);
+  max-width: 46em;
+}
+
+@media (max-width: 48rem) {
+  .glossary > div {
+    grid-template-columns: 1fr;
+    gap: var(--space-1);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   16.10 LIGHT ACCORDION (FAQ) - reuses accordion structure on white
+   -------------------------------------------------------------------------- */
+.accordion--light {
+  border-top: var(--rule-thin) solid var(--color-ink);
+}
+
+.accordion--light .accordion__item {
+  border-bottom: var(--rule-thin) solid var(--color-rule);
+}
+
+.accordion--light .accordion__index {
+  color: var(--color-accent);
+}
+
+.accordion--light .accordion__title {
+  font-size: var(--text-lead);
+}
+
+.accordion--light .accordion__glyph {
+  color: var(--color-ink-3);
+}
+
+.accordion--light .accordion__panel p {
+  color: var(--color-ink-2);
+  font-size: var(--text-small);
+}
+
+/* --------------------------------------------------------------------------
+   16.11 GRID SPAN UTILITIES - used sparingly to vary inner-page composition
+   -------------------------------------------------------------------------- */
+.col-full   { grid-column: 1 / 13; }
+.col-left   { grid-column: 1 / 7; }
+.col-right  { grid-column: 7 / 13; }
+.col-wide   { grid-column: 1 / 9; }
+.col-narrow { grid-column: 9 / 13; }
+.col-inset  { grid-column: 2 / 12; }
+
+.span-3 { grid-column: span 3; }
+.span-4 { grid-column: span 4; }
+.span-6 { grid-column: span 6; }
+
+.stack-2 > * + * { margin-top: var(--space-2); }
+.stack-3 > * + * { margin-top: var(--space-3); }
+.stack-4 > * + * { margin-top: var(--space-4); }
+
+.row-gap { row-gap: var(--grid-gutter); }
+.row-gap-lg { row-gap: var(--space-5); }
+
+@media (max-width: 62rem) {
+  .col-left, .col-right, .col-wide, .col-narrow, .col-inset,
+  .span-3, .span-4, .span-6 {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Prose helper for body copy blocks on inner pages */
+.prose p {
+  color: var(--color-ink-2);
+  max-width: 40em;
+}
+
+.prose p + p {
+  margin-top: var(--space-3);
+}
+
+/* --------------------------------------------------------------------------
+   16.12 DARK-CONTEXT TEXT OVERRIDES
+   --color-ink-2 (#555) on black is ~2.6:1 and fails WCAG AA. Anything that
+   defaults to it must lift to --color-grey-400 (~7:1) inside dark sections.
+   -------------------------------------------------------------------------- */
+.section--dark .prose p,
+.section--dark .small,
+.section--dark .why-card p:not(.why-card__index),
+.section--dark .stat__label,
+.section--dark .case-study dd,
+.section--dark .resource-card p,
+.section--dark .glossary dd,
+.section--dark .field__hint,
+.section--dark .journey-step p:not(.journey-step__index) {
+  color: var(--color-grey-400);
+}
+
+.section--dark .why-card {
+  border-color: var(--color-rule-dark);
+}
+
+.section--dark .why-card__index,
+.section--dark .case-study dt,
+.section--dark .glossary dt span {
+  color: var(--color-gold);
+}
+
+.section--dark .case-study {
+  border-top-color: var(--color-white);
+}
+
+.section--dark .case-study dd,
+.section--dark .glossary > div,
+.section--dark .glossary {
+  border-color: var(--color-rule-dark);
+}
+
+/* --------------------------------------------------------------------------
+   16.14 CANDIDATE PATHWAY - the CGP route, eight stages, one line
+   Used by about.html ("How CGP Works"). Reads top-to-bottom on phones and
+   left-to-right from tablet up. Arrows are decorative; the numbers carry
+   the order for assistive technology.
+   -------------------------------------------------------------------------- */
+.pathway {
+  grid-column: 1 / 13;
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  column-gap: var(--space-2);
+  row-gap: var(--space-4);
+  margin-top: var(--space-4);
+  padding-top: var(--space-3);
+  border-top: var(--rule-thick) solid var(--color-black);
+}
+
+.pathway__step {
+  position: relative;
+  padding-right: var(--space-2);
+}
+
+.pathway__num {
+  display: block;
+  margin-bottom: var(--space-1);
+  font-size: var(--text-micro);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-wide);
+  color: var(--color-accent);
+}
+
+.pathway__label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-snug);
+}
+
+.pathway__step::after {
+  content: "\2192";
+  position: absolute;
+  top: -0.125rem;
+  right: calc(-1 * var(--space-1) - 0.125rem);
+  font-size: var(--text-small);
+  font-weight: var(--weight-bold);
+  color: var(--color-accent);
+}
+
+.pathway__step:last-child::after {
+  content: none;
+}
+
+@media (max-width: 62rem) {
+  .pathway {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .pathway__step::after {
+    content: none;
+  }
+}
+
+@media (max-width: 40rem) {
+  .pathway {
+    grid-template-columns: 1fr;
+    row-gap: var(--space-2);
+  }
+
+  .pathway__step {
+    padding-bottom: var(--space-3);
+    padding-right: 0;
+    border-bottom: var(--rule-thin) solid var(--color-rule);
+  }
+
+  .pathway__step:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .pathway__step::after {
+    content: "\2193";
+    top: auto;
+    right: 0;
+    bottom: 0.125rem;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   16.15 STUDENTS & PARENTS - section hero banner, section cards and the
+   fifteen-stage complete pathway.
+   Added for the client's 2026-10-15 Students Section amendment.
+   -------------------------------------------------------------------------- */
+
+/* Hero banner - a single supplied banner artwork at the top of a section.
+   Shown whole, never cropped; the message it carries is repeated as real text
+   in the caption underneath and in the headline band below, so nothing on the
+   page depends on reading text inside an image. */
+.hero-banner {
+  margin: 0;
+}
+
+.hero-banner img {
+  width: 100%;
+  height: auto;
+}
+
+.hero-banner__caption {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-1) var(--space-3);
+  padding-top: var(--space-2);
+  border-top: var(--rule-thin) solid var(--color-rule);
+  margin-top: var(--space-2);
+  font-size: var(--text-small);
+  color: var(--color-ink-2);
+}
+
+.hero-banner__line {
+  font-weight: var(--weight-medium);
+  color: var(--color-black);
+}
+
+/* Section cards - the three pages that make up the Students & Parents menu. */
+.route-cards {
+  grid-column: 1 / 13;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--grid-gutter);
+}
+
+.route-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  min-height: 13rem;
+  border: var(--rule-thin) solid var(--color-rule);
+  border-top: var(--rule-thick) solid var(--color-black);
+  transition: background var(--duration-fast) var(--ease-out);
+}
+
+.route-card:hover {
+  background: var(--color-panel);
+}
+
+.route-card__index {
+  font-size: var(--text-micro);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-wide);
+  color: var(--color-accent);
+}
+
+.route-card__title {
+  font-size: var(--text-lead);
+}
+
+.route-card__desc {
+  font-size: var(--text-small);
+  color: var(--color-ink-2);
+}
+
+.route-card__more {
+  margin-top: auto;
+  font-size: var(--text-micro);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+}
+
+/* Complete pathway - fifteen numbered stages grouped into phases, each stage
+   carrying the role responsible for it, so CGP's preparation role and the
+   German institution's assessment and selection role are never confused. */
+.route {
+  grid-column: 1 / 13;
+  margin-top: var(--space-4);
+  border-top: var(--rule-thick) solid var(--color-black);
+}
+
+.route__phase {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--grid-gutter);
+  padding-block: var(--space-3);
+  border-bottom: var(--rule-thin) solid var(--color-rule);
+}
+
+.route__phase-head {
+  grid-column: 1 / 5;
+}
+
+.route__phase-label {
+  font-size: var(--text-lead);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-snug);
+}
+
+.route__phase-role {
+  display: block;
+  margin-top: var(--space-1);
+}
+
+.route__steps {
+  grid-column: 5 / 13;
+}
+
+.route__step {
+  display: grid;
+  grid-template-columns: 2.5rem minmax(0, 1fr) auto;
+  gap: var(--space-2);
+  align-items: baseline;
+  padding-block: var(--space-1);
+}
+
+.route__step + .route__step {
+  border-top: var(--rule-thin) solid var(--color-rule);
+}
+
+.route__num {
+  font-size: var(--text-micro);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-wide);
+  color: var(--color-accent);
+}
+
+.route__name {
+  font-size: var(--text-body);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-snug);
+}
+
+.route__owner {
+  padding: 0.125rem 0.375rem;
+  font-size: var(--text-micro);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  white-space: nowrap;
+  border: var(--rule-thin) solid currentColor;
+}
+
+.route__owner--cgp {
+  color: var(--color-accent);
+}
+
+.route__owner--de {
+  color: var(--color-ink-2);
+}
+
+.section--dark .route__owner--de {
+  color: var(--color-grey-150);
+}
+
+/* Two roles, one pathway - the plain-language split. */
+.roles {
+  grid-column: 1 / 13;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--grid-gutter);
+  margin-bottom: var(--space-4);
+}
+
+.roles__block {
+  padding-top: var(--space-3);
+  border-top: var(--rule-thick) solid var(--color-gold);
+}
+
+.roles__block h3 {
+  margin-bottom: var(--space-2);
+  font-size: var(--text-lead);
+}
+
+.roles__block p {
+  font-size: var(--text-small);
+}
+
+.section--dark .roles__block p {
+  color: var(--color-grey-150);
+}
+
+@media (max-width: 62rem) {
+  .route__phase-head {
+    grid-column: 1 / 13;
+    margin-bottom: var(--space-2);
+  }
+
+  .route__steps {
+    grid-column: 1 / 13;
+  }
+}
+
+@media (max-width: 48rem) {
+  .route-cards,
+  .roles {
+    grid-template-columns: 1fr;
+  }
+
+  .route__step {
+    grid-template-columns: 2.5rem minmax(0, 1fr);
+    row-gap: 0.25rem;
+  }
+
+  .route__owner {
+    grid-column: 2;
+    justify-self: start;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   16.16 APPROACH LIST - ruled two-column statements ("Our Approach")
+   -------------------------------------------------------------------------- */
+.approach {
+  grid-column: 1 / 13;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border-top: var(--rule-thin) solid var(--color-rule);
+}
+
+.approach__item {
+  display: grid;
+  grid-template-columns: 3.5rem 1fr;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-3) var(--space-3) 0;
+  border-bottom: var(--rule-thin) solid var(--color-rule);
+}
+
+.approach__item:nth-child(odd) {
+  padding-right: var(--space-4);
+  border-right: var(--rule-thin) solid var(--color-rule);
+}
+
+.approach__index {
+  font-size: var(--text-micro);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-wide);
+  color: var(--color-accent);
+}
+
+.approach__text {
+  font-size: var(--text-body);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-snug);
+}
+
+@media (max-width: 48rem) {
+  .approach {
+    grid-template-columns: 1fr;
+  }
+
+  .approach__item,
+  .approach__item:nth-child(odd) {
+    padding-right: 0;
+    border-right: none;
+    grid-template-columns: 2.5rem 1fr;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   16.16 VISION & MISSION BLOCKS
+   -------------------------------------------------------------------------- */
+.vm {
+  grid-column: 1 / 13;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: var(--grid-gutter);
+  row-gap: var(--space-4);
+}
+
+.vm__block {
+  padding-top: var(--space-2);
+  border-top: var(--rule-thick) solid var(--color-accent);
+}
+
+.vm__label {
+  display: block;
+  margin-bottom: var(--space-2);
+}
+
+.vm__statement {
+  font-size: var(--text-lead);
+  line-height: var(--leading-snug);
+  font-weight: var(--weight-medium);
+}
+
+@media (max-width: 48rem) {
+  .vm {
+    grid-template-columns: 1fr;
+  }
+}
