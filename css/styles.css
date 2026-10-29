@@ -695,6 +695,12 @@ html {
    The supplied banner artwork carries its own headline, so each banner is
    shown whole (never cropped) and the headline is repeated as real text in
    the caption underneath - which is what mobile visitors actually read.
+
+   The banner band is FULL BLEED: the viewport div sits directly inside
+   .hero-slider, so the photograph runs edge to edge of the page while every
+   other element on it stays on the 90rem container grid. Heights follow the
+   artwork's own aspect ratio (width: 100%, height: auto) - nothing is cropped
+   and nothing is letterboxed.
    -------------------------------------------------------------------------- */
 .hero-slider {
   padding-top: 0;
@@ -725,13 +731,31 @@ html {
   height: auto;
 }
 
+/* The caption sits under a full-bleed photograph, so it re-applies the
+   container inset itself: 100% is the slide's own width (the viewport), which
+   puts its first character on exactly the same vertical as every other
+   section heading, at every breakpoint. Its hairline rule is a pseudo-element
+   so the line - unlike the caption box - stops at the container edge. */
 .hero-slide__caption {
+  position: relative;
   margin-top: auto;
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
   gap: var(--space-1) var(--space-3);
   padding-block: var(--space-2);
+  padding-inline: max(var(--container-pad),
+      calc((100% - var(--container-max)) / 2 + var(--container-pad)));
+}
+
+.hero-slide__caption::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: max(var(--container-pad),
+      calc((100% - var(--container-max)) / 2 + var(--container-pad)));
+  right: max(var(--container-pad),
+      calc((100% - var(--container-max)) / 2 + var(--container-pad)));
   border-top: var(--rule-thin) solid var(--color-rule);
 }
 

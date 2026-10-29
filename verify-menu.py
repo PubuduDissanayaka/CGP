@@ -36,10 +36,13 @@ for p in PAGES:
     check(before[p] == after[p], f"re-running the generator leaves {p} byte-identical")
 
 # --- 2. version stamps ----------------------------------------------------
+ASSET_VERSION = re.search(
+    r'^ASSET_VERSION = "(\d+)"', (ROOT / "build-pages.py").read_text(), re.M).group(1)
 for p in PAGES:
     txt = (ROOT / p).read_text()
     vs = set(re.findall(r"\?v=(\d+)", txt))
-    check(vs == {"14"}, f"{p} asset stamp is ?v=14 only (found {sorted(vs)})")
+    check(vs == {ASSET_VERSION},
+          f"{p} asset stamp is ?v={ASSET_VERSION} only (found {sorted(vs)})")
 
 # --- 3. page integrity ----------------------------------------------------
 for p in PAGES:

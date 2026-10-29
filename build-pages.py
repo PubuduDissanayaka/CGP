@@ -33,7 +33,7 @@ LOGO = "assets/images/CGPLogo.png"
 
 # Bump this whenever css/ or js/ changes, then re-run, and mirror it in
 # index.html. Forces browsers to fetch the new file instead of a cached one.
-ASSET_VERSION = "14"
+ASSET_VERSION = "15"
 
 # --------------------------------------------------------------------------
 # OPTIMISED RESPONSIVE IMAGES (2026-10-16 performance pass)
