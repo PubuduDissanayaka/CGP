@@ -183,6 +183,7 @@ menu structure change (see the menu structure change request below). It follows
 | 2026-10-16 | `51d1059` | Footer credits: **Developed by DevTenent** link, new tab → devtenent.com |
 | 2026-10-16 | `c35105e` | **Performance pass** (DEVT-87): 109 responsive WebP/JPEG derivatives in `assets/images/opt/`, every `<img>` rewritten as `<picture>` with `srcset`/`sizes`, minified merged stylesheet + JS, `?v=14`, below-fold images deferred, plus `.htaccess` caching/MIME rules. Home page 3,614 KB → 798 KB, site 8.22 MB → 1.83 MB, Lighthouse mobile 0.75 → 0.99, LCP 12.5 s → 2.3 s, text unchanged on all ten pages |
 | 2026-10-16 | `67c59a9` | **Generated imagery**: the twelve Unsplash placeholder photographs replaced with purpose-generated images under `assets/images/gen/` + `opt/gen/`; `make-opt.py` + `images-gen.json` added. Client artwork (`hero-banner-01..03`, `hero-students-parents`) deliberately unchanged. Home page 798 KB → 648 KB, site 1.83 MB → 1.48 MB |
+| 2026-10-29 | `89a5df8` | **Full-bleed hero banner** (DEVT-265): the home page's three-banner slider now runs edge to edge of the window, image uncropped and on its own aspect ratio, caption and controls re-aligned to the container grid; `?v=15` |
 
 **Rollback:** `git reset --hard 6975a46` on the server returns the site to the
 build that was live before the menu work; `git reset --hard f3ecd16` keeps the
@@ -648,4 +649,79 @@ developed by DevTenent hyperlink new tab open to devtenent.com."*
 number `+94 70 400 8952` while the nine generated pages' footers do not (their list is email,
 address, district, hours). This predates this change and lives in `build-pages.py`'s footer
 template; it is left exactly as it was rather than fixed without being asked.
+
+## ✦ Client change request — 2026-10-29 (full-bleed hero banner)
+
+Requested on the issue (DEVT-265): *"i want to make this image slide with full width section, only
+slide section make full width hero section. and also make sure image dont crop and maintain the
+aspect ratio."*
+
+**Change** — the home page's three-banner slider is now a full-bleed band. Only that band left the
+container; every other element of the page, including the caption and the controls *inside* the
+band, is still on the 90rem grid.
+
+- **Markup** (`index.html` only, home page): `.hero-slider__viewport` moved out of the wrapping
+  `<div class="container">` and became a direct child of `.hero-slider`, so it is as wide as the
+  page. `.hero-slider__controls` keeps a `.container` of its own. Nothing else in the block moved:
+  the three `<figure class="hero-slide">` elements, their captions and the slider's `data-` hooks
+  are byte-identical, and the script queries them the same way.
+- **CSS** (`css/styles.css` + the same rule in `css/styles.min.css`): `.hero-slide__caption`
+  re-applies the container inset itself —
+  `padding-inline: max(var(--container-pad), calc((100% - var(--container-max)) / 2 + var(--container-pad)))`
+  — where `100%` is the slide's own width. That puts the caption's first character on exactly the
+  same vertical as the page's `<h1>` and section headings at every width. The hairline above the
+  caption became a `::before` with the same inset, so the rule stops at the container edge while
+  the photograph does not.
+- **No cropping.** `.hero-slide img` keeps `width: 100%; height: auto`, so the rendered box follows
+  the artwork's own ratio (masters 1942×810 / 1944×809 = 2.40 : 1). No `object-fit`, no fixed
+  height, no letterboxing.
+- **`sizes`** changed from `(min-width: 90rem) 83rem, 100vw` to `100vw` on all three slides and on
+  the hero preload's `imagesizes` — the image now really is viewport-wide, so the old estimate
+  would have under-fetched on wide screens. Up to 1440 px the browser still picks the derivative it
+  picked before; from 1942 px up each slide loads the 1942w file (130 KB WebP against 92 KB, 212 KB
+  JPEG against 141 KB). That is the one weight increase of this change, and only on viewports wider
+  than the artwork.
+- **`?v=15`** on all ten pages plus `ASSET_VERSION = "15"`, because `css/` changed. `verify-menu.py`
+  now reads the expected stamp from `build-pages.py` instead of hard-coding it, so the next bump
+  cannot fail its own contract check; it reports **102 / 102 passed**, including generator
+  idempotency.
+
+**Measured** (Chromium, local build over `http://127.0.0.1:4173`, `Emulation.setDeviceMetricsOverride`,
+`deviceScaleFactor: 1`):
+
+| viewport | image width | image x | rendered ratio | caption text left | page container left | h-overflow |
+|---|---|---|---|---|---|---|
+| 1920 px | 1905 px (was 1328, x 288.5) | 0 | 2.400 | 288.5 | 288.5 | 0 |
+| 1440 px | 1425 px (was 1313, x 56) | 0 | 2.400 | 56 | 56 | 0 |
+| 1024 px | 1009 px (was 927.1, x 41) | 0 | 2.400 | 41 | 41 | 84 px — **pre-existing**, identical before and after |
+| 768 px | 753 px (was 691.6, x 30.7) | 0 | 2.400 | 30.7 | 30.7 | 0 |
+| 390 px | 390 px (was 350, x 20) | 0 | 2.400 | 20 | 20 | 0 |
+
+Rendered ratio 2.400 against the artwork's 2.3975 — sub-pixel rounding of `height: auto`, no crop.
+Slider still steps `translateX(0/-100/-200%)`, dots and `aria-hidden` track the active slide, arrow
+keys work, and every slide keeps a full-width image with a 56 px caption inset at 1440 px.
+
+**Deployment and verification**
+
+- Repo commit `89a5df8` on `main` (`106d699` → `89a5df8`, 14 files, +88/−61); the docroot pulled
+  `--ff-only` and is clean at `89a5df8`.
+- Probed from outside with `?cb=<timestamp>`: `https://cgp.lk/?cb=…` is **byte-identical** to the
+  repository's `index.html` (40,617 B) and carries the restructured block, `sizes="100vw"` ×7 and
+  `?v=15`; `https://cgp.lk/css/styles.min.css?v=15` returns 200, 44,069 B, byte-identical to the
+  repository file and containing the new rule. All **10** page URLs return 200 with `?v=15`.
+- **Edge-cache caveat, same as every previous deploy:** straight after the push `https://cgp.lk/`
+  (the bare root, a separate cache entry from `/index.html`) was still an `x-cdn-cache-status: HIT`
+  copy of the old 40,873 B page with `expires: Thu, 29 Oct 2026 23:04:25 GMT`; every other URL was
+  current. A StackCP **Edge Caching → purge** shows the new banner at `/` immediately, otherwise it
+  clears itself at that timestamp.
+- **Rollback:** `ssh … 'cd ~/cgp.lk && git reset --hard 106d699'`, or `git revert 89a5df8` (the
+  docroot is a clean clone; never force-push this repository). Local snapshot before the edit:
+  `website-build-files/ceylon-german-pathway-cgp-website-pre-hero-fullbleed-20261029-115448.tar.gz`.
+
+**Noticed, not changed** — at a 1024 px viewport the page carries an 84 px horizontal overflow
+(`.header__bar` needs 1093 px: logo + full desktop nav + WhatsApp button, the desktop nav only
+collapses at 62rem / 992 px). It is **identical before and after** this change and lives in
+`build-pages.py`'s header, so it was left alone rather than fixed unasked. Also unchanged: the
+Students & Parents page's own hero banner (`hero-students-parents`) stays inside its container —
+this request named the home page slider only.
 
